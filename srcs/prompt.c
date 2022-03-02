@@ -27,9 +27,13 @@ static char	*ft_skip(char *a)
 	int		j;
 
 	i = 0;
-	while (a && (a[i] != 'g' || a[i + 1] != '/'))
+	j = -1;
+	while (++j < 3)
+	{
+		while (a[i] != '/')
+			i++;
 		i++;
-	i++;
+	}
 	j = 0;
 	while (a[i + j])
 		j++;
@@ -37,15 +41,12 @@ static char	*ft_skip(char *a)
 	if (s)
 	{
 		s[0] = '~';
-		j = 0;
-		while (a[i + j])
-		{
+		j = -1;
+		while (a[i + ++j])
 			s[j + 1] = a[i + j];
-			j++;
-		}
 		s[j + 1] = '\0';
 	}
-	free(a);
+	free(a)
 	return (s);
 }
 
