@@ -1,12 +1,23 @@
 #include "../incl/minishell.h"
 
-static void	ft_strc(char *c)
+static void	ft_strc(char *c, int nb, int i)
 {
-	c[0] = '\033';
-	c[1] = '[';
-	c[2] = '3';
-	c[3] = '2';
-	c[4] = 'm';
+	if (nb == 0)
+	{
+		c[0] = '\033';
+		c[1] = '[';
+		c[2] = '3';
+		c[3] = '2';
+		c[4] = 'm';
+	}
+	if (nb == 1)
+	{
+		c[i] = '\033';
+		c[++i] = '[';
+		c[++i] = '0';
+		c[++i] = 'm';
+		c[++i] = '\0';
+	}
 }
 
 static char	*ft_skip(char *a)
@@ -16,7 +27,7 @@ static char	*ft_skip(char *a)
 	int		j;
 
 	i = 0;
-	while (a && (a[i] != 't' || a[i + 1] != '/'))
+	while (a && (a[i] != 'g' || a[i + 1] != '/'))
 		i++;
 	i++;
 	j = 0;
@@ -50,17 +61,17 @@ static char	*ft_join(char *a, char *b)
 		i++;
 	while (b && b[j])
 		j++;
-	c = malloc(i + j + 6);
+	c = malloc(i + j + 10);
 	if (c)
 	{
-		ft_strc(c);
+		ft_strc(c, 0, 0);
 		i = -1;
 		while (a && a[++i])
 			c[i + 5] = a[i];
 		j = -1;
 		while (b && b[++j])
 			c[i + j + 5] = b[j];
-		c[i + j + 5] = '\0';
+		ft_strc(c, 1, i + j + 5);
 	}
 	free(a);
 	return (c);

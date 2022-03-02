@@ -9,8 +9,12 @@ int	nb_split(char *a)
 	nb = 0;
 	while (a[i])
 	{
-		if (a[i +1] && a[i] == '|')
+		if (a[i] == ' ')
+		{
+			while (a[i] == ' ')
+				i++;
 			nb++;
+		}
 		i++;
 	}
 	return (nb + 1);
@@ -47,14 +51,10 @@ char	*l_split(char *a)
 	i = space + 1;
 	while (a[i] && a[i] != '|')
 		i++;
-	s = malloc(i + space + 1);
-	i = space + 1;
-	while (a[i] && a[i] != '|')
-	{
-		s[i - (space + 1)] = a[i];
-		i++;
-	}
-	s[i - (space + 1)] = '\0';
+	if (i - space != 1)
+		s = ft_strdup(&a[space + 1]);
+	else
+		s = ft_strdup(".");
 	return (s);
 }
 
@@ -82,15 +82,22 @@ char	**parse(char *a)
 {
 	char	**p;
 	int		i;
+	int		nb;
 
-	p = malloc(sizeof(char *) * 2 * nb_split(a));
+	nb = nb_split(a);
+	p = malloc(sizeof(char *) * (nb + 1));
+	// printf ("%d\n", nb);
 	i = 0;
-	while (i < 2 * nb_split(a))
+	while (i < nb)
 	{
 		p[i] = f_split(place_split(a, i / 2));
 		i++;
-		p[i] = l_split(place_split(a, i / 2));
-		i++;
+		if (i < nb)
+		{
+			p[i] = l_split(place_split(a, i / 2));
+			i++;
+		}
 	}
+	p[i] = NULL;
 	return (p);
 }
