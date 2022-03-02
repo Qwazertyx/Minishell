@@ -19,9 +19,15 @@ char	*ft_strjoin(char *s1, char *s2);
 void	terminate(void);
 void	errorcmd();
 void	free_split(char **args);
-char	**parse(char *a);
+char	***parse(char *a);
 int		execmaster(char **maincmd, char **envp);
 char	*path(char *cmd, char **envp);
 char	*ft_strdup(char *a);
+void	ft_vpipe(char ***tab, int nb, char **env);
+void	*ft_choice(char ***tab, char **env, int i);
+int		echomaster(char *cmd, char **envp);
+void	ft_exit(char ***tab, int nb);
+void	free_tab(char ***a);
+int		ft_atoi(const char *str);
 
 #endif

@@ -1,23 +1,32 @@
 #include "../incl/minishell.h"
 
-int	nb_split(char *a)
+int	nb_doublt(char *a)
 {
 	int	i;
 	int	nb;
 
-	i = 0;
 	nb = 0;
-	while (a[i])
-	{
-		if (a[i] == ' ')
-		{
-			while (a[i] == ' ')
-				i++;
+	i = -1;
+	while (a[++i])
+		if (a[i] == '|')
 			nb++;
-		}
-		i++;
-	}
 	return (nb + 1);
+}
+
+int	nb_param(char *a)
+{
+	int i;
+	int	nb;
+
+	i = 0;
+	nb = 1;
+	while (a[i] && a[i] != ' ')
+		i++;
+	while (a[i] && a[i] == ' ')
+		i++;
+	if (a[i])
+		nb++;
+	return (nb);
 }
 
 char	*f_split(char *a)
@@ -39,6 +48,22 @@ char	*f_split(char *a)
 	return (s);
 }
 
+char	*ft_strndup(char *a, int l)
+{
+	int		i;
+	char	*s;
+
+	i = 0;
+	s = malloc(l + 1);
+	while (a[i] && i < l)
+	{
+		s[i] = a[i];
+		i++;
+	}
+	s[i] = '\0';
+	return (s);
+}
+
 char	*l_split(char *a)
 {
 	int		space;
@@ -51,10 +76,7 @@ char	*l_split(char *a)
 	i = space + 1;
 	while (a[i] && a[i] != '|')
 		i++;
-	if (i - space != 1)
-		s = ft_strdup(&a[space + 1]);
-	else
-		s = ft_strdup(".");
+	s = ft_strndup(&a[space + 1], i - space - 1);
 	return (s);
 }
 
@@ -78,25 +100,24 @@ char	*place_split(char *a, int nb)
 	return (a);
 }
 
-char	**parse(char *a)
+char	***parse(char *a)
 {
-	char	**p;
+	char	***p;
 	int		i;
 	int		nb;
 
-	nb = nb_split(a);
-	p = malloc(sizeof(char *) * (nb + 1));
-	// printf ("%d\n", nb);
+	p = malloc(sizeof(char **) * (nb_doublt(a) + 1));
 	i = 0;
-	while (i < nb)
+	while (i < nb_doublt(a))
 	{
-		p[i] = f_split(place_split(a, i / 2));
-		i++;
-		if (i < nb)
+		p[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
+		p[i][0] = f_split(place_split(a, i));
+		if (nb_param(place_split(a , i)) > 1)
 		{
-			p[i] = l_split(place_split(a, i / 2));
-			i++;
+			p[i][1] = l_split(place_split(a, i));
 		}
+		p[i][nb_param(place_split(a , i))] = NULL;
+		i++;
 	}
 	p[i] = NULL;
 	return (p);

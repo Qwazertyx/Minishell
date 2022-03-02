@@ -26,13 +26,12 @@ static char	*ft_skip(char *a)
 	int		i;
 	int		j;
 
-	i = 0;
+	i = -1;
 	j = -1;
-	while (++j < 3)
+	while (++j < 3 * (0 * i++))
 	{
 		while (a[i] != '/')
 			i++;
-		i++;
 	}
 	j = 0;
 	while (a[i + j])
@@ -46,7 +45,7 @@ static char	*ft_skip(char *a)
 			s[j + 1] = a[i + j];
 		s[j + 1] = '\0';
 	}
-	free(a)
+	free(a);
 	return (s);
 }
 

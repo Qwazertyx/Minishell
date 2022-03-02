@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+         #
+#    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/02 11:22:49 by mlagrang         ###   ########.fr        #
+#    Updated: 2022/03/02 16:07:09 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,16 +63,21 @@ OBJS = $(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
 ##****************##
 SOURCES	=	prompt.c		\
 			parse.c			\
-			main.c			\
 			pipex.c			\
 			pipexerror.c	\
 			pipexpath.c		\
 			pipexutils.c	\
 			pipexutils2.c	\
 			exec.c			\
+			choice.c		\
+			main.c			\
+			echo.c			\
+			ft_atoi.c		\
+			exit.c			\
 
 #			gnl.c			
 #			gnl2.c			
+
 
 ##*********##
 ### RULES ###
