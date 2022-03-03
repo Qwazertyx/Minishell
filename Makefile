@@ -6,7 +6,7 @@
 #    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/02 16:07:09 by vsedat           ###   ########lyon.fr    #
+#    Updated: 2022/03/03 12:46:00 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,10 +70,14 @@ SOURCES	=	prompt.c		\
 			pipexutils2.c	\
 			exec.c			\
 			choice.c		\
-			main.c			\
 			echo.c			\
 			ft_atoi.c		\
 			exit.c			\
+			utils.c			\
+			pwd.c			\
+			env.c			\
+			splitve.c		\
+			main.c			\
 
 #			gnl.c			
 #			gnl2.c			
@@ -133,5 +137,20 @@ sus:
 	@echo "$(WHITE)         ░█▀▀░█░█░█▀▀$(END)"
 	@echo "$(WHITE)         ░▀▀█░█░█░▀▀█$(END)"
 	@echo "$(WHITE)         ░▀▀▀░▀▀▀░▀▀▀$(END)"
+
+squidgame:
+	@echo "$(WHITE)            ^      $(END)"
+	@echo "$(WHITE)          /   \    $(END)"
+	@echo "$(WHITE)          \   /    $(END)"
+	@echo "$(WHITE)          |   |    $(END)"
+	@echo "$(WHITE)          |   |    $(END)"
+	@echo "$(WHITE)          | 0 |    $(END)"
+	@echo "$(WHITE)         // ||\\   $(END)"
+	@echo "$(WHITE)        (( // ||   $(END)"
+	@echo "$(WHITE)         \\))  \\  $(END)"
+	@echo "$(WHITE)       //||    ))  $(END)"
+	@echo "$(WHITE)       ( ))   //   $(END)"
+	@echo "$(WHITE)        //   ((    $(END)"
+
 
 .PHONY:	all clean fclean re sus

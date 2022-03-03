@@ -3,11 +3,13 @@
 void	terminate(void)
 {
 	write(2, "Error\n", 6);
+	exit(EXIT_FAILURE);
 }
 
 void	errorcmd(void)
 {
 	write(2, "Error: command not found\n", 25);
+	exit(EXIT_FAILURE);
 }
 
 void	free_split(char **args)

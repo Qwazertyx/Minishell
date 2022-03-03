@@ -29,6 +29,48 @@ int	nb_param(char *a)
 	return (nb);
 }
 
+char	*skip_quote(char *cmd)
+{
+	char	*s;
+	int		i;
+	int		nb;
+	int		quot;
+
+	quot = 0;
+	i = 0;
+	nb = 0;
+	while(cmd[i])
+	{
+		if (cmd[i] == '\'' && quot == 0)
+			quot = 1 + 0 * i++;
+		else if (cmd[i] == '\"' && quot == 0)
+			quot = 2 + 0 * i++;
+		else if ((cmd[i] == '\"' && quot == 2) || (cmd[i] == '\'' && quot == 1))
+			quot = 0 + 0 * i++;
+		else if ((cmd[i] == '\"' && quot == 1) || (cmd[i] == '\'' && quot == 2)
+			|| (cmd[i] != '\"' && cmd[i] != '\''))
+			i = i + 1 + 0 * nb++;
+	}
+	s = malloc(nb + 1);
+	i = 0;
+	nb = 0;
+	quot = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '\'' && quot == 0)
+			quot = 1 + 0 * i++;
+		else if (cmd[i] == '\"' && quot == 0)
+			quot = 2 + 0 * i++;
+		else if ((cmd[i] == '\"' && quot == 2) || (cmd[i] == '\'' && quot == 1))
+			quot = 0 + 0 * i++;
+		else if ((cmd[i] == '\"' && quot == 1) || (cmd[i] == '\'' && quot == 2)
+			|| (cmd[i] != '\"' && cmd[i] != '\''))
+			s[nb++] = cmd[i++];
+	}
+	s[nb] = '\0';
+	return (s);
+}
+
 char	*f_split(char *a)
 {
 	int		i;
@@ -111,7 +153,8 @@ char	***parse(char *a)
 	while (i < nb_doublt(a))
 	{
 		p[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
-		p[i][0] = f_split(place_split(a, i));
+		p[i][0] = skip_quote(f_split(place_split(a, i)));
+		//p[i][0] = f_split(place_split(a, i));
 		if (nb_param(place_split(a , i)) > 1)
 		{
 			p[i][1] = l_split(place_split(a, i));

@@ -22,6 +22,8 @@ int	ft_strcmp(char *a, char *b)
 
 void	*ft_choice(char ***tab, char **env, int i)
 {
+	char	**s;
+
 	printf("cmd = %s\n", tab[i][0]);
 	if (!ft_strcmp(tab[i][0], "echo"))
 	{
@@ -35,6 +37,7 @@ void	*ft_choice(char ***tab, char **env, int i)
 	else if (!ft_strcmp(tab[i][0], "pwd"))
 	{
 		printf("=enter pwd\n\n");
+		ft_pwd();
 	}
 	else if (!ft_strcmp(tab[i][0], "export"))
 	{
@@ -47,6 +50,7 @@ void	*ft_choice(char ***tab, char **env, int i)
 	else if (!ft_strcmp(tab[i][0], "env"))
 	{
 		printf("=enter env\n\n");
+		ft_env(env);
 	}
 	else if (!ft_strcmp(tab[i][0], "exit"))
 	{
@@ -58,6 +62,8 @@ void	*ft_choice(char ***tab, char **env, int i)
 	else
 	{
 		printf("=enter execve\n\n");
-		execmaster(tab[i], env);
+		s = ft_splitve(tab[i][1], ' ', tab[i][0]);
+		execmaster(s, env);
+		free(s);
 	}
 }

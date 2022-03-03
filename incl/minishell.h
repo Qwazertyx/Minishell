@@ -29,5 +29,10 @@ int		echomaster(char *cmd, char **envp);
 void	ft_exit(char ***tab, int nb);
 void	free_tab(char ***a);
 int		ft_atoi(const char *str);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_pwd(void);
+void	ft_env(char **env);
+void	ft_putstr_fd(char *s, int fd);
+char	**ft_splitve(char *arg, char c, char *cmd);
 
 #endif

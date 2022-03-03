@@ -19,5 +19,5 @@ int	execmaster(char **maincmd, char **envp)
 	}
 	else
 		errorcmd(maincmd);
-	return (0);
+	exit(0);
 }
