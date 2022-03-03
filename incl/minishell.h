@@ -34,5 +34,6 @@ void	ft_pwd(void);
 void	ft_env(char **env);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_splitve(char *arg, char c, char *cmd);
+int		mycd(char *cmd);
 
 #endif

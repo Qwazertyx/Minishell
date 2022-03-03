@@ -6,7 +6,7 @@
 #    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/03 12:46:00 by vsedat           ###   ########lyon.fr    #
+#    Updated: 2022/03/03 16:07:05 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ SOURCES	=	prompt.c		\
 			env.c			\
 			splitve.c		\
 			main.c			\
+			cd.c			\
 
 #			gnl.c			
 #			gnl2.c			
