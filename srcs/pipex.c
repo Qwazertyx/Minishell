@@ -23,7 +23,7 @@ void	child_one(int *pipefd, int *fd, char **av, char **envp)
 			free_split(cmd);
 		}
 		else
-			errorcmd(cmd);
+			errorcmd();
 	}
 }
 
@@ -50,7 +50,7 @@ void	child_two(int *pipefd, int *fd, char **av, char **envp)
 			free_split(cmd);
 		}
 		else
-			errorcmd(cmd);
+			errorcmd();
 	}
 }
 

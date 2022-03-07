@@ -6,7 +6,7 @@
 #    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/03 16:07:05 by vsedat           ###   ########lyon.fr    #
+#    Updated: 2022/03/07 14:55:23 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ NAME	= minishell
 ### COMPILATION ###
 ##**************###
 CC		= gcc -Ofast
-CFLAGS	= -Wall -Wextra #-Werror #-fsanitize=address -g3
+CFLAGS	= -Wall -Wextra #-g -fsanitize=address #-Werror #-fsanitize=address -g3
 
 ##*******************##
 ### DIRECTORY PATHS ###
@@ -138,20 +138,5 @@ sus:
 	@echo "$(WHITE)         ░█▀▀░█░█░█▀▀$(END)"
 	@echo "$(WHITE)         ░▀▀█░█░█░▀▀█$(END)"
 	@echo "$(WHITE)         ░▀▀▀░▀▀▀░▀▀▀$(END)"
-
-squidgame:
-	@echo "$(WHITE)            ^      $(END)"
-	@echo "$(WHITE)          /   \    $(END)"
-	@echo "$(WHITE)          \   /    $(END)"
-	@echo "$(WHITE)          |   |    $(END)"
-	@echo "$(WHITE)          |   |    $(END)"
-	@echo "$(WHITE)          | 0 |    $(END)"
-	@echo "$(WHITE)         // ||\\   $(END)"
-	@echo "$(WHITE)        (( // ||   $(END)"
-	@echo "$(WHITE)         \\))  \\  $(END)"
-	@echo "$(WHITE)       //||    ))  $(END)"
-	@echo "$(WHITE)       ( ))   //   $(END)"
-	@echo "$(WHITE)        //   ((    $(END)"
-
 
 .PHONY:	all clean fclean re sus

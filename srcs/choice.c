@@ -33,6 +33,7 @@ void	*ft_choice(char ***tab, char **env, int i)
 	else if (!ft_strcmp(tab[i][0], "cd"))
 	{
 		printf("=enter cd\n\n");
+		mycd(tab[i]);
 	}
 	else if (!ft_strcmp(tab[i][0], "pwd"))
 	{
@@ -54,8 +55,8 @@ void	*ft_choice(char ***tab, char **env, int i)
 	}
 	else if (!ft_strcmp(tab[i][0], "exit"))
 	{
-		ft_exit(tab, i);
 		printf("=enter exit\n\n");
+		ft_exit(tab, i);
 	}
 	else if (tab[i][0][0] == '\0')
 		return (0);

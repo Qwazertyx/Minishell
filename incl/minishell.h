@@ -17,7 +17,7 @@ int		ft_conststrlen(char const *s);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char	*ft_strjoin(char *s1, char *s2);
 void	terminate(void);
-void	errorcmd();
+void	errorcmd(void);
 void	free_split(char **args);
 char	***parse(char *a);
 int		execmaster(char **maincmd, char **envp);
@@ -34,6 +34,7 @@ void	ft_pwd(void);
 void	ft_env(char **env);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_splitve(char *arg, char c, char *cmd);
-int		mycd(char *cmd);
+int		mycd(char **cmd);
+int		ft_putchar(int c);
 
 #endif

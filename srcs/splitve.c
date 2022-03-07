@@ -2,18 +2,24 @@
 
 static int	ft_nb_w(const char *s, char c)
 {
-	int	i;
-	int	nb;
+	int		i;
+	int		nb;
+	char	quot;
 
 	i = 0;
 	nb = 0;
+	quot = 0;
 	while (s && s[i])
 	{
+		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+			quot = s[i++];
+		else if (quot != 0 && (s[i] == '\'' || s[i] == '\"'))
+			quot = 0;
 		while (s[i] == c && s[i])
 			i++;
-		if (s[i] != '\0')
+		if (s[i] != '\0' && quot == 0)
 			nb++;
-		while (s[i] != c && s[i])
+		while (s[i] != c && s[i] && s[i] != '\'' && s[i] != '\"')
 			i++;
 	}
 	return (nb);
@@ -48,7 +54,7 @@ static int	ft_skip(char *s, char c, int i)
 	char	quot;
 
 	quot = 0;
-	while (s && s[i] && s[i] != c)
+	while (s && s[i])
 	{
 		if (s[i] == '\'' && quot == 0)
 			quot = '\'';
@@ -59,6 +65,8 @@ static int	ft_skip(char *s, char c, int i)
 				i++;
 		if (s[i] == quot)
 			quot = 0;
+		if (s[i] == c && quot == 0)
+			return (i);
 		i++;
 	}
 	return (i);
@@ -87,6 +95,7 @@ char	**ft_splitve(char *arg, char c, char *cmd)
 		if (!tab[j])
 			return (0);
 		tab[j] = ft_strncpy(tab[j], &arg[l], i - l);
+		// printf("%s\n", tab[j]);
 		j++;
 	}
 	tab[j] = 0;

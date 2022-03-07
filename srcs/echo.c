@@ -1,14 +1,7 @@
 #include "../incl/minishell.h"
 
-int	ft_putchar(int c)
+int	*get_sus(char **envp, char *toech, int j)
 {
-	write(1, &c, 1);
-	return (1);
-}
-
-int	*get_sus(char *cmd, char **envp, char *toech, int j)
-{
-	char	*sus;
 	int		i;
 	int		p;
 
@@ -23,11 +16,6 @@ int	*get_sus(char *cmd, char **envp, char *toech, int j)
 		while (envp[i][p])
 			ft_putchar(envp[i][p++]);
 	}
-	else
-	{
-		write(1, "$", 1);
-		ft_putstr_fd(toech, 1);
-	}
 	return (0);
 }
 
@@ -37,41 +25,60 @@ int	echospecial(char *cmd, char **envp, int i)
 	char	*toech;
 
 	j = 0;
-	while (cmd[i + j] && cmd[i + j] != ' ')
+	while (cmd[i + j] && (cmd[i + j] != ' '
+			&& cmd[i + j] != '\'' && cmd[i + j] != '\"'))
 		j++;
 	toech = malloc((j + 1) * sizeof(char));
 	j = 0;
-	while (cmd[i + j] && cmd[i + j] != ' ')
+	while (cmd[i + j] && (cmd[i + j] != ' '
+			&& cmd[i + j] != '\'' && cmd[i + j] != '\"'))
 	{
 		toech[j] = cmd[i + j];
 		j++;
 	}
 	toech[j] = 0;
-	get_sus(cmd, envp, toech, j);
+	if (cmd[i + j] && cmd[i + j] == '\'')
+	{
+		write(1, "$", 1);
+		ft_putstr_fd(toech, 1);
+	}
+	else
+		get_sus(envp, toech, j);
 	return (j);
 }
 
 int	nparam(char *cmd)
 {
-	if (cmd[0] && cmd[1] && cmd[2]
-		&& cmd[0] == '-' && cmd[1] == 'n' && cmd[2] == ' ')
-		return (3);
+	int	i;
+
+	i = 0;
+	while (cmd[i] == ' ')
+		i++;
+	if (cmd[i] && cmd[i] == '-')
+	{
+		i++;
+		if (cmd[i] && cmd[i] == 'n')
+		{
+			while (cmd[i] && cmd[i] == 'n')
+				i++;
+			if (cmd[i] && cmd[i] == ' ')
+				return (i);
+		}
+	}
 	return (0);
 }
 
-int	echomaster(char *cmd, char **envp)
+int	echoservant(char *cmd, char **envp, int i)
 {
-	int	i;
 	int	quot;
 
-	i = nparam(cmd);
 	quot = 0;
 	while (cmd[i])
 	{
 		if (cmd[i] == '$')
 			i += echospecial(cmd, envp, i + 1);
-		//else if (cmd[i + 1] && cmd[i] == ' ' && cmd[i + 1] == ' ' && quot == 0)
-		//	i++;
+		else if (cmd[i - 1] && cmd[i] == ' ' && cmd[i - 1] == ' ' && quot == 0)
+			i++;
 		else if (cmd[i] == '\'' && quot == 0)
 			quot = 1;
 		else if (cmd[i] == '\"' && quot == 0)
@@ -83,6 +90,22 @@ int	echomaster(char *cmd, char **envp)
 			ft_putchar(cmd[i]);
 		i++;
 	}
+	return (1);
+}
+
+int	echomaster(char *cmd, char **envp)
+{
+	int	i;
+	int	quot;
+
+	i = 0;
+	while (cmd[i] == ' ')
+		i++;
+	i = nparam(cmd);
+	while (cmd[i] == ' ')
+		i++;
+	quot = 0;
+	echoservant(cmd, envp, i);
 	if (!nparam(cmd))
 		write(1, "\n", 1);
 	return (1);

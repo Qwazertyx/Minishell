@@ -2,14 +2,22 @@
 
 int	nb_doublt(char *a)
 {
-	int	i;
-	int	nb;
+	int		i;
+	int		nb;
+	char	quot;
 
 	nb = 0;
 	i = -1;
+	quot = 0;
 	while (a[++i])
-		if (a[i] == '|')
+	{
+		if ((a[i] == '\'' || a[i] == '\"') && quot == 0)
+			quot = a[i];
+		else if ((a[i] == '\'' || a[i] == '\"') && quot != 0)
+			quot = 0;
+		if (a[i] == '|' && quot == 0)
 			nb++;
+	}
 	return (nb + 1);
 }
 
@@ -154,7 +162,6 @@ char	***parse(char *a)
 	{
 		p[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
 		p[i][0] = skip_quote(f_split(place_split(a, i)));
-		//p[i][0] = f_split(place_split(a, i));
 		if (nb_param(place_split(a , i)) > 1)
 		{
 			p[i][1] = l_split(place_split(a, i));

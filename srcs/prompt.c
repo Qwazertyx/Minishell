@@ -27,11 +27,11 @@ static char	*ft_skip(char *a)
 	int		j;
 
 	i = -1;
-	j = -1;
-	while (++j < 3 * (0 * i++))
+	j = 0;
+	while (j < 3 && a[++i])
 	{
-		while (a[i] != '/')
-			i++;
+		if (a[i] == '/')
+			j++;
 	}
 	j = 0;
 	while (a[i + j])
@@ -80,9 +80,18 @@ static char	*ft_join(char *a, char *b)
 char	*ft_prompt(void)
 {
 	char	*a;
+	int		nb;
+	int		i;
 
 	a = NULL;
-	a = ft_skip(getcwd(a, 1));
+	a = getcwd(a, 1);
+	i = -1;
+	nb = 0;
+	while (a[++i])
+		if(a[i] == '/')
+			nb++;
+	if (nb >= 2)
+		a = ft_skip(a);
 	if (!a)
 		return (0);
 	return (ft_join(a, " > "));

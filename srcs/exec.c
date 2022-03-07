@@ -18,6 +18,6 @@ int	execmaster(char **maincmd, char **envp)
 			perror("error execve:");
 	}
 	else
-		errorcmd(maincmd);
+		errorcmd();
 	exit(0);
 }

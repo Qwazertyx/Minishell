@@ -22,10 +22,10 @@ void	free_tab(char ***a)
 	int	j;
 
 	i = 0;
-	while (a[i])
+	while (a && a[i])
 	{
 		j = -1;
-		while (a[i][++j])
+		while (a[i] && a[i][++j])
 			free(a[i][j]);
 		free(a[i]);
 		i++;
@@ -68,14 +68,15 @@ void	ft_while(char **env)
 
 void CtrlC(int sig)
 {
-	fprintf(stdin, "");
+	// printf("\n\033[32m~/Desktop/cursus/minishelldossier/Minishell > \033[0m");
+	// fprintf(stdin, "%d", -1);
 }
 
 int	main(int argc, char *argv[], char **env)
 {
 	(void) argc;
 	(void) argv;
-	signal(SIGINT, CtrlC);
+	//signal(SIGINT, CtrlC);
 	while (1)
 	{
 		ft_while(env);

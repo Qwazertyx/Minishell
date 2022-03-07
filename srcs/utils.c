@@ -14,3 +14,9 @@ void	ft_putstr_fd(char *s, int fd)
 		}
 	}
 }
+
+int	ft_putchar(int c)
+{
+	write(1, &c, 1);
+	return (1);
+}
