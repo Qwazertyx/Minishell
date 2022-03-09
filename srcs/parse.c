@@ -21,9 +21,32 @@ int	nb_doublt(char *a)
 	return (nb + 1);
 }
 
+int	is_input(char *s)
+{
+	int		i;
+	char	quot;
+
+	i = 0;
+	quot = 0;
+	while (s[i])
+	{
+		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+			quot = s[i];
+		else if (quot == s[i])
+			quot = 0;
+		i++;
+	}
+	if (quot != 0)
+	{
+		printf("Missing %c quote\n", quot);
+		return (0);
+	}
+	return (1);
+}
+
 int	nb_param(char *a)
 {
-	int i;
+	int	i;
 	int	nb;
 
 	i = 0;
@@ -150,25 +173,26 @@ char	*place_split(char *a, int nb)
 	return (a);
 }
 
-char	***parse(char *a)
+t_var	*parse(char *a)
 {
-	char	***p;
+	t_var	*p;
 	int		i;
-	int		nb;
 
-	p = malloc(sizeof(char **) * (nb_doublt(a) + 1));
+	p = malloc(sizeof(t_var) * (nb_doublt(a) + 1));
 	i = 0;
 	while (i < nb_doublt(a))
 	{
-		p[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
-		p[i][0] = skip_quote(f_split(place_split(a, i)));
-		if (nb_param(place_split(a , i)) > 1)
+		p[i].cmd = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
+		p[i].cmd[0] = skip_quote(f_split(place_split(a, i)));
+		if (nb_param(place_split(a, i)) > 1)
 		{
-			p[i][1] = l_split(place_split(a, i));
+			p[i].cmd[1] = l_split(place_split(a, i));
 		}
-		p[i][nb_param(place_split(a , i))] = NULL;
+		p[i].cmd[nb_param(place_split(a, i))] = NULL;
+		p[i].output = NULL;
 		i++;
 	}
-	p[i] = NULL;
+	p[i].cmd = NULL;
+	p[i].output = NULL;
 	return (p);
 }

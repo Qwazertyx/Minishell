@@ -1,6 +1,6 @@
 #include "../incl/minishell.h"
 
-void	ft_vpipe(char ***tab, int nb, char **env)
+void	ft_vpipe(t_var *tab, int nb, char **env)
 {
 	if (nb > 1)
 	{
@@ -20,50 +20,50 @@ int	ft_strcmp(char *a, char *b)
 	return (a[i] - b[i]);
 }
 
-void	*ft_choice(char ***tab, char **env, int i)
+void	ft_choice(t_var *tab, char **env, int i)
 {
 	char	**s;
 
-	printf("cmd = %s\n", tab[i][0]);
-	if (!ft_strcmp(tab[i][0], "echo"))
+	printf("cmd = %s\n", tab[i].cmd[0]);
+	if (!ft_strcmp(tab[i].cmd[0], "echo"))
 	{
 		printf("=enter echo\n\n");
-		echomaster(tab[i][1], env);
+		echomaster(tab[i].cmd[1], env);
 	}
-	else if (!ft_strcmp(tab[i][0], "cd"))
+	else if (!ft_strcmp(tab[i].cmd[0], "cd"))
 	{
 		printf("=enter cd\n\n");
-		mycd(tab[i]);
+		mycd(tab[i].cmd);
 	}
-	else if (!ft_strcmp(tab[i][0], "pwd"))
+	else if (!ft_strcmp(tab[i].cmd[0], "pwd"))
 	{
 		printf("=enter pwd\n\n");
-		ft_pwd();
+		ft_pwd(&tab[i]);
 	}
-	else if (!ft_strcmp(tab[i][0], "export"))
+	else if (!ft_strcmp(tab[i].cmd[0], "export"))
 	{
 		printf("=enter export\n\n");
 	}
-	else if (!ft_strcmp(tab[i][0], "unset"))
+	else if (!ft_strcmp(tab[i].cmd[0], "unset"))
 	{
 		printf("=enter unset\n\n");
 	}
-	else if (!ft_strcmp(tab[i][0], "env"))
+	else if (!ft_strcmp(tab[i].cmd[0], "env"))
 	{
 		printf("=enter env\n\n");
-		ft_env(env);
+		ft_env(env, tab);
 	}
-	else if (!ft_strcmp(tab[i][0], "exit"))
+	else if (!ft_strcmp(tab[i].cmd[0], "exit"))
 	{
 		printf("=enter exit\n\n");
 		ft_exit(tab, i);
 	}
-	else if (tab[i][0][0] == '\0')
-		return (0);
+	else if (tab[i].cmd[0] == '\0')
+		return ;
 	else
 	{
 		printf("=enter execve\n\n");
-		s = ft_splitve(tab[i][1], ' ', tab[i][0]);
+		s = ft_splitve(tab[i].cmd[1], ' ', tab[i].cmd[0]);
 		execmaster(s, env);
 		free(s);
 	}

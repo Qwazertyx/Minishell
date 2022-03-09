@@ -9,15 +9,17 @@ int	execmaster(char **maincmd, char **envp)
 {
 	pid_t	pid;
 
+	if (!maincmd[0] || !maincmd[0][0])
+		return (0);
 	pid = fork();
 	if (pid != 0)
 		return (0);
-	if (maincmd[0] && path(maincmd[0], envp))
+	if (path(maincmd[0], envp))
 	{
 		if (execve(path(maincmd[0], envp), maincmd, envp) == -1)
 			perror("error execve:");
 	}
 	else
-		errorcmd();
+		errorcmd(maincmd[0]);
 	exit(0);
 }

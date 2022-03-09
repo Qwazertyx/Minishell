@@ -6,9 +6,10 @@ void	terminate(void)
 	exit(EXIT_FAILURE);
 }
 
-void	errorcmd(void)
+void	errorcmd(char *cmd)
 {
-	write(2, "Error: command not found\n", 25);
+	printf("Minishell: %s: command not found\n", cmd);
+	// write(2, "Error: command not found\n", 25);
 	exit(EXIT_FAILURE);
 }
 

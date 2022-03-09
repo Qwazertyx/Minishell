@@ -93,10 +93,11 @@ int	echoservant(char *cmd, char **envp, int i)
 	return (1);
 }
 
-int	echomaster(char *cmd, char **envp)
+char	*echomaster(char *cmd, char **envp)
 {
-	int	i;
-	int	quot;
+	int		i;
+	int		quot;
+	char	*s;
 
 	i = 0;
 	while (cmd[i] == ' ')
@@ -105,8 +106,8 @@ int	echomaster(char *cmd, char **envp)
 	while (cmd[i] == ' ')
 		i++;
 	quot = 0;
-	echoservant(cmd, envp, i);
+	s = echoservant(cmd, envp, i);
 	if (!nparam(cmd))
 		write(1, "\n", 1);
-	return (1);
+	return (s);
 }
