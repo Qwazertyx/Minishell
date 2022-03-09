@@ -1,6 +1,6 @@
 #include "../incl/minishell.h"
 
-int	*get_sus(char **envp, char *toech, int j)
+int	*get_sus(char **envp, char *toech, int j, char **s)
 {
 	int		i;
 	int		p;
@@ -13,13 +13,18 @@ int	*get_sus(char **envp, char *toech, int j)
 	{
 		while (p < j + 1)
 			p++;
-		while (envp[i][p])
-			ft_putchar(envp[i][p++]);
+		*s = ft_joins(*s, &envp[i][p]);
+		// printf("%s || %s\n", s, &envp[i][p]);
+		// while (envp[i][p])
+		// {
+		// 	ft_putchar(envp[i][p]);
+		// 	s = ft_joinc(s, envp[i][p++]);
+		// }
 	}
 	return (0);
 }
 
-int	echospecial(char *cmd, char **envp, int i)
+int	echospecial(char *cmd, char **envp, int i, char **s)
 {
 	int		j;
 	char	*toech;
@@ -39,11 +44,11 @@ int	echospecial(char *cmd, char **envp, int i)
 	toech[j] = 0;
 	if (cmd[i + j] && cmd[i + j] == '\'')
 	{
-		write(1, "$", 1);
-		ft_putstr_fd(toech, 1);
+		*s = ft_joinc(*s, '$');
+		*s = ft_joins(*s, toech);
 	}
 	else
-		get_sus(envp, toech, j);
+		get_sus(envp, toech, j, s);
 	return (j);
 }
 
@@ -68,15 +73,17 @@ int	nparam(char *cmd)
 	return (0);
 }
 
-int	echoservant(char *cmd, char **envp, int i)
+char	*echoservant(char *cmd, char **envp, int i)
 {
-	int	quot;
+	int		quot;
+	char	*s;
 
 	quot = 0;
+	s = NULL;
 	while (cmd[i])
 	{
 		if (cmd[i] == '$')
-			i += echospecial(cmd, envp, i + 1);
+			i += echospecial(cmd, envp, i + 1, &s);
 		else if (cmd[i - 1] && cmd[i] == ' ' && cmd[i - 1] == ' ' && quot == 0)
 			i++;
 		else if (cmd[i] == '\'' && quot == 0)
@@ -87,10 +94,10 @@ int	echoservant(char *cmd, char **envp, int i)
 			quot = 0;
 		else if ((cmd[i] == '\"' && quot == 1) || (cmd[i] == '\'' && quot == 2)
 			|| ((cmd[i] != '\"' && cmd[i] != '\'')))
-			ft_putchar(cmd[i]);
+			s = ft_joinc(s, cmd[i]);
 		i++;
 	}
-	return (1);
+	return (s);
 }
 
 char	*echomaster(char *cmd, char **envp)
@@ -99,6 +106,7 @@ char	*echomaster(char *cmd, char **envp)
 	int		quot;
 	char	*s;
 
+	s = NULL;
 	i = 0;
 	while (cmd[i] == ' ')
 		i++;
@@ -108,6 +116,6 @@ char	*echomaster(char *cmd, char **envp)
 	quot = 0;
 	s = echoservant(cmd, envp, i);
 	if (!nparam(cmd))
-		write(1, "\n", 1);
+		ft_joinc(s, '\n');
 	return (s);
 }

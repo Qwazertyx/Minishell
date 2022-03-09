@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/07 14:55:23 by vsedat           ###   ########lyon.fr    #
+#    Updated: 2022/03/09 10:42:47 by mlagrang         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,8 +77,9 @@ SOURCES	=	prompt.c		\
 			pwd.c			\
 			env.c			\
 			splitve.c		\
-			main.c			\
+			ft_join.c		\
 			cd.c			\
+			main.c			\
 
 #			gnl.c			
 #			gnl2.c			

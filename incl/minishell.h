@@ -31,7 +31,7 @@ char	*path(char *cmd, char **envp);
 char	*ft_strdup(char *a);
 void	ft_vpipe(t_var *tab, int nb, char **env);
 void	ft_choice(t_var *tab, char **env, int i);
-int		echomaster(char *cmd, char **envp);
+char	*echomaster(char *cmd, char **envp);
 void	ft_exit(t_var *tab, int nb);
 void	free_tab(t_var *a);
 int		ft_atoi(const char *str);
@@ -44,5 +44,7 @@ int		mycd(char **cmd);
 int		ft_putchar(int c);
 int		is_input(char *s);
 int		ft_strcmp(char *a, char *b);
+char	*ft_joinc(char *s1, char c);
+char	*ft_joins(char *s1, char *s2);
 
 #endif

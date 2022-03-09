@@ -28,7 +28,7 @@ void	ft_choice(t_var *tab, char **env, int i)
 	if (!ft_strcmp(tab[i].cmd[0], "echo"))
 	{
 		printf("=enter echo\n\n");
-		echomaster(tab[i].cmd[1], env);
+		tab[i].output = echomaster(tab[i].cmd[1], env);
 	}
 	else if (!ft_strcmp(tab[i].cmd[0], "cd"))
 	{
