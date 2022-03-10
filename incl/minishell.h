@@ -51,5 +51,6 @@ int		s_chevred(char *ch);
 char	*ft_strncpy(char *dest, char *str, int n);
 char	*ft_strndup(char *a, int l);
 char	*ft_nochevre(char *s, char c);
+char	*ft_noquote(char *a);
 
 #endif

@@ -103,7 +103,7 @@ int	skip_dolar(char *cmd)
 	return (i);
 }
 
-char	*skip_quote(char *cmd)
+char	*skip_quote(char *cmd, int n)
 {
 	char	*s;
 	int		i;
@@ -125,7 +125,8 @@ char	*skip_quote(char *cmd)
 		}
 		else if (cmd[i] == '~' && quot == 0)
 			s = ft_joins(s, getenv("HOME"));
-		else if (quot != cmd[i])
+		else if ((n == 1 || (quot != cmd[i] && quot != 0)
+				|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"')))
 			s = ft_joinc(s, cmd[i]);
 		i++;
 	}
@@ -213,11 +214,9 @@ t_var	*parse(char *a)
 	while (i < nb_doublt(a))
 	{
 		p[i].cmd = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
-		p[i].cmd[0] = skip_quote(f_split(place_split(a, i)));
+		p[i].cmd[0] = skip_quote(f_split(place_split(a, i)), 0);
 		if (nb_param(place_split(a, i)) > 1)
-		{
-			p[i].cmd[1] = skip_quote(l_split(place_split(a, i)));
-		}
+			p[i].cmd[1] = skip_quote(l_split(place_split(a, i)), 1);
 		p[i].cmd[nb_param(place_split(a, i))] = NULL;
 		i++;
 	}

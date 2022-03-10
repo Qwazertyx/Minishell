@@ -99,6 +99,8 @@ int	echomaster(char *cmd)
 	int	quot;
 
 	i = 0;
+	if (!cmd)
+		return (0);
 	while (cmd[i] == ' ')
 		i++;
 	i = nparam(cmd);

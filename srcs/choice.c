@@ -46,6 +46,7 @@ int	ft_choice(t_var *tab, char **env, int i)
 	char	**s;
 	int		fd;
 
+	fd = 0;
 	printf("cmd = %s\\\n", tab[i].cmd[0]);
 	if (ft_strchrquot(tab[i].cmd[1], '>', 0) != -1)
 	{

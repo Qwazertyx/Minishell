@@ -70,7 +70,8 @@ void	ft_while(char **env)
 		nb = ft_vpipe(parsed, nb, env);
 		wait(NULL);
 		free_tab(parsed);
-		dup2(nb, 1);
+		if (nb != 0)
+			dup2(nb, 1);
 	}
 }
 
