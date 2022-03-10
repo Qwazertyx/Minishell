@@ -60,45 +60,75 @@ int	nb_param(char *a)
 	return (nb);
 }
 
+int	stop_while(char c, char *legal)
+{
+	int	i;
+
+	i = -1;
+	while (legal[++i])
+		if (legal[i] == c)
+			return (1);
+	return (0);
+}
+
+char	*ft_dolar(char *a)
+{
+	int		i;
+	char	*s;
+	char	*gete;
+
+	i = 0;
+	while (a[i] && stop_while(a[i],
+			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
+		i++;
+	s = malloc(i + 1);
+	i = -1;
+	while (a[++i] && stop_while(a[i],
+			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
+		s[i] = a[i];
+	s[i] = '\0';
+	gete = getenv(s);
+	free(s);
+	return (gete);
+}
+
+int	skip_dolar(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i] && stop_while(cmd[i],
+			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
+		i++;
+	return (i);
+}
+
 char	*skip_quote(char *cmd)
 {
 	char	*s;
 	int		i;
-	int		nb;
-	int		quot;
+	char	quot;
 
 	quot = 0;
 	i = 0;
-	nb = 0;
-	while(cmd[i])
-	{
-		if (cmd[i] == '\'' && quot == 0)
-			quot = 1 + 0 * i++;
-		else if (cmd[i] == '\"' && quot == 0)
-			quot = 2 + 0 * i++;
-		else if ((cmd[i] == '\"' && quot == 2) || (cmd[i] == '\'' && quot == 1))
-			quot = 0 + 0 * i++;
-		else if ((cmd[i] == '\"' && quot == 1) || (cmd[i] == '\'' && quot == 2)
-			|| (cmd[i] != '\"' && cmd[i] != '\''))
-			i = i + 1 + 0 * nb++;
-	}
-	s = malloc(nb + 1);
-	i = 0;
-	nb = 0;
-	quot = 0;
+	s = NULL;
 	while (cmd[i])
 	{
-		if (cmd[i] == '\'' && quot == 0)
-			quot = 1 + 0 * i++;
-		else if (cmd[i] == '\"' && quot == 0)
-			quot = 2 + 0 * i++;
-		else if ((cmd[i] == '\"' && quot == 2) || (cmd[i] == '\'' && quot == 1))
-			quot = 0 + 0 * i++;
-		else if ((cmd[i] == '\"' && quot == 1) || (cmd[i] == '\'' && quot == 2)
-			|| (cmd[i] != '\"' && cmd[i] != '\''))
-			s[nb++] = cmd[i++];
+		if (quot == 0 && (cmd[i] == '\'' || cmd[i] == '\"'))
+			quot = cmd[i];
+		else if (quot != 0 && quot == cmd[i])
+			quot = 0;
+		if (cmd[i] == '$' && quot != '\'')
+		{
+			s = ft_joins(s, ft_dolar(&cmd[i + 1]));
+			i += skip_dolar(&cmd[i + 1]);
+		}
+		else if (cmd[i] == '~' && quot == 0)
+			s = ft_joins(s, getenv("HOME"));
+		else if (quot != cmd[i])
+			s = ft_joinc(s, cmd[i]);
+		i++;
 	}
-	s[nb] = '\0';
 	return (s);
 }
 
@@ -186,13 +216,11 @@ t_var	*parse(char *a)
 		p[i].cmd[0] = skip_quote(f_split(place_split(a, i)));
 		if (nb_param(place_split(a, i)) > 1)
 		{
-			p[i].cmd[1] = l_split(place_split(a, i));
+			p[i].cmd[1] = skip_quote(l_split(place_split(a, i)));
 		}
 		p[i].cmd[nb_param(place_split(a, i))] = NULL;
-		p[i].output = NULL;
 		i++;
 	}
 	p[i].cmd = NULL;
-	p[i].output = NULL;
 	return (p);
 }

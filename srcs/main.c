@@ -51,6 +51,8 @@ void	ft_while(char **env)
 		printf("\b\bexit\n");
 		exit(0);
 	}
+	if (!a[0])
+		return ;
 	add_history(a);
 	if (is_input(a))
 	{
@@ -65,10 +67,10 @@ void	ft_while(char **env)
 			// }
 			nb++;
 		}
-		ft_vpipe(parsed, nb, env);
+		nb = ft_vpipe(parsed, nb, env);
 		wait(NULL);
-		printf("- %s\n", parsed[0].output);
 		free_tab(parsed);
+		dup2(nb, 1);
 	}
 }
 

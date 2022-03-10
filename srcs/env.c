@@ -31,35 +31,13 @@ static int	*ft_nbcreate(char **env)
 	return (nb);
 }
 
-void	ft_env(char **env, t_var *tab)
+void	ft_env(char **env)
 {
 	int	i;
-	int	j;
-	int	l;
 	int	*nb;
 
-	i = 0;
-	while (env[i])
-		i++;
 	nb = ft_nbcreate(env);
 	i = -1;
-	l = 0;
 	while (env[++i])
-	{
-		j = -1;
-		while (env[i][++j])
-			l++;
-		l++;
-	}
-	tab[0].output = malloc(l);
-	i = -1;
-	l = -1;
-	while (env[++i])
-	{
-		j = -1;
-		while (env[i][++j])
-			tab[0].output[++l] = env[i][j];
-		tab[0].output[++l] = '\n';
-	}
-	tab[0].output[l] = '\0';
+		printf("%s\n", env[nb[i]]);
 }

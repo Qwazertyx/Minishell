@@ -6,7 +6,7 @@
 #    By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/09 10:42:47 by mlagrang         ###   ########.fr        #
+#    Updated: 2022/03/10 15:02:22 by mlagrang         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ SOURCES	=	prompt.c		\
 			splitve.c		\
 			ft_join.c		\
 			cd.c			\
+			chevre.c		\
 			main.c			\
 
 #			gnl.c			

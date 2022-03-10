@@ -19,7 +19,7 @@ char	*ft_joinc(char *s1, char c)
 		s[i] = c;
 		s[i + 1] = '\0';
 	}
-	// free(s1);
+	free(s1);
 	return (s);
 }
 

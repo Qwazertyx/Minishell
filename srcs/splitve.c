@@ -25,7 +25,7 @@ static int	ft_nb_w(const char *s, char c)
 	return (nb);
 }
 
-static char	*ft_strncpy(char *dest, const char *str, int n)
+char	*ft_strncpy(char *dest, char *str, int n)
 {
 	int	i;
 

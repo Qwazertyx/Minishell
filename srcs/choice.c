@@ -1,13 +1,34 @@
 #include "../incl/minishell.h"
 
-void	ft_vpipe(t_var *tab, int nb, char **env)
+int	ft_strchrquot(char *s, char c, char c2)
 {
+	int		i;
+	char	quot;
+
+	i = 0;
+	quot = 0;
+	while (s && s[i])
+	{
+		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+			quot = s[i];
+		else if (s[i] == quot)
+			quot = 0;
+		if (quot == 0 && s[i] == c && (c2 == 0 || (s[i + 1] && s[i + 1] == c2)))
+			return (i + 1);
+		i++;
+	}
+	return (-1);
+}
+
+int	ft_vpipe(t_var *tab, int nb, char **env)
+{
+	// s_chevred(tab[0].cmd[1], env);
 	if (nb > 1)
 	{
 
 	}
 	else
-		ft_choice(tab, env, 0);
+		return (ft_choice(tab, env, 0));
 }
 
 int	ft_strcmp(char *a, char *b)
@@ -20,15 +41,22 @@ int	ft_strcmp(char *a, char *b)
 	return (a[i] - b[i]);
 }
 
-void	ft_choice(t_var *tab, char **env, int i)
+int	ft_choice(t_var *tab, char **env, int i)
 {
 	char	**s;
+	int		fd;
 
-	printf("cmd = %s\n", tab[i].cmd[0]);
+	printf("cmd = %s\\\n", tab[i].cmd[0]);
+	if (ft_strchrquot(tab[i].cmd[1], '>', 0) != -1)
+	{
+		fd = s_chevred(tab[i].cmd[1]);
+		tab[i].cmd[1] = ft_nochevre(tab[i].cmd[1], '>');
+		printf("=%s\n", tab[i].cmd[1]);
+	}
 	if (!ft_strcmp(tab[i].cmd[0], "echo"))
 	{
 		printf("=enter echo\n\n");
-		tab[i].output = echomaster(tab[i].cmd[1], env);
+		echomaster(tab[i].cmd[1]);
 	}
 	else if (!ft_strcmp(tab[i].cmd[0], "cd"))
 	{
@@ -38,7 +66,7 @@ void	ft_choice(t_var *tab, char **env, int i)
 	else if (!ft_strcmp(tab[i].cmd[0], "pwd"))
 	{
 		printf("=enter pwd\n\n");
-		ft_pwd(&tab[i]);
+		ft_pwd();
 	}
 	else if (!ft_strcmp(tab[i].cmd[0], "export"))
 	{
@@ -51,7 +79,7 @@ void	ft_choice(t_var *tab, char **env, int i)
 	else if (!ft_strcmp(tab[i].cmd[0], "env"))
 	{
 		printf("=enter env\n\n");
-		ft_env(env, tab);
+		ft_env(env);
 	}
 	else if (!ft_strcmp(tab[i].cmd[0], "exit"))
 	{
@@ -59,7 +87,7 @@ void	ft_choice(t_var *tab, char **env, int i)
 		ft_exit(tab, i);
 	}
 	else if (tab[i].cmd[0] == '\0')
-		return ;
+		return (1);
 	else
 	{
 		printf("=enter execve\n\n");
@@ -67,4 +95,5 @@ void	ft_choice(t_var *tab, char **env, int i)
 		execmaster(s, env);
 		free(s);
 	}
+	return (fd);
 }
