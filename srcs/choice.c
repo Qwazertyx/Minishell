@@ -20,7 +20,7 @@ int	ft_strchrquot(char *s, char c, char c2)
 	return (-1);
 }
 
-int	ft_vpipe(t_var *tab, int nb, char **env)
+int	ft_vpipe(t_var *tab, int nb)
 {
 	// s_chevred(tab[0].cmd[1], env);
 	if (nb > 1)
@@ -28,7 +28,7 @@ int	ft_vpipe(t_var *tab, int nb, char **env)
 
 	}
 	else
-		return (ft_choice(tab, env, 0));
+		return (ft_choice(tab, 0));
 }
 
 int	ft_strcmp(char *a, char *b)
@@ -41,7 +41,7 @@ int	ft_strcmp(char *a, char *b)
 	return (a[i] - b[i]);
 }
 
-int	ft_choice(t_var *tab, char **env, int i)
+int	ft_choice(t_var *tab, int i)
 {
 	char	**s;
 	int		fd;
@@ -71,6 +71,7 @@ int	ft_choice(t_var *tab, char **env, int i)
 	else if (!ft_strcmp(tab[i].cmd[0], "export"))
 	{
 		printf("=enter export\n\n");
+		exportmaster(tab[i].cmd[1], tab->env);
 	}
 	else if (!ft_strcmp(tab[i].cmd[0], "unset"))
 	{

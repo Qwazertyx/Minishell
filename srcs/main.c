@@ -35,11 +35,10 @@ void	free_tab(t_var *a)
 	free(a);
 }
 
-void	ft_while(char **env)
+void	ft_while(t_var *parsed)
 {
 	char	*a;
 	char	*tmp;
-	t_var	*parsed;
 	int		nb;
 
 	nb = 0;
@@ -67,7 +66,7 @@ void	ft_while(char **env)
 			// }
 			nb++;
 		}
-		nb = ft_vpipe(parsed, nb, env);
+		nb = ft_vpipe(parsed, nb, parsed->env);
 		wait(NULL);
 		free_tab(parsed);
 		dup2(nb, 1);
@@ -81,13 +80,29 @@ void CtrlC(int sig)
 	// fprintf(stdin, "%d", -1);
 }
 
-int	main(int argc, char *argv[], char **env)
+int	main(int argc, char *argv[], char **envp)
 {
+	int		i;
+	char	**env;
+	t_var	struc;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	env = malloc((i + 1) * sizeof(char *));
+	i = 0;
+	while (envp[i])
+	{
+		env[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	env[i] = 0;
+	struc.env = &env;
 	(void) argc;
 	(void) argv;
 	//signal(SIGINT, CtrlC);
 	while (1)
 	{
-		ft_while(env);
+		ft_while(&struc);
 	}
 }

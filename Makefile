@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+         #
+#    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/10 15:02:22 by mlagrang         ###   ########.fr        #
+#    Updated: 2022/03/11 11:10:05 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,6 +81,7 @@ SOURCES	=	prompt.c		\
 			cd.c			\
 			chevre.c		\
 			main.c			\
+			export.c		\
 
 #			gnl.c			
 #			gnl2.c			

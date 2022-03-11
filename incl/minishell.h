@@ -14,6 +14,7 @@
 typedef struct s_var
 {
 	char	**cmd;
+	char	***env;
 }				t_var;
 
 char	*ft_prompt(void);
@@ -29,8 +30,8 @@ t_var	*parse(char *a);
 int		execmaster(char **maincmd, char **envp);
 char	*path(char *cmd, char **envp);
 char	*ft_strdup(char *a);
-int		ft_vpipe(t_var *tab, int nb, char **env);
-int		ft_choice(t_var *tab, char **env, int i);
+int		ft_vpipe(t_var *tab, int nb);
+int		ft_choice(t_var *tab, int i);
 int		echomaster(char *cmd);
 void	ft_exit(t_var *tab, int nb);
 void	free_tab(t_var *a);
@@ -51,5 +52,6 @@ int		s_chevred(char *ch);
 char	*ft_strncpy(char *dest, char *str, int n);
 char	*ft_strndup(char *a, int l);
 char	*ft_nochevre(char *s, char c);
+char	**exportmaster(char *var, char **env);
 
 #endif
