@@ -50,3 +50,39 @@ char	*ft_joins(char *a, char *b)
 	free(a);
 	return (s);
 }
+
+char	*ft_noquote(char *a)
+{
+	char	*s;
+	char	quot;
+	int		i;
+	int		len;
+
+	i = 0;
+	quot = 0;
+	len = 0;
+	while (a[i])
+	{
+		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
+			quot = a[i++];
+		else if (quot != 0 && quot == a[i])
+			quot = 0 * i++;
+		else
+			i = i + 1 + 0 * len++;
+	}
+	s = malloc(len + 1);
+	len = 0;
+	i = 0;
+	while (a[i])
+	{
+		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
+			quot = a[i++];
+		else if (quot != 0 && quot == a[i])
+			quot = 0 * i++;
+		else
+			s[len++] = a[i++];
+	}
+	s[len] = '\0';
+	free(a);
+	return (s);
+}

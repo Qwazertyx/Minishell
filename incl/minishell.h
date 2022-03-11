@@ -52,6 +52,10 @@ int		s_chevred(char *ch);
 char	*ft_strncpy(char *dest, char *str, int n);
 char	*ft_strndup(char *a, int l);
 char	*ft_nochevre(char *s, char c);
+<<<<<<< HEAD
 char	**exportmaster(char *var, char **env);
+=======
+char	*ft_noquote(char *a);
+>>>>>>> bb1d1e428d208730b86854998aa7284528666b6b
 
 #endif

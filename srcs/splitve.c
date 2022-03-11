@@ -12,11 +12,13 @@ static int	ft_nb_w(const char *s, char c)
 	while (s && s[i])
 	{
 		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+		{
 			quot = s[i++];
-		else if (quot != 0 && (s[i] == '\'' || s[i] == '\"'))
+			while (s[i] && s[i] != quot)
+				i++;
+		}
+		else if (quot != 0 && quot == s[i])
 			quot = 0;
-		while (s[i] == c && s[i])
-			i++;
 		if (s[i] != '\0' && quot == 0)
 			nb++;
 		while (s[i] != c && s[i] && s[i] != '\'' && s[i] != '\"')
@@ -33,7 +35,7 @@ char	*ft_strncpy(char *dest, char *str, int n)
 	while (str && str[++i] && i < n)
 		dest[i] = str[i];
 	dest[i] = '\0';
-	return (dest);
+	return (ft_noquote(dest));
 }
 
 static char	*mallocdef(char **tab, int j, int len)
@@ -56,16 +58,15 @@ static int	ft_skip(char *s, char c, int i)
 	quot = 0;
 	while (s && s[i])
 	{
-		if (s[i] == '\'' && quot == 0)
-			quot = '\'';
-		else if (s[i] == '\"' && quot == 0)
-			quot = '\"';
-		if (quot)
-			while (s[i] != quot)
+		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+		{
+			quot = s[i++];
+			while (s[i] && s[i] != quot)
 				i++;
+		}
 		if (s[i] == quot)
 			quot = 0;
-		if (s[i] == c && quot == 0)
+		else if (s[i] == c && quot == 0)
 			return (i);
 		i++;
 	}
@@ -95,7 +96,6 @@ char	**ft_splitve(char *arg, char c, char *cmd)
 		if (!tab[j])
 			return (0);
 		tab[j] = ft_strncpy(tab[j], &arg[l], i - l);
-		// printf("%s\n", tab[j]);
 		j++;
 	}
 	tab[j] = 0;
