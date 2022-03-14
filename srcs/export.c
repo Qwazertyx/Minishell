@@ -57,7 +57,7 @@ void	**exportservant(char *var, t_var *env)
 		printf("%s\n", newenv[i++]);
 }
 */
-void	**envcpy(char *var, t_var *env, char **newenv)
+void	**envcpy(char *var, t_var *data, char **newenv)
 {
 	int	i;
 
@@ -65,11 +65,11 @@ void	**envcpy(char *var, t_var *env, char **newenv)
 	i = 0;
 	while (newenv[i])
 	{
-		tab->env[i] = ft_strdup(newenv[i]);
+		data->env[i] = ft_strdup(newenv[i]);
 		i++;
 	}
-	tab->env[i] = ft_strdup(var);
-	tab->env[i] = 0;
+	data->env[i] = ft_strdup(var);
+	data->env[i] = 0;
 	free(newenv);
 	printf("sortie cpy\n");
 }
@@ -91,7 +91,7 @@ void	**exportservant(char *var, t_var *tab)
 		i++;
 	}
 	newenv[i] = 0;
-	free(tab->env[i])
+	free(tab->env[i]);
 	tab->env[i] = malloc((i + 2) * sizeof(char *));
 	envcpy(var, tab, newenv);
 	printf("sortie servant\n");
@@ -108,7 +108,7 @@ void	**exportmaster(char *var, t_var *tab)
 		while (tab->env[i])
 		{
 			write(1, "declare -x ", 11);
-			ft_putstr_fd(tab->env[i], 1);
+			ft_putstr_fd(*tab->env[i], 1);
 			write(1, "\n", 1);
 			i++;
 		}

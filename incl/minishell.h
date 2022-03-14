@@ -27,8 +27,8 @@ void	terminate(void);
 void	errorcmd(char *cmd);
 void	free_split(char **args);
 t_var	*parse(char *a);
-int		execmaster(char **maincmd, char **envp);
-char	*path(char *cmd, char **envp);
+int		execmaster(char **maincmd, t_var *tab);
+char	*path(char *cmd, t_var *tab);
 char	*ft_strdup(char *a);
 int		ft_vpipe(t_var *tab, int nb);
 int		ft_choice(t_var *tab, int i);
@@ -52,10 +52,6 @@ int		s_chevred(char *ch);
 char	*ft_strncpy(char *dest, char *str, int n);
 char	*ft_strndup(char *a, int l);
 char	*ft_nochevre(char *s, char c);
-<<<<<<< HEAD
-char	**exportmaster(char *var, char **env);
-=======
-char	*ft_noquote(char *a);
->>>>>>> bb1d1e428d208730b86854998aa7284528666b6b
+void	**exportmaster(char *var, t_var *tab);
 
 #endif

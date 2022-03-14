@@ -81,7 +81,7 @@ int	ft_choice(t_var *tab, int i)
 	else if (!ft_strcmp(tab[i].cmd[0], "env"))
 	{
 		printf("=enter env\n\n");
-		ft_env(env);
+		ft_env(tab);
 	}
 	else if (!ft_strcmp(tab[i].cmd[0], "exit"))
 	{
@@ -94,7 +94,7 @@ int	ft_choice(t_var *tab, int i)
 	{
 		printf("=enter execve\n\n");
 		s = ft_splitve(tab[i].cmd[1], ' ', tab[i].cmd[0]);
-		execmaster(s, env);
+		execmaster(s, tab);
 		free(s);
 	}
 	return (fd);

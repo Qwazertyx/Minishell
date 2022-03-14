@@ -66,7 +66,7 @@ void	ft_while(t_var *parsed)
 			// }
 			nb++;
 		}
-		nb = ft_vpipe(parsed, nb, parsed->env);
+		nb = ft_vpipe(parsed, nb);
 		wait(NULL);
 		free_tab(parsed);
 		if (nb != 0)

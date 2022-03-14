@@ -12,7 +12,7 @@ char	**get_paths(char **envp)
 	return (paths);
 }
 
-char	*path(char *cmd, char **envp)
+char	*path(char *cmd, t_var *tab)
 {
 	char	**paths;
 	char	*path;
@@ -22,7 +22,7 @@ char	*path(char *cmd, char **envp)
 	i = 0;
 	if (ft_strnstr(cmd, "/", ft_strlen(cmd)))
 		return (cmd);
-	paths = get_paths(envp);
+	paths = get_paths(tab->env);
 	i = -1;
 	while (paths[++i])
 	{

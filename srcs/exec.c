@@ -5,7 +5,7 @@
 	//	int j = 0;
 	//	while(maincmd[j])
 	//		dprintf(2, "line=%s", maincmd[j++]);
-int	execmaster(char **maincmd, char **envp)
+int	execmaster(char **maincmd, t_var *tab)
 {
 	pid_t	pid;
 
@@ -14,9 +14,9 @@ int	execmaster(char **maincmd, char **envp)
 	pid = fork();
 	if (pid != 0)
 		return (0);
-	if (path(maincmd[0], envp))
+	if (path(maincmd[0], tab))
 	{
-		if (execve(path(maincmd[0], envp), maincmd, envp) == -1)
+		if (execve(path(maincmd[0], tab), maincmd, tab->env) == -1)
 			perror("error execve:");
 	}
 	else
