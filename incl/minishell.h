@@ -13,7 +13,7 @@
 
 typedef struct s_var
 {
-	char	**cmd;
+	char	***cmd;
 	char	***env;
 }				t_var;
 
@@ -26,9 +26,9 @@ char	*ft_strjoin(char *s1, char *s2);
 void	terminate(void);
 void	errorcmd(char *cmd);
 void	free_split(char **args);
-t_var	*parse(char *a);
-int		execmaster(char **maincmd, t_var *tab);
-char	*path(char *cmd, t_var *tab);
+t_var	*parse(char *a, t_var *p);
+int		execmaster(char **maincmd, char **env);
+char	*path(char *cmd, char **tab);
 char	*ft_strdup(char *a);
 int		ft_vpipe(t_var *tab, int nb);
 int		ft_choice(t_var *tab, int i);
@@ -53,5 +53,9 @@ char	*ft_strncpy(char *dest, char *str, int n);
 char	*ft_strndup(char *a, int l);
 char	*ft_nochevre(char *s, char c);
 void	**exportmaster(char *var, t_var *tab);
+char	*ft_getenv(char *var, char **env);
+char	*ft_noquote(char *a);
+int		*ft_nbcreate(char **env);
+void	export(char *cmd, t_var *p);
 
 #endif

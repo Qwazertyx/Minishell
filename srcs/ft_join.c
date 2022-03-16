@@ -42,7 +42,8 @@ char	*ft_joins(char *a, char *b)
 			i = 0;
 		while (b && b[++j] && b[j] != '\n')
 			s[i + j] = b[j];
-		s[i + j] = b[j];
+		if (j != -1)
+			s[i + j] = b[j];
 		if ((b && b[j] && b[j] == '\n') || j == -1)
 			j++;
 		s[i + j] = '\0';

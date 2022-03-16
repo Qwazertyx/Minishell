@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
+#    By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/11 11:10:05 by vsedat           ###   ########lyon.fr    #
+#    Updated: 2022/03/16 09:32:13 by mlagrang         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ NAME	= minishell
 ### COMPILATION ###
 ##**************###
 CC		= gcc -Ofast
-CFLAGS	= -Wall -Wextra #-g -fsanitize=address #-Werror #-fsanitize=address -g3
+CFLAGS	= -Wall -Wextra -g3 -fsanitize=address #-Werror #-fsanitize=address -g3
 
 ##*******************##
 ### DIRECTORY PATHS ###
@@ -80,7 +80,9 @@ SOURCES	=	prompt.c		\
 			ft_join.c		\
 			cd.c			\
 			chevre.c		\
+			getenv.c		\
 			main.c			\
+			ft_export.c		\
 			export.c		\
 
 #			gnl.c			

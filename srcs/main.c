@@ -22,17 +22,14 @@ void	free_tab(t_var *a)
 	int	j;
 
 	i = 0;
-	while (a && a[i].cmd)
+	while (a && a->cmd[i])
 	{
-		j = -1;
-		while (a[i].cmd && a[i].cmd[++j])
-			free(a[i].cmd[j]);
-		free(a[i].cmd);
-		// if (a[i].output)
-		// 	free(a[i].output);
+		j = 0;
+		while (a->cmd[i] && a->cmd[i][j])
+			free(a->cmd[i][j++]);
+		free(a->cmd[i]);
 		i++;
 	}
-	free(a);
 }
 
 void	ft_while(t_var *parsed)
@@ -55,20 +52,23 @@ void	ft_while(t_var *parsed)
 	add_history(a);
 	if (is_input(a))
 	{
-		parsed = parse(a);
-		while (parsed[nb].cmd)
+		parse(a, parsed);
+		while (parsed->cmd[nb])
 		{
-			// int	j = 0;
-			// while (parsed[nb].cmd[j])
-			// {
-			// 	printf("%d %d %s\n", nb, j, parsed[nb].cmd[j]);
-			// 	j++;
-			// }
+			int	j = 0;
+			while (parsed->cmd[nb][j])
+			{
+				printf("%d %d %s\n", nb, j, parsed->cmd[nb][j]);
+				j++;
+			}
 			nb++;
 		}
 		nb = ft_vpipe(parsed, nb);
 		wait(NULL);
 		free_tab(parsed);
+		// int	i = 0;
+		// while (parsed->env[0][i])
+		// 	printf("%s\n", parsed->env[0][i++]);
 		if (nb != 0)
 			dup2(nb, 1);
 	}
@@ -105,5 +105,8 @@ int	main(int argc, char *argv[], char **envp)
 	while (1)
 	{
 		ft_while(&struc);
+		// i = 0;
+		// while (struc.env[0][i])
+		// 	printf("%s\n", struc.env[0][i++]);
 	}
 }

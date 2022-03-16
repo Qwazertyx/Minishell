@@ -8,10 +8,8 @@ void	ft_putstr_fd(char *s, int fd)
 	if (s)
 	{
 		while (s[c])
-		{
-			write(fd, &s[c], 1);
 			c++;
-		}
+			write(fd, s, c);
 	}
 }
 

@@ -71,7 +71,7 @@ int	stop_while(char c, char *legal)
 	return (0);
 }
 
-char	*ft_dolar(char *a)
+char	*ft_dolar(char *a, char **env)
 {
 	int		i;
 	char	*s;
@@ -87,7 +87,7 @@ char	*ft_dolar(char *a)
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		s[i] = a[i];
 	s[i] = '\0';
-	gete = getenv(s);
+	gete = ft_getenv(s, env);
 	free(s);
 	return (gete);
 }
@@ -103,7 +103,7 @@ int	skip_dolar(char *cmd)
 	return (i);
 }
 
-char	*skip_quote(char *cmd, int n)
+char	*skip_quote(char *cmd, int n, char **env)
 {
 	char	*s;
 	int		i;
@@ -120,13 +120,14 @@ char	*skip_quote(char *cmd, int n)
 			quot = 0;
 		if (cmd[i] == '$' && quot != '\'')
 		{
-			s = ft_joins(s, ft_dolar(&cmd[i + 1]));
+			s = ft_joins(s, ft_dolar(&cmd[i + 1], env));
 			i += skip_dolar(&cmd[i + 1]);
 		}
 		else if (cmd[i] == '~' && quot == 0)
-			s = ft_joins(s, getenv("HOME"));
+			s = ft_joins(s, ft_getenv("HOME", env));
 		else if ((n == 1 || (quot != cmd[i] && quot != 0)
-				|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"')))
+				|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"'))
+				&& (cmd[i] != ' ' || (cmd[i] == ' ' && cmd[i - 1] && cmd[i - 1] != ' ')))
 			s = ft_joinc(s, cmd[i]);
 		i++;
 	}
@@ -204,22 +205,21 @@ char	*place_split(char *a, int nb)
 	return (a);
 }
 
-t_var	*parse(char *a)
+t_var	*parse(char *a, t_var *p)
 {
-	t_var	*p;
 	int		i;
 
-	p = malloc(sizeof(t_var) * (nb_doublt(a) + 1));
+	p->cmd = malloc(sizeof(char **) * (nb_doublt(a) + 1));
 	i = 0;
 	while (i < nb_doublt(a))
 	{
-		p[i].cmd = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
-		p[i].cmd[0] = skip_quote(f_split(place_split(a, i)), 0);
+		p->cmd[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
+		p->cmd[i][0] = skip_quote(f_split(place_split(a, i)), 0, *p->env);
 		if (nb_param(place_split(a, i)) > 1)
-			p[i].cmd[1] = skip_quote(l_split(place_split(a, i)), 1);
-		p[i].cmd[nb_param(place_split(a, i))] = NULL;
+			p->cmd[i][1] = skip_quote(l_split(place_split(a, i)), 1, *p->env);
+		p->cmd[i][nb_param(place_split(a, i))] = NULL;
 		i++;
 	}
-	p[i].cmd = NULL;
+	p->cmd[i] = NULL;
 	return (p);
 }

@@ -47,54 +47,55 @@ int	ft_choice(t_var *tab, int i)
 	int		fd;
 
 	fd = 0;
-	printf("cmd = %s\\\n", tab[i].cmd[0]);
-	if (ft_strchrquot(tab[i].cmd[1], '>', 0) != -1)
+	printf("cmd = %s\\\n", tab->cmd[i][0]);
+	if (ft_strchrquot(tab->cmd[i][1], '>', 0) != -1)
 	{
-		fd = s_chevred(tab[i].cmd[1]);
-		tab[i].cmd[1] = ft_nochevre(tab[i].cmd[1], '>');
-		printf("=%s\n", tab[i].cmd[1]);
+		fd = s_chevred(tab->cmd[i][1]);
+		tab->cmd[i][1] = ft_nochevre(tab->cmd[i][1], '>');
+		printf("=%s\n", tab->cmd[i][1]);
 	}
-	if (!ft_strcmp(tab[i].cmd[0], "echo"))
+	if (!ft_strcmp(tab->cmd[i][0], "echo"))
 	{
 		printf("=enter echo\n\n");
-		echomaster(tab[i].cmd[1]);
+		echomaster(tab->cmd[i][1]);
 	}
-	else if (!ft_strcmp(tab[i].cmd[0], "cd"))
+	else if (!ft_strcmp(tab->cmd[i][0], "cd"))
 	{
 		printf("=enter cd\n\n");
-		mycd(tab[i].cmd);
+		mycd(tab->cmd[i]);
 	}
-	else if (!ft_strcmp(tab[i].cmd[0], "pwd"))
+	else if (!ft_strcmp(tab->cmd[i][0], "pwd"))
 	{
 		printf("=enter pwd\n\n");
 		ft_pwd();
 	}
-	else if (!ft_strcmp(tab[i].cmd[0], "export"))
+	else if (!ft_strcmp(tab->cmd[i][0], "export"))
 	{
 		printf("=enter export\n\n");
-		exportmaster(tab[i].cmd[1], tab->env);
+		export(tab->cmd[i][1], tab);
+		// exportmaster(tab->cmd[i][1], *tab->env);
 	}
-	else if (!ft_strcmp(tab[i].cmd[0], "unset"))
+	else if (!ft_strcmp(tab->cmd[i][0], "unset"))
 	{
 		printf("=enter unset\n\n");
 	}
-	else if (!ft_strcmp(tab[i].cmd[0], "env"))
+	else if (!ft_strcmp(tab->cmd[i][0], "env"))
 	{
 		printf("=enter env\n\n");
-		ft_env(tab);
+		ft_env(*tab->env);
 	}
-	else if (!ft_strcmp(tab[i].cmd[0], "exit"))
+	else if (!ft_strcmp(tab->cmd[i][0], "exit"))
 	{
 		printf("=enter exit\n\n");
 		ft_exit(tab, i);
 	}
-	else if (tab[i].cmd[0] == '\0')
+	else if (tab->cmd[i][0] == '\0')
 		return (1);
 	else
 	{
 		printf("=enter execve\n\n");
-		s = ft_splitve(tab[i].cmd[1], ' ', tab[i].cmd[0]);
-		execmaster(s, tab);
+		s = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
+		execmaster(s, *tab->env);
 		free(s);
 	}
 	return (fd);
