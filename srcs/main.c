@@ -105,8 +105,5 @@ int	main(int argc, char *argv[], char **envp)
 	while (1)
 	{
 		ft_while(&struc);
-		// i = 0;
-		// while (struc.env[0][i])
-		// 	printf("%s\n", struc.env[0][i++]);
 	}
 }

@@ -9,7 +9,7 @@ int	execmaster(char **maincmd, char **env)
 {
 	pid_t	pid;
 
-	printf("%s\n%s\n", maincmd[0], maincmd[1]);
+	// printf("%s\n%s\n", maincmd[0], maincmd[1]);
 	// int i = 0;
 	// while (env[i])
 	// {

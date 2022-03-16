@@ -17,11 +17,13 @@ static int	ft_nb_w(const char *s, char c)
 			while (s[i] && s[i] != quot)
 				i++;
 		}
-		else if (quot != 0 && quot == s[i])
-			quot = 0;
-		if (s[i] != '\0' && quot == 0)
+		if (quot != 0 && quot == s[i])
+			quot = 0 * i++;
+		if (quot == 0)
 			nb++;
-		while (s[i] != c && s[i] && s[i] != '\'' && s[i] != '\"')
+		while (s[i] && s[i] != c && s[i] != '\'' && s[i] != '\"')
+			i++;
+		if (s[i])
 			i++;
 	}
 	return (nb);

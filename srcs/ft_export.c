@@ -224,15 +224,11 @@ void	export(char *cmd, t_var *p)
 	if (cmd)
 	{
 		new_env = parse_export(cmd, *p->env);
-		p->env = &new_env;
+		p->env[0] = new_env;
 	}
 	else
 	{
 		printf("JE RENTRE\n");
-		new_env = *p->env;
-		int i = 0;
-		while (new_env[i])
-			printf("%s\n", new_env[i++]);
-		// print_export(*p->env);
+		print_export(*p->env);
 	}
 }

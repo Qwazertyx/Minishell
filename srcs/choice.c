@@ -95,6 +95,9 @@ int	ft_choice(t_var *tab, int i)
 	{
 		printf("=enter execve\n\n");
 		s = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
+		int	i = 0;
+		while (s[i])
+			printf("%s\n", s[i++]);
 		execmaster(s, *tab->env);
 		free(s);
 	}
