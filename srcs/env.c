@@ -38,9 +38,10 @@ void	ft_env(char **env)
 	int	*nb;
 
 	nb = ft_nbcreate(env);
-	i = 0;
+	i = -1;
 	// printf("env[0] = %s", env[0]);
-	while (env[i])
-		printf("%s\n", env[nb[i++]]);
+	while (env[++i])
+		if (contains(env[nb[i]], '='))
+			printf("%s\n", env[nb[i]]);
 	free(nb);
 }

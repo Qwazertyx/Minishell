@@ -57,5 +57,10 @@ char	*ft_getenv(char *var, char **env);
 char	*ft_noquote(char *a);
 int		*ft_nbcreate(char **env);
 void	export(char *cmd, t_var *p);
+int		contains(char *a, char c);
+int		ft_exist(char *var, char **env);
+int		ft_startcompare(char *s1, char *s2);
+int		ft_startcomparegal(char *s1, char *s2);
+char	**unset(char **cmd, char **env);
 
 #endif

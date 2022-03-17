@@ -47,8 +47,10 @@ char	**add_export(char **cmd, char **env)
 	int		nb;
 
 	nb = 0;
-	while (cmd[nb])
-		nb++;
+	i = 0;
+	while (cmd[i])
+		if (!ft_exist(cmd[i++], env))
+			nb++;
 	i = 0;
 	while (env[i])
 		i++;
@@ -56,9 +58,13 @@ char	**add_export(char **cmd, char **env)
 	nb = 0;
 	while (cmd[nb])
 	{
-		new_env[i] = ft_strdup(cmd[nb]);
-		printf("==%s\n", cmd[nb]);
-		i = i + 1 + 0 * nb++;
+		while (cmd[nb] && ft_exist(cmd[nb], env))
+			nb++;
+		if (cmd[nb])
+		{
+			new_env[i] = ft_strdup(cmd[nb]);
+			i = i + 1 + 0 * nb++;
+		}
 	}
 	new_env[i] = NULL;
 	return (new_env);
@@ -124,9 +130,7 @@ char	**pre_parsexport(char *cmd)
 	while (++i < nb)
 	{
 		pre[i] = fill_export(cmd, i);
-		printf("%d	%s\n", i, pre[i]);
 		pre[i] = only_noquote(pre[i]);
-		printf("%d	%s\n", i, pre[i]);
 	}
 	pre[i] = NULL;
 	return (pre);
@@ -156,24 +160,66 @@ char	*end_parse(char *a)
 	return (s);
 }
 
+char	**create_tab_parse(char **tab, char *to_add)
+{
+	char	**new_tab;
+	int		i;
+
+	i = 0;
+	while (tab && tab[i])
+		i++;
+	new_tab = malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while (tab && tab[i])
+	{
+		new_tab[i] = tab[i];
+		i++;
+	}
+	new_tab[i] = ft_strdup(to_add);
+	new_tab[i + 1] = 0;
+	free(tab);
+	return (new_tab);
+}
+
+void	export_exist(char *mod, char **env)
+{
+	int	i;
+
+	if (!contains(mod, '='))
+		return ;
+	i = 0;
+	while (env[i])
+	{
+		if (ft_startcomparegal(mod, env[i]))
+		{
+			free(env[i]);
+			env[i] = ft_strdup(mod);
+		}
+		i++;
+	}
+}
+
 char	**parse_export(char *cmd, char **env)
 {
 	char	**parsed;
+	char	**final;
 	char	**returned;
 	int		i;
 
 	parsed = pre_parsexport(cmd);
-	// i = -1;
-	// while (parsed[++i])
-	// {
-	// 	printf("pre = %s\n", parsed[i]);
-	// 	parsed[i] = end_parse(parsed[i]);
-	// 	printf("end = %s\n", parsed[i]);
-	// }
-	returned = add_export(parsed, env);
 	i = 0;
-	// while (returned[i])
-	// 	printf("%s\n", returned[i++]);
+	final = NULL;
+	while (parsed[i])
+	{
+		if (!ft_exist(parsed[i], env))
+			final = create_tab_parse(final, parsed[i++]);
+		else
+			export_exist(parsed[i++], env);
+	}
+	free_split(parsed);
+	if (!final)
+		return (env);
+	returned = add_export(final, env);
 	return (returned);
 }
 
@@ -224,11 +270,8 @@ void	export(char *cmd, t_var *p)
 	if (cmd)
 	{
 		new_env = parse_export(cmd, *p->env);
-		p->env[0] = new_env;
+		*p->env = new_env;
 	}
 	else
-	{
-		printf("JE RENTRE\n");
 		print_export(*p->env);
-	}
 }

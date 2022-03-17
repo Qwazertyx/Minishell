@@ -78,6 +78,7 @@ int	ft_choice(t_var *tab, int i)
 	else if (!ft_strcmp(tab->cmd[i][0], "unset"))
 	{
 		printf("=enter unset\n\n");
+		*tab->env = unset(tab->cmd[i], *tab->env);
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "env"))
 	{
