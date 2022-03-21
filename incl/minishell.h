@@ -10,11 +10,14 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <errno.h>
 
 typedef struct s_var
 {
 	char	***cmd;
 	char	***env;
+	
 }				t_var;
 
 char	*ft_prompt(void);
@@ -62,5 +65,6 @@ int		ft_exist(char *var, char **env);
 int		ft_startcompare(char *s1, char *s2);
 int		ft_startcomparegal(char *s1, char *s2);
 char	**unset(char **cmd, char **env);
+int		multipipex(t_var *tab, int nb);
 
 #endif
