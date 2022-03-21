@@ -29,3 +29,17 @@ int	contains(char *a, char c)
 			return (1);
 	return (0);
 }
+
+int	ft_isexportable(char *s)
+{
+	int	i;
+
+	if (!((s[1] >= 'a' && s[1] <= 'z') || (s[1] >= 'A' && s[1] <= 'Z') || s[1] == '_'))
+		return (0);
+	i = -1;
+	while (s[++i] && s[i] != '=')
+		if (!((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] < 'Z')
+			|| (s[i] >= '0' && s[i] <= '9') || s[i] == '_'))
+			return (0);
+	return (1);
+}

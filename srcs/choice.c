@@ -20,15 +20,21 @@ int	ft_strchrquot(char *s, char c, char c2)
 	return (-1);
 }
 
-int	ft_vpipe(t_var *tab, int nb)
+void	ft_vpipe(t_var *tab, int nb)
 {
+	pid_t	pid;
 	// s_chevred(tab[0].cmd[1], env);
 	if (nb > 1)
 	{
 
 	}
 	else
+	{
+		pid = fork();
+		if (pid)
+			return ;
 		return (ft_choice(tab, 0));
+	}
 }
 
 int	ft_strcmp(char *a, char *b)
@@ -41,66 +47,66 @@ int	ft_strcmp(char *a, char *b)
 	return (a[i] - b[i]);
 }
 
-int	ft_choice(t_var *tab, int i)
+void	ft_choice(t_var *tab, int i)
 {
 	char	**s;
 	int		fd;
 
 	fd = 0;
-	printf("cmd = %s\\\n", tab->cmd[i][0]);
+	dprintf(2, "cmd = %s\\\n", tab->cmd[i][0]);
 	if (ft_strchrquot(tab->cmd[i][1], '>', 0) != -1)
 	{
-		fd = s_chevred(tab->cmd[i][1]);
+		tab->fd = s_chevred(tab->cmd[i][1]);
 		tab->cmd[i][1] = ft_nochevre(tab->cmd[i][1], '>');
-		printf("=%s\n", tab->cmd[i][1]);
+		dprintf(2, "=%s\n", tab->cmd[i][1]);
 	}
 	if (!ft_strcmp(tab->cmd[i][0], "echo"))
 	{
-		printf("=enter echo\n\n");
+		dprintf(2, "=enter echo\n\n");
 		echomaster(tab->cmd[i][1]);
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "cd"))
 	{
-		printf("=enter cd\n\n");
+		dprintf(2, "=enter cd\n\n");
 		mycd(tab->cmd[i]);
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "pwd"))
 	{
-		printf("=enter pwd\n\n");
+		dprintf(2, "=enter pwd\n\n");
 		ft_pwd();
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "export"))
 	{
-		printf("=enter export\n\n");
+		dprintf(2, "=enter export\n\n");
 		export(tab->cmd[i][1], tab);
 		// exportmaster(tab->cmd[i][1], *tab->env);
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "unset"))
 	{
-		printf("=enter unset\n\n");
+		dprintf(2, "=enter unset\n\n");
 		*tab->env = unset(tab->cmd[i], *tab->env);
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "env"))
 	{
-		printf("=enter env\n\n");
+		dprintf(2, "=enter env\n\n");
 		ft_env(*tab->env);
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "exit"))
 	{
-		printf("=enter exit\n\n");
+		dprintf(2, "=enter exit\n\n");
 		ft_exit(tab, i);
 	}
 	else if (tab->cmd[i][0] == '\0')
-		return (1);
+		return ;
 	else
 	{
-		printf("=enter execve\n\n");
+		dprintf(2, "=enter execve\n\n");
 		s = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
+		dprintf(2, "sus\n");
 		int	i = 0;
 		while (s[i])
-			printf("%s\n", s[i++]);
+			dprintf(2, "%s\n", s[i++]);
 		execmaster(s, *tab->env);
-		free(s);
 	}
-	return (fd);
+	exit(0);
 }

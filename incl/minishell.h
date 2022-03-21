@@ -3,6 +3,10 @@
 
 # include <signal.h>
 # include <stdio.h>
+# include <sys/types.h>
+# include <sys/file.h>
+# include <sys/stat.h>
+# include <sys/errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
@@ -15,6 +19,7 @@ typedef struct s_var
 {
 	char	***cmd;
 	char	***env;
+	int		fd;
 }				t_var;
 
 char	*ft_prompt(void);
@@ -30,8 +35,8 @@ t_var	*parse(char *a, t_var *p);
 int		execmaster(char **maincmd, char **env);
 char	*path(char *cmd, char **tab);
 char	*ft_strdup(char *a);
-int		ft_vpipe(t_var *tab, int nb);
-int		ft_choice(t_var *tab, int i);
+void	ft_vpipe(t_var *tab, int nb);
+void	ft_choice(t_var *tab, int i);
 int		echomaster(char *cmd);
 void	ft_exit(t_var *tab, int nb);
 void	free_tab(t_var *a);
@@ -47,6 +52,7 @@ int		is_input(char *s);
 int		ft_strcmp(char *a, char *b);
 char	*ft_joinc(char *s1, char c);
 char	*ft_joins(char *s1, char *s2);
+char	*ft_joinsfree(char *s1, char *s2);
 int		ft_strchrquot(char *s, char c, char c2);
 int		s_chevred(char *ch);
 char	*ft_strncpy(char *dest, char *str, int n);
@@ -62,5 +68,7 @@ int		ft_exist(char *var, char **env);
 int		ft_startcompare(char *s1, char *s2);
 int		ft_startcomparegal(char *s1, char *s2);
 char	**unset(char **cmd, char **env);
+int		ft_isexportable(char *s);
+void	free_cmd(char ***cmd);
 
 #endif

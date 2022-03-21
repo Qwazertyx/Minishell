@@ -52,6 +52,36 @@ char	*ft_joins(char *a, char *b)
 	return (s);
 }
 
+char	*ft_joinsfree(char *a, char *b)
+{
+	int		i;
+	int		j;
+	char	*s;
+
+	i = ft_strlen(a);
+	j = ft_strlen(b);
+	s = malloc(i + j + 1);
+	if (s)
+	{
+		i = -1;
+		j = -1;
+		while (a && a[++i])
+			s[i] = a[i];
+		if (i == -1)
+			i = 0;
+		while (b && b[++j] && b[j] != '\n')
+			s[i + j] = b[j];
+		if (j != -1)
+			s[i + j] = b[j];
+		if ((b && b[j] && b[j] == '\n') || j == -1)
+			j++;
+		s[i + j] = '\0';
+	}
+	free(a);
+	free(b);
+	return (s);
+}
+
 char	*ft_noquote(char *a)
 {
 	char	*s;
@@ -84,6 +114,5 @@ char	*ft_noquote(char *a)
 			s[len++] = a[i++];
 	}
 	s[len] = '\0';
-	free(a);
 	return (s);
 }

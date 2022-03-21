@@ -16,6 +16,22 @@ char	*ft_strdup(char *a)
 	return (s);
 }
 
+void	free_cmd(char ***cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (cmd && cmd[i])
+	{
+		j = 0;
+		while (cmd[i] && cmd[i][j])
+			free(cmd[i][j++]);
+		free(cmd[i++]);
+	}
+	free(cmd);
+}
+
 void	free_tab(t_var *a)
 {
 	int	i;
@@ -26,7 +42,9 @@ void	free_tab(t_var *a)
 	{
 		j = 0;
 		while (a->cmd[i] && a->cmd[i][j])
+		{
 			free(a->cmd[i][j++]);
+		}
 		free(a->cmd[i]);
 		i++;
 	}
@@ -54,23 +72,16 @@ void	ft_while(t_var *parsed)
 	{
 		parse(a, parsed);
 		while (parsed->cmd[nb])
-		{
-			int	j = 0;
-			while (parsed->cmd[nb][j])
-			{
-				printf("%d %d %s\n", nb, j, parsed->cmd[nb][j]);
-				j++;
-			}
 			nb++;
-		}
-		nb = ft_vpipe(parsed, nb);
-		wait(NULL);
-		free_tab(parsed);
-		// int	i = 0;
-		// while (parsed->env[0][i])
-		// 	printf("%s\n", parsed->env[0][i++]);
-		if (nb != 0)
+		ft_vpipe(parsed, nb);
+		wait (NULL);
+		free_cmd(parsed->cmd);
+		free(a);
+		if (parsed->fd != 0)
+		{
+			parsed->fd = 0;
 			dup2(nb, 1);
+		}
 	}
 }
 
@@ -94,7 +105,11 @@ int	main(int argc, char *argv[], char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		env[i] = ft_strdup(envp[i]);
+		if (ft_startcompare("SHLVL", envp[i]))
+			env[i] = ft_joinc(ft_strdup("SHLVL="),
+					ft_atoi(ft_getenv("SHLVL", envp)) + 49);
+		else
+			env[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	env[i] = 0;

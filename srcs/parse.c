@@ -38,7 +38,10 @@ int	is_input(char *s)
 	}
 	if (quot != 0)
 	{
-		printf("Missing %c quote\n", quot);
+		ft_putstr_fd("Missing ", 2);
+		write(2, &quot, 1);
+		ft_putstr_fd(" quote\n", 2);
+		free(s);
 		return (0);
 	}
 	return (1);
@@ -87,7 +90,7 @@ char	*ft_dolar(char *a, char **env)
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		s[i] = a[i];
 	s[i] = '\0';
-	gete = ft_getenv(s, env);
+	gete = ft_strdup(ft_getenv(s, env));
 	free(s);
 	return (gete);
 }
@@ -120,7 +123,7 @@ char	*skip_quote(char *cmd, int n, char **env)
 			quot = 0;
 		if (cmd[i] == '$' && quot != '\'')
 		{
-			s = ft_joins(s, ft_dolar(&cmd[i + 1], env));
+			s = ft_joinsfree(s, ft_dolar(&cmd[i + 1], env));
 			i += skip_dolar(&cmd[i + 1]);
 		}
 		else if (cmd[i] == '~' && quot == 0)
@@ -131,6 +134,7 @@ char	*skip_quote(char *cmd, int n, char **env)
 			s = ft_joinc(s, cmd[i]);
 		i++;
 	}
+	free(cmd);
 	return (s);
 }
 
@@ -216,8 +220,12 @@ t_var	*parse(char *a, t_var *p)
 		p->cmd[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
 		p->cmd[i][0] = skip_quote(f_split(place_split(a, i)), 0, *p->env);
 		if (nb_param(place_split(a, i)) > 1)
+		{
 			p->cmd[i][1] = skip_quote(l_split(place_split(a, i)), 1, *p->env);
-		p->cmd[i][nb_param(place_split(a, i))] = NULL;
+			p->cmd[i][2] = NULL;
+		}
+		else
+			p->cmd[i][1] = NULL;
 		i++;
 	}
 	p->cmd[i] = NULL;

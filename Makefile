@@ -6,7 +6,7 @@
 #    By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/17 10:41:41 by mlagrang         ###   ########.fr        #
+#    Updated: 2022/03/17 16:46:17 by mlagrang         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ NAME	= minishell
 ### COMPILATION ###
 ##**************###
 CC		= gcc -Ofast
-CFLAGS	= -Wall -Wextra -g3 -fsanitize=address #-Werror #-fsanitize=address -g3
+CFLAGS	= -Wall -Wextra -framework CoreFoundation #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
 
 ##*******************##
 ### DIRECTORY PATHS ###

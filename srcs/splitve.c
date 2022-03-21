@@ -29,28 +29,18 @@ static int	ft_nb_w(const char *s, char c)
 	return (nb);
 }
 
-char	*ft_strncpy(char *dest, char *str, int n)
+char	*ft_strncpydef(char *dest, char *str, int n)
 {
-	int	i;
+	int		i;
+	char	*a;
 
 	i = -1;
 	while (str && str[++i] && i < n)
 		dest[i] = str[i];
 	dest[i] = '\0';
-	return (ft_noquote(dest));
-}
-
-static char	*mallocdef(char **tab, int j, int len)
-{
-	tab[j] = malloc(len);
-	if (!tab[j])
-	{
-		while (-j > 0)
-			free(tab[j]);
-		free(tab);
-		return (0);
-	}
-	return (tab[j]);
+	a = ft_noquote(dest);
+	free(dest);
+	return (a);
 }
 
 static int	ft_skip(char *s, char c, int i)
@@ -75,6 +65,19 @@ static int	ft_skip(char *s, char c, int i)
 	return (i);
 }
 
+static char	*mallocdef(char **tab, int j, int len)
+{
+	tab[j] = malloc(len);
+	if (!tab[j])
+	{
+		while (--j > 0)
+			free(tab[j]);
+		free(tab);
+		return (0);
+	}
+	return (tab[j]);
+}
+
 char	**ft_splitve(char *arg, char c, char *cmd)
 {
 	int		i;
@@ -97,7 +100,7 @@ char	**ft_splitve(char *arg, char c, char *cmd)
 		tab[j] = mallocdef(tab, j, i - l + 1);
 		if (!tab[j])
 			return (0);
-		tab[j] = ft_strncpy(tab[j], &arg[l], i - l);
+		tab[j] = ft_strncpydef(tab[j], &arg[l], i - l);
 		j++;
 	}
 	tab[j] = 0;

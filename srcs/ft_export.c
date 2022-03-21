@@ -177,7 +177,7 @@ char	**create_tab_parse(char **tab, char *to_add)
 	}
 	new_tab[i] = ft_strdup(to_add);
 	new_tab[i + 1] = 0;
-	free(tab);
+	free_split(tab);
 	return (new_tab);
 }
 
@@ -266,7 +266,23 @@ int	only_onechar(char *a, char c)
 void	export(char *cmd, t_var *p)
 {
 	char	**new_env;
+	char	**split;
+	int		i;
 
+	split = ft_splitve(cmd, ' ', "export");
+	i = 0;
+	while (split[++i])
+	{
+		if (!ft_isexportable(split[i]))
+		{
+			ft_putstr_fd("Minishell: export: `", 2);
+			ft_putstr_fd(split[i], 2);
+			ft_putstr_fd("\': not a valid indentifier\n", 2);
+			free_split(split);
+			return ;
+		}
+	}
+	free_split(split);
 	if (cmd)
 	{
 		new_env = parse_export(cmd, *p->env);

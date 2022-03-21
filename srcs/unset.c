@@ -40,8 +40,21 @@ char	**unset(char **cmd, char **env)
 {
 	char	**split;
 	char	**returned;
+	int		i;
 
 	split = ft_splitve(cmd[1], ' ', cmd[0]);
+	i = 0;
+	while (split[++i])
+	{
+		if (!ft_isexportable(split[i]))
+		{
+			ft_putstr_fd("Minishell: unset: `", 2);
+			ft_putstr_fd(split[i], 2);
+			ft_putstr_fd("\': not a valid indentifier\n", 2);
+			free_split(split);
+			return (env);
+		}
+	}
 	returned = delete_tab(split, env);
 	free_split(split);
 	return (returned);
