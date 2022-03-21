@@ -26,7 +26,8 @@ void	ft_vpipe(t_var *tab, int nb)
 	// s_chevred(tab[0].cmd[1], env);
 	if (nb > 1)
 	{
-
+		printf("sheeeeeeesh\n");
+		multipipex(tab, nb);
 	}
 	else
 	{

@@ -3,16 +3,21 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+         #
+#    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2022/03/17 16:46:17 by mlagrang         ###   ########.fr        #
+=======
+#    Updated: 2022/03/18 13:53:26 by vsedat           ###   ########lyon.fr    #
+>>>>>>> deecc245a6f2d2aefc4e930f378968188c08ca4b
 #                                                                              #
 # **************************************************************************** #
 
 ##**********##
 ### COLORS ###
 ##**********##
+
 BLACK		= \033[1;30m
 RED			= \033[1;31m
 GREEN		= \033[1;32m
@@ -32,6 +37,7 @@ IWHITE		= \x1b[47m
 END			= \x1b[0m
 UNDERLINE	= \x1b[4m
 REV			= \x1b[7m
+ERASE		= \033[2K\r
 
 ##********##
 ### NAME ###
@@ -42,7 +48,11 @@ NAME	= minishell
 ### COMPILATION ###
 ##**************###
 CC		= gcc -Ofast
+<<<<<<< HEAD
 CFLAGS	= -Wall -Wextra -framework CoreFoundation #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
+=======
+CFLAGS	= -Wall -Wextra #-g3 #-fsanitize=address #-Werror #-fsanitize=address -g3
+>>>>>>> deecc245a6f2d2aefc4e930f378968188c08ca4b
 
 ##*******************##
 ### DIRECTORY PATHS ###
@@ -82,10 +92,11 @@ SOURCES	=	prompt.c		\
 			chevre.c		\
 			getenv.c		\
 			ft_export.c		\
-			export.c		\
-			unset.c		\
+			unset.c			\
 			main.c			\
+			multipipex.c	\
 
+#			export.c		
 #			gnl.c			
 #			gnl2.c			
 
@@ -96,7 +107,7 @@ SOURCES	=	prompt.c		\
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(HEADER) Makefile
 			@mkdir -p objs
-			@echo "$(BLUE)$(UNDERLINE)Compiling:$(END)$(CYAN) $<"
+			@printf "$(ERASE)$(BLUE)$(UNDERLINE)Compiling:$(END)$(CYAN)$<"
 			@${CC} ${CFLAGS} -c $< -o $@
 
 all:	${NAME}

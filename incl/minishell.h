@@ -14,6 +14,8 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <errno.h>
 
 typedef struct s_var
 {
@@ -68,7 +70,11 @@ int		ft_exist(char *var, char **env);
 int		ft_startcompare(char *s1, char *s2);
 int		ft_startcomparegal(char *s1, char *s2);
 char	**unset(char **cmd, char **env);
+<<<<<<< HEAD
 int		ft_isexportable(char *s);
 void	free_cmd(char ***cmd);
+=======
+int		multipipex(t_var *tab, int nb);
+>>>>>>> deecc245a6f2d2aefc4e930f378968188c08ca4b
 
 #endif
