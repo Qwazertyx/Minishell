@@ -6,11 +6,7 @@
 #    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2022/03/17 16:46:17 by mlagrang         ###   ########.fr        #
-=======
-#    Updated: 2022/03/18 13:53:26 by vsedat           ###   ########lyon.fr    #
->>>>>>> deecc245a6f2d2aefc4e930f378968188c08ca4b
+#    Updated: 2022/03/21 17:04:16 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,11 +44,7 @@ NAME	= minishell
 ### COMPILATION ###
 ##**************###
 CC		= gcc -Ofast
-<<<<<<< HEAD
-CFLAGS	= -Wall -Wextra -framework CoreFoundation #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
-=======
-CFLAGS	= -Wall -Wextra #-g3 #-fsanitize=address #-Werror #-fsanitize=address -g3
->>>>>>> deecc245a6f2d2aefc4e930f378968188c08ca4b
+CFLAGS	= -Wall -Wextra #-framework CoreFoundation #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
 
 ##*******************##
 ### DIRECTORY PATHS ###
