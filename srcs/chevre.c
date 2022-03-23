@@ -21,7 +21,7 @@ int	nb_schevre(char *ch, char c)
 	return (nb);
 }
 
-char	*ft_chevrecpy(char *ch, char c)
+char	*ft_chevrecpy(char *ch, char c1, char c2)
 {
 	int		i;
 	int		sp;
@@ -31,15 +31,15 @@ char	*ft_chevrecpy(char *ch, char c)
 	while (ch[sp] && ch[sp] == ' ')
 		sp++;
 	i = sp;
-	while (ch[i] && ch[i] != ' ' && ch[i] != c)
+	while (ch[i] && ch[i] != ' ' && ch[i] != '>' && ch[i] != '<')
 		i++;
-	s = malloc(i - sp + 1);
+	s = malloc(i - sp + 3);
+	s[0] = c1;
+	s[1] = c2;
 	i = sp - 1;
-	while (ch[++i] && ch[i] != ' ' && ch[i] != c)
-	{
-		s[i - sp] = ch[i];
-	}
-	s[i - sp] = '\0';
+	while (ch[++i] && ch[i] != ' ' && ch[i] != '>' && ch[i] != '<')
+		s[(i - sp) + 2] = ch[i];
+	s[(i - sp) + 2] = '\0';
 	return (s);
 }
 
@@ -58,11 +58,34 @@ char	**ft_sfilechevre(char *ch, char c)
 		i = ft_strchrquot(&ch[oldi], c, 0);
 		oldi += i;
 		if (ch[oldi] != c)
-			file[j++] = ft_chevrecpy(&ch[oldi], c);
-		printf("--%s\n", file[j - 1]);
+		{
+			if (ch[oldi - 2] && ch[oldi - 2] == ch[oldi - 1])
+				file[j++] = ft_chevrecpy(&ch[oldi], ch[oldi - 2], ch[oldi - 1]);
+			else
+				file[j++] = ft_chevrecpy(&ch[oldi], ' ', ch[oldi - 1]);
+		}
+		// printf("file = (%s)\n", file[j - 1]);
 	}
 	file[j] = NULL;
 	return (file);
+}
+
+char	*no_endspace(char *s)
+{
+	int		i;
+	char	*str;
+
+	if (!s)
+		return (NULL);
+	i = 0;
+	while (s[i])
+		i++;
+	i--;
+	while (i > 0 && s[i] == ' ')
+		i--;
+	str = ft_strndup(s, i + 1);
+	free(s);
+	return (str);
 }
 
 char	*ft_nochevre(char *s, char c)
@@ -73,52 +96,80 @@ char	*ft_nochevre(char *s, char c)
 
 	i = 0;
 	len = 0;
+	while (s[i] && s[i] == ' ')
+		i++;
 	while (s[i])
 	{
 		if (s[i] == c)
 		{
+			i++;
 			while (s[i] && s[i] == ' ')
 				i++;
 			while (s[i] && s[i] != ' ')
 				i++;
 		}
-		i = i + 1 + 0 * len++;
+		if (s[i])
+			i = i + 1 + 0 * len++;
 	}
 	str = malloc(len + 1);
 	i = 0;
 	len = 0;
+	while (s[i] && s[i] == ' ')
+		i++;
 	while (s[i])
 	{
 		if (s[i] == c)
 		{
+			i++;
 			while (s[i] && s[i] == ' ')
 				i++;
 			while (s[i] && s[i] != ' ')
 				i++;
 		}
-		str[len++] = s[i++];
+		if (s[i])
+			str[len++] = s[i++];
 	}
 	str[len] = '\0';
+	free(s);
 	return (str);
 }
 
-int	s_chevred(char *ch)
+int	end_chevre(char **file, int param)
 {
-	int		i;
-	int		fd;
-	int		returned;
-	char	**file;
+	int	i;
+	int	fd;
+	int	returned;
 
-	file = ft_sfilechevre(ch, '>');
 	i = 0;
 	while (file[i])
 	{
-		fd = open(file[i], O_RDWR | O_TRUNC | O_CREAT, 0777);
+		fd = open(&file[i][2], param, 0777);
 		close(fd);
 		i++;
 	}
-	fd = open(file[i - 1], O_RDWR);
+	fd = open(&file[i - 1][2], param);
 	returned = dup(1);
 	dup2(fd, 1);
 	return (returned);
+}
+
+int	ft_chevred(char **file)
+{
+	int		i;
+	int		fd;
+
+	i = 0;
+	if (file[i][1] == '>')
+	{
+		if (file[i][0] == ' ')
+			fd = end_chevre(file, 1538);
+		else
+			fd = end_chevre(file, 522);
+	}
+	else
+	{
+		if (file[i][0] == ' ');
+		else ;
+	}
+	return (fd);
 }

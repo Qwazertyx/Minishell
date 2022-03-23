@@ -76,7 +76,6 @@ void	ft_while(t_var *parsed)
 		ft_vpipe(parsed, nb);
 		wait (NULL);
 		free_cmd(parsed->cmd);
-		free(a);
 		if (parsed->fd != 0)
 		{
 			parsed->fd = 0;
