@@ -31,11 +31,11 @@ static void	redir(t_var *tab, int i)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		ft_choice(tab, i);
-		callerror("wait");
+		exit(1);
 	}
 }
 /*
-int	multipipextest(t_var *tab, int nb)
+int	multipipepxxtest(t_var *tab, int nb)
 {
 	int	i;
 	int	fd[2];
@@ -62,38 +62,12 @@ int	multipipex(t_var *tab, int nb)
 
 	printf("test1\n");
 	i = 0;
-	if (pipe(fd) == -1)
-		callerror("pipe");
-	pid = fork();
-	if (pid < 0)
-		callerror("fork");
-	if (pid > 0)
-	{
-		printf("test2\n");
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		waitpid(pid, NULL, 0);
-		printf("test3\n");
-	}
-	if (pid == 0)
-	{
-		printf("test4\n");
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		ft_choice(tab, i);
-		printf("test5\n");
-		callerror("error");
-	}
-	i++;
 	while (i < nb - 1)
 	{
 		printf("boucle %d sur %d\n", i, nb - 2);
 		redir(tab, i++);
 	}
-	dup2(fd[1], STDOUT_FILENO);
-	printf("---------------------\n");
 	ft_choice(tab, i);
-	printf("---------------------\n");
+	exit(1);
+	return (0);
 }
