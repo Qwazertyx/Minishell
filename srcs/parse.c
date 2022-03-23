@@ -130,7 +130,7 @@ char	*skip_quote(char *cmd, int n, char **env)
 			s = ft_joins(s, ft_getenv("HOME", env));
 		else if ((n == 1 || (quot != cmd[i] && quot != 0)
 				|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"'))
-				&& (cmd[i] != ' ' || (cmd[i] == ' ' && cmd[i - 1] && cmd[i - 1] != ' ')))
+				&& (cmd[i] != ' ' || (i >= 1 && cmd[i] == ' ' && cmd[i - 1] && cmd[i - 1] != ' ')))
 			s = ft_joinc(s, cmd[i]);
 		i++;
 	}
@@ -211,13 +211,30 @@ char	*place_split(char *a, int nb)
 
 char	*ft_parsechevre(char *a, t_var *p)
 {
+	char	**pipe;
 	char	*temp;
+	int		i;
+	int		j;
 
-	p->chevred = ft_sfilechevre(a, '>');
-	dprintf(2, "%s\n", p->chevred[0]);
-	p->chevreg = ft_sfilechevre(a, '<');
+	pipe = ft_split(a, '|');
+	i = 0;
+	while (pipe[i])
+		i++;
+	p->chevred = malloc(sizeof(char **) * (i + 1));
+	p->chevreg = malloc(sizeof(char **) * (i + 1));
+	j = 0;
+	while (j < i)
+	{
+		p->chevred[j] = ft_sfilechevre(pipe[j], '>');
+		dprintf(2, "%s\n", p->chevred[j][0]);
+		p->chevreg[j] = ft_sfilechevre(pipe[j], '<');
+		j++;
+	}
 	temp = ft_nochevre(a, '>');
 	a = ft_nochevre(temp, '<');
+	p->chevred[j] = NULL;
+	p->chevreg[j] = NULL;
+	free_split(pipe);
 	return (a);
 }
 

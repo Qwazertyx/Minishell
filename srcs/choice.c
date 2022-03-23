@@ -36,6 +36,11 @@ void	ft_vpipe(t_var *tab, int nb)
 	}
 	else
 	{
+		if (!ft_strcmp(tab->cmd[0][0], "exit"))
+		{
+			dprintf(2, "=enter exit\n\n");
+			ft_exit(tab, 0);
+		}
 		pid = fork();
 		if (pid)
 			return ;
@@ -60,9 +65,9 @@ void	ft_choice(t_var *tab, int i)
 
 	fd = 0;
 	dprintf(2, "cmd = %s\\\n", tab->cmd[i][0]);
-	if (tab->chevred[0])
+	if (tab->chevred[i][0])
 	{
-		tab->fd = ft_chevred(tab->chevred);
+		tab->fd = ft_chevred(tab->chevred[i]);
 		dprintf(2, "=%s\n", tab->cmd[i][1]);
 	}
 	if (!ft_strcmp(tab->cmd[i][0], "echo"))
@@ -106,11 +111,11 @@ void	ft_choice(t_var *tab, int i)
 	else
 	{
 		dprintf(2, "=enter execve\n\n");
-		dprintf(2, "s = (%s)\n", tab->cmd[i][1]);
 		s = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
 		int	i = 0;
 		while (s[i])
-			dprintf(2, "%s\n", s[i++]);
+			dprintf(2, "split = %s\n", s[i++]);
+		dprintf(2, "\n");
 		execmaster(s, *tab->env);
 	}
 	exit(0);

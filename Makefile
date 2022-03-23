@@ -79,7 +79,6 @@ SOURCES	=	prompt.c		\
 			main.c			\
 			multipipex.c	\
 
-#			export.c		
 #			gnl.c			
 #			gnl2.c			
 

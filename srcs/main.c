@@ -25,29 +25,20 @@ void	free_cmd(char ***cmd)
 	while (cmd && cmd[i])
 	{
 		j = 0;
-		while (cmd[i] && cmd[i][j])
+		while (cmd[i][j])
 			free(cmd[i][j++]);
 		free(cmd[i++]);
 	}
 	free(cmd);
 }
 
-void	free_tab(t_var *a)
+void	free_struc(t_var *p, int i)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (a && a->cmd[i])
-	{
-		j = 0;
-		while (a->cmd[i] && a->cmd[i][j])
-		{
-			free(a->cmd[i][j++]);
-		}
-		free(a->cmd[i]);
-		i++;
-	}
+	free_cmd(p->cmd);
+	free_cmd(p->chevred);
+	free_cmd(p->chevreg);
+	if (i == 1)
+		free_cmd(p->env);
 }
 
 void	ft_while(t_var *parsed)
@@ -65,23 +56,26 @@ void	ft_while(t_var *parsed)
 		printf("\b\bexit\n");
 		exit(0);
 	}
-	if (!a[0])
-		return ;
-	add_history(a);
-	if (is_input(a))
+	if (a[0])
 	{
-		parse(a, parsed);
-		while (parsed->cmd[nb])
-			nb++;
-		ft_vpipe(parsed, nb);
-		wait (NULL);
-		free_cmd(parsed->cmd);
-		if (parsed->fd != 0)
+		add_history(a);
+		if (is_input(a))
 		{
-			parsed->fd = 0;
-			dup2(nb, 1);
+			parse(a, parsed);
+			while (parsed->cmd[nb])
+				nb++;
+			ft_vpipe(parsed, nb);
+			wait (NULL);
+			free_struc(parsed, 0);
+			if (parsed->fd != 0)
+			{
+				parsed->fd = 0;
+				dup2(nb, 1);
+			}
 		}
 	}
+	else
+		free(a);
 }
 
 void CtrlC(int sig)

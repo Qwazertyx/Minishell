@@ -21,8 +21,8 @@ typedef struct s_var
 {
 	char	***cmd;
 	char	***env;
-	char	**chevred;
-	char	**chevreg;
+	char	***chevred;
+	char	***chevreg;
 	int		fd;
 }				t_var;
 
@@ -62,7 +62,6 @@ int		ft_chevred(char **file);
 char	*ft_strncpy(char *dest, char *str, int n);
 char	*ft_strndup(char *a, int l);
 char	*ft_nochevre(char *s, char c);
-void	**exportmaster(char *var, t_var *tab);
 char	*ft_getenv(char *var, char **env);
 char	*ft_noquote(char *a);
 int		*ft_nbcreate(char **env);
