@@ -72,5 +72,6 @@ int		ft_startcomparegal(char *s1, char *s2);
 char	**unset(char **cmd, char **env);
 int		ft_isexportable(char *s);
 void	free_cmd(char ***cmd);
+int		multipipex(t_var *tab, int nb);
 
 #endif

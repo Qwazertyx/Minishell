@@ -6,7 +6,7 @@
 #    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/21 17:04:16 by vsedat           ###   ########lyon.fr    #
+#    Updated: 2022/03/28 16:00:54 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,23 +106,23 @@ all:	${NAME}
 
 ${NAME}:	${OBJS}
 			@${CC} ${CFLAGS} -lreadline ${OBJS} -o ${NAME}
-			@echo "$(GREEN)Successful compilation$(END)"
+			@printf "\n$(GREEN)Successful compilation$(END)\n"
 
 mini:	all
-		@echo "$(WHITE)[Opening the shell]$(END)"
+		@printf "\n$(WHITE)[Opening the shell]$(END)\n"
 		@./minishell
 	
 clean:
 		@rm -f ${OBJS}
-		@echo "$(BLUE)Object files cleaned$(DEF_COLOR)"
+		@printf "\n$(BLUE)Object files cleaned\n$(DEF_COLOR)"
 
 fclean:	clean
 		@rm -f ${NAME}
-		@echo "$(CYAN)Executable files cleaned$(END)"
+		@printf "\n$(CYAN)Executable files cleaned\n$(END)"
 
 re:	fclean
 	@${MAKE} all
-	@echo "$(VIOLET)Cleaned and rebuilt everything$(END)"
+	@printf "\n$(VIOLET)Cleaned and rebuilt everything\n$(END)"
 
 t:
 	gcc -g -lreadline ${SRCS}
