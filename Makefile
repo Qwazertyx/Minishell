@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -9,6 +10,9 @@
 #    Updated: 2022/03/28 16:00:54 by vsedat           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
+=======
+
+>>>>>>> 6c6d0c80ad7617f59fc23abf96c693a2cf21bca5
 
 ##**********##
 ### COLORS ###
@@ -44,8 +48,9 @@ NAME	= minishell
 ### COMPILATION ###
 ##**************###
 CC		= gcc -Ofast
-CFLAGS	= -Wall -Wextra #-framework CoreFoundation #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
 
+CFLAGS	= -Wall -Wextra #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
+#-framework CoreFoundation
 ##*******************##
 ### DIRECTORY PATHS ###
 ##*******************##
@@ -88,7 +93,6 @@ SOURCES	=	prompt.c		\
 			main.c			\
 			multipipex.c	\
 
-#			export.c		
 #			gnl.c			
 #			gnl2.c			
 

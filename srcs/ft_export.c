@@ -273,6 +273,7 @@ void	export(char *cmd, t_var *p)
 	i = 0;
 	while (split[++i])
 	{
+		dprintf(2, "split[%d] = %s\n", i, split[i]);
 		if (!ft_isexportable(split[i]))
 		{
 			ft_putstr_fd("Minishell: export: `", 2);

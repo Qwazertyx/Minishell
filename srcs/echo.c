@@ -88,7 +88,8 @@ int	echoservant(char *cmd, int i)
 		else if ((cmd[i] == '\"' && quot == 1) || (cmd[i] == '\'' && quot == 2)
 			|| ((cmd[i] != '\"' && cmd[i] != '\'')))
 			ft_putchar(cmd[i]);
-		i++;
+		if (cmd[i])
+			i++;
 	}
 	return (1);
 }

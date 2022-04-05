@@ -21,6 +21,8 @@ typedef struct s_var
 {
 	char	***cmd;
 	char	***env;
+	char	***chevred;
+	char	***chevreg;
 	int		fd;
 }				t_var;
 
@@ -56,11 +58,10 @@ char	*ft_joinc(char *s1, char c);
 char	*ft_joins(char *s1, char *s2);
 char	*ft_joinsfree(char *s1, char *s2);
 int		ft_strchrquot(char *s, char c, char c2);
-int		s_chevred(char *ch);
+int		ft_chevred(char **file);
 char	*ft_strncpy(char *dest, char *str, int n);
 char	*ft_strndup(char *a, int l);
 char	*ft_nochevre(char *s, char c);
-void	**exportmaster(char *var, t_var *tab);
 char	*ft_getenv(char *var, char **env);
 char	*ft_noquote(char *a);
 int		*ft_nbcreate(char **env);
@@ -73,5 +74,9 @@ char	**unset(char **cmd, char **env);
 int		ft_isexportable(char *s);
 void	free_cmd(char ***cmd);
 int		multipipex(t_var *tab, int nb);
+<<<<<<< HEAD
+=======
+char	**ft_sfilechevre(char *a, char c);
+>>>>>>> 6c6d0c80ad7617f59fc23abf96c693a2cf21bca5
 
 #endif
