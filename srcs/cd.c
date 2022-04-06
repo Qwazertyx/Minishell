@@ -1,6 +1,6 @@
 #include "../incl/minishell.h"
 
-int	mycd(char **path)
+void	mycd(char **path)
 {
 	int	i;
 
@@ -19,5 +19,4 @@ int	mycd(char **path)
 		if (chdir(getenv("HOME")) != 0)
 			perror("no HOME detected");
 	}
-	return (0);
 }

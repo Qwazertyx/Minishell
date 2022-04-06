@@ -26,7 +26,9 @@ void	free_cmd(char ***cmd)
 	{
 		j = 0;
 		while (cmd[i][j])
+		{
 			free(cmd[i][j++]);
+		}
 		free(cmd[i++]);
 	}
 	free(cmd);
@@ -61,7 +63,9 @@ void	ft_while(t_var *parsed)
 		add_history(a);
 		if (is_input(a))
 		{
-			parse(a, parsed);
+			parsed = parse(a, parsed);
+			if (!parsed)
+				return ;
 			while (parsed->cmd[nb])
 				nb++;
 			ft_vpipe(parsed, nb);

@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: vsedat <vsedat@student.42lyon.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/11/25 15:08:55 by vsedat            #+#    #+#              #
-#    Updated: 2022/03/28 16:00:54 by vsedat           ###   ########lyon.fr    #
-#                                                                              #
-# **************************************************************************** #
-=======
-
->>>>>>> 6c6d0c80ad7617f59fc23abf96c693a2cf21bca5
-
 ##**********##
 ### COLORS ###
 ##**********##
@@ -47,7 +31,7 @@ NAME	= minishell
 ##***************##
 ### COMPILATION ###
 ##**************###
-CC		= gcc -Ofast
+CC		= gcc
 
 CFLAGS	= -Wall -Wextra #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
 #-framework CoreFoundation

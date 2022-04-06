@@ -23,6 +23,12 @@ int	ft_strchrquot(char *s, char c, char c2)
 void	ft_vpipe(t_var *tab, int nb)
 {
 	pid_t	pid;
+	int		old;
+	int		status;
+	int		i;
+
+	old = 0;
+	i = 0;
 	// s_chevred(tab[0].cmd[1], env);
 	if (nb > 1)
 	{
@@ -32,7 +38,13 @@ void	ft_vpipe(t_var *tab, int nb)
 		//if (pid > 0)
 		//	waitpid(pid, NULL, 0);
 		//else
-			multipipex(tab, nb);
+		while (i < nb)
+			pid = multipipex(tab, nb, &old, i++);
+		waitpid(pid, &status, 0);
+		while (wait(NULL) != -1)
+		{
+		}
+		
 	}
 	else
 	{

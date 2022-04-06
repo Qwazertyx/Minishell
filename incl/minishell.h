@@ -50,7 +50,7 @@ void	ft_pwd(void);
 void	ft_env(char **env);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_splitve(char *arg, char c, char *cmd);
-int		mycd(char **cmd);
+void	mycd(char **cmd);
 int		ft_putchar(int c);
 int		is_input(char *s);
 int		ft_strcmp(char *a, char *b);
@@ -73,10 +73,7 @@ int		ft_startcomparegal(char *s1, char *s2);
 char	**unset(char **cmd, char **env);
 int		ft_isexportable(char *s);
 void	free_cmd(char ***cmd);
-int		multipipex(t_var *tab, int nb);
-<<<<<<< HEAD
-=======
-char	**ft_sfilechevre(char *a, char c);
->>>>>>> 6c6d0c80ad7617f59fc23abf96c693a2cf21bca5
+pid_t	multipipex(t_var *tab, int nb, int *old, int i);
+char	**ft_sfilechevre(char *ch, char c);
 
 #endif

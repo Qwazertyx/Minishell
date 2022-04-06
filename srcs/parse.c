@@ -222,12 +222,14 @@ char	*ft_parsechevre(char *a, t_var *p)
 		i++;
 	p->chevred = malloc(sizeof(char **) * (i + 1));
 	p->chevreg = malloc(sizeof(char **) * (i + 1));
+	printf("%d\n", i);
 	j = 0;
 	while (j < i)
 	{
 		p->chevred[j] = ft_sfilechevre(pipe[j], '>');
 		dprintf(2, "%s\n", p->chevred[j][0]);
 		p->chevreg[j] = ft_sfilechevre(pipe[j], '<');
+		dprintf(2, "%s\n", p->chevreg[j][0]);
 		j++;
 	}
 	temp = ft_nochevre(a, '>');
@@ -238,11 +240,92 @@ char	*ft_parsechevre(char *a, t_var *p)
 	return (a);
 }
 
+int	check_exist(char *s)
+{
+	int		i;
+	char	*path;
+	int		returned;
+
+	i = 2;
+	while (s[i] && s[i] != '/')
+		i++;
+	path = malloc(i - 1);
+	i = 1;
+	while (s[++i] && s[i] != '/')
+		path[i - 2] = s[i];
+	path[i - 2] = '\0';
+	returned = access(path, F_OK | W_OK);
+	free(path);
+	return (returned);
+}
+
+int	ft_verifchevred(t_var *p)
+{
+	int		i;
+	int		j;
+
+	i = -1;
+	while (p->chevred[++i])
+	{
+		j = -1;
+		while (p->chevred[i][++j])
+		{
+			if (!p->chevred[i][j][2])
+				return (0);
+			if (ft_strchrquot(p->chevred[i][j], '/', 0) != -1)
+				if (check_exist(p->chevred[i][j]) == -1)
+					return (0);
+		}
+	}
+	return (1);
+}
+
+int	ft_verifchevreg(t_var *p)
+{
+	int		i;
+	int		j;
+
+	i = -1;
+	while (p->chevreg[++i])
+	{
+		j = -1;
+		while (p->chevreg[i][++j])
+		{
+			if (!p->chevreg[i][j][2])
+				return (0);
+			if (ft_strchrquot(p->chevreg[i][j], '/', 0) != -1)
+				if (check_exist(p->chevreg[i][j]) == -1)
+					return (0);
+		}
+	}
+	return (1);
+}
+
+t_var	*free_returned(t_var *p, char *a)
+{
+	free(a);
+	free_cmd(p->chevred);
+	free_cmd(p->chevreg);
+	return (NULL);
+}
+
+int	ft_verifchevre(t_var *p)
+{
+	if (!ft_verifchevred(p) || !ft_verifchevreg(p))
+	{
+		ft_putstr_fd("Minishell: syntax error\n", 2);
+		return (0);
+	}
+	return (1);
+}
+
 t_var	*parse(char *a, t_var *p)
 {
 	int		i;
 
 	a = ft_parsechevre(a, p);
+	if (!ft_verifchevre(p))
+		return (free_returned(p, a));
 	p->cmd = malloc(sizeof(char **) * (nb_doublt(a) + 1));
 	i = 0;
 	while (i < nb_doublt(a))

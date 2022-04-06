@@ -34,25 +34,16 @@ static void	redir(t_var *tab, int i)
 	int		fd[2];
 	pid_t	pid;
 
-	if (pipe(fd) == -1)
-		callerror("pipe");
-	pid = fork();
-	if (pid < 0)
-		callerror("fork");
-	if (pid > 0)
-	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		waitpid(pid, NULL, 0);
-	}
 	if (pid == 0)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		ft_choice(tab, i);
-		exit(1);
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		waitpid(pid, NULL, 0);
 	}
 }
 	//pid = fork();
@@ -60,26 +51,36 @@ static void	redir(t_var *tab, int i)
 		//	callerror("fork");
 		//if (pid > 0)
 		//	waitpid(pid, NULL, 0);
-int	multipipex(t_var *tab, int nb)
+pid_t	multipipex(t_var *tab, int nb, int *old, int i)
 {
 	int		fd[2];
 	pid_t	pid;
-	int		i;
 
+	pipe(fd);
 	pid = fork();
 	if (!pid)
 	{
-		i = 0;
-		while (i < nb - 1)
-		{
-			printf("boucle %d sur %d\n", i + 1, nb - 1);
-			redir(tab, i++);
-		}
+		printf("i == %d	%d	%d\n", i, fd[0], fd[1]);
+		printf("fold = %d\n", *old);
+		dup2(*old, STDIN_FILENO);
+		if (*old)
+			close (*old);
+		if (i < nb - 1)
+			dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		close(fd[0]);
 		ft_choice(tab, i);
 	}
 	else
-		waitpid(pid, NULL, 0);
-	return (0);
+	{
+		if (*old != 0)
+			close (old);
+		if (i < nb - 1)
+			*old = dup(fd[0]);
+		close(fd[0]);
+		close(fd[1]);
+	}
+	return (pid);
 }
 
 static void	redir2(t_var *tab, int i)

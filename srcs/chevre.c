@@ -8,8 +8,10 @@ int	nb_schevre(char *ch, char c)
 
 	i = ft_strchrquot(ch, c, 0);
 	nb = 0;
-	if (i != -1 && ch[i] && ch[i] != c)
+	if (i != -1)
 		nb++;
+	if (ch[i] && ch[i] == c)
+		nb--;
 	oldi = i;
 	while (i != -1)
 	{
@@ -26,20 +28,26 @@ char	*ft_chevrecpy(char *ch, char c1, char c2)
 	int		i;
 	int		sp;
 	char	*s;
+	char	quot;
 
 	sp = 0;
 	while (ch[sp] && ch[sp] == ' ')
 		sp++;
 	i = sp;
-	while (ch[i] && ch[i] != ' ' && ch[i] != '>' && ch[i] != '<')
-		i++;
-	s = malloc(i - sp + 3);
+	s = malloc(3);
 	s[0] = c1;
 	s[1] = c2;
-	i = sp - 1;
-	while (ch[++i] && ch[i] != ' ' && ch[i] != '>' && ch[i] != '<')
-		s[(i - sp) + 2] = ch[i];
-	s[(i - sp) + 2] = '\0';
+	s[2] = '\0';
+	quot = 0;
+	while (ch[i] && ((ch[i] != ' ' && ch[i] != '>' && ch[i] != '<') || quot))
+	{
+		if (!quot && (ch[i] == '\'' || ch[i] == '\"'))
+			quot = ch[i++];
+		else if (quot && quot == ch[i])
+			quot = 0 * i++;
+		if (ch[i])
+			s = ft_joinc(s, ch[i++]);
+	}
 	return (s);
 }
 
@@ -64,7 +72,8 @@ char	**ft_sfilechevre(char *ch, char c)
 			else
 				file[j++] = ft_chevrecpy(&ch[oldi], ' ', ch[oldi - 1]);
 		}
-		// printf("file = (%s)\n", file[j - 1]);
+		if (j > 0)
+			printf("file = (%s)\n", file[j - 1]);
 	}
 	file[j] = NULL;
 	return (file);
@@ -91,13 +100,12 @@ char	*no_endspace(char *s)
 char	*ft_nochevre(char *s, char c)
 {
 	int		i;
-	int		len;
 	char	*str;
+	char	quot;
 
+	quot = 0;
+	str = NULL;
 	i = 0;
-	len = 0;
-	while (s[i] && s[i] == ' ')
-		i++;
 	while (s[i])
 	{
 		if (s[i] == c)
@@ -105,31 +113,18 @@ char	*ft_nochevre(char *s, char c)
 			i++;
 			while (s[i] && s[i] == ' ')
 				i++;
-			while (s[i] && s[i] != ' ')
+			while (s[i] && (s[i] != ' ' || quot != 0))
+			{
+				if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+					quot = s[i];
+				else if (quot && quot == s[i])
+					quot = 0;
 				i++;
+			}
 		}
 		if (s[i])
-			i = i + 1 + 0 * len++;
+			str = ft_joinc(str, s[i++]);
 	}
-	str = malloc(len + 1);
-	i = 0;
-	len = 0;
-	while (s[i] && s[i] == ' ')
-		i++;
-	while (s[i])
-	{
-		if (s[i] == c)
-		{
-			i++;
-			while (s[i] && s[i] == ' ')
-				i++;
-			while (s[i] && s[i] != ' ')
-				i++;
-		}
-		if (s[i])
-			str[len++] = s[i++];
-	}
-	str[len] = '\0';
 	free(s);
 	return (str);
 }
@@ -166,10 +161,6 @@ int	ft_chevred(char **file)
 		else
 			fd = end_chevre(file, 522);
 	}
-	else
-	{
-		if (file[i][0] == ' ');
-		else ;
-	}
+	else fd = 0;
 	return (fd);
 }
