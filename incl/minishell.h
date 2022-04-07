@@ -75,5 +75,6 @@ void	free_cmd(char ***cmd);
 pid_t	multipipex(t_var *tab, int nb, int *old, int i);
 char	**ft_sfilechevre(char *ch, char c);
 int		ft_chevred(char **file);
+int		ft_chevreg(char **file);
 
 #endif
