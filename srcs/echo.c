@@ -75,7 +75,8 @@ int	echoservant(char *cmd, int i)
 	quot = 0;
 	while (cmd[i])
 	{
-		if (i != 0 && cmd[i - 1] && cmd[i] == ' ' && cmd[i - 1] == ' ' && quot == 0)
+		if (i != 0 && cmd[i - 1] && cmd[i] == ' ' \
+		&& cmd[i - 1] == ' ' && quot == 0)
 			i++;
 		else if (!cmd[i + 1] && cmd[i] == ' ' && quot == 0)
 			i++;

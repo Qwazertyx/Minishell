@@ -71,6 +71,7 @@ SOURCES	=	prompt.c		\
 			ft_join.c		\
 			cd.c			\
 			chevre.c		\
+			chevreutils.c	\
 			getenv.c		\
 			ft_export.c		\
 			unset.c			\

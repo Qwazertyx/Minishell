@@ -34,7 +34,7 @@ int	ft_strcmpi(char *a, char *b, int i)
 	return (a[i] - b[j]);
 }
 
-int verif_exit(char *cmd)
+int	verif_exit(char *cmd)
 {
 	char	sign;
 
@@ -43,7 +43,7 @@ int verif_exit(char *cmd)
 		sign += 2;
 	if (cmd && cmd[0] == '+')
 		sign++;
-	if (cmd && (ft_strleni(cmd, sign) > 19
+	if (cmd && (ft_strleni(cmd, sign) > 19 \
 		|| (ft_strleni(cmd, sign) == 19 \
 		&& ft_strcmpi(cmd, "9223372036854775807", sign) > 0 && sign <= 1) \
 		|| (ft_strlen(cmd) == 20 && ft_strcmp(cmd, "-9223372036854775808") > 0 \
@@ -91,7 +91,6 @@ void	ft_exit(t_var	*tab, int i)
 	cmd = NULL;
 	if (tab && tab->cmd[i] && tab->cmd[i][1])
 	{
-		dprintf(2, "sus\n");
 		cmd = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
 		int	i = 0;
 		while (cmd && cmd[i])

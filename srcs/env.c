@@ -26,7 +26,6 @@ int	*ft_nbcreate(char **env)
 	while (env[i])
 	{
 		nb[ft_strcmtri(env, i)] = i;
-		// printf("%d	%d\n",i, ft_strcmtri(env, i));
 		i++;
 	}
 	return (nb);
@@ -39,7 +38,6 @@ void	ft_env(char **env)
 
 	nb = ft_nbcreate(env);
 	i = -1;
-	// printf("env[0] = %s", env[0]);
 	while (env[++i])
 		if (contains(env[nb[i]], '='))
 			printf("%s\n", env[nb[i]]);

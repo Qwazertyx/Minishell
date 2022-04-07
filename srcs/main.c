@@ -71,11 +71,6 @@ void	ft_while(t_var *parsed)
 			ft_vpipe(parsed, nb);
 			wait (NULL);
 			free_struc(parsed, 0);
-			if (parsed->fd != 0)
-			{
-				parsed->fd = 0;
-				dup2(nb, 1);
-			}
 		}
 	}
 	else

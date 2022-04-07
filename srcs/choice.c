@@ -29,22 +29,13 @@ void	ft_vpipe(t_var *tab, int nb)
 
 	old = 0;
 	i = 0;
-	// s_chevred(tab[0].cmd[1], env);
 	if (nb > 1)
 	{
-		//pid = fork();
-		//if (pid < 0)
-		//	callerror("fork");
-		//if (pid > 0)
-		//	waitpid(pid, NULL, 0);
-		//else
 		while (i < nb)
 			pid = multipipex(tab, nb, &old, i++);
 		waitpid(pid, &status, 0);
 		while (wait(NULL) != -1)
-		{
-		}
-		
+			;
 	}
 	else
 	{
@@ -79,7 +70,7 @@ void	ft_choice(t_var *tab, int i)
 	dprintf(2, "cmd = %s\\\n", tab->cmd[i][0]);
 	if (tab->chevred[i][0])
 	{
-		tab->fd = ft_chevred(tab->chevred[i]);
+		ft_chevred(tab->chevred[i]);
 		dprintf(2, "=%s\n", tab->cmd[i][1]);
 	}
 	if (!ft_strcmp(tab->cmd[i][0], "echo"))
@@ -101,7 +92,6 @@ void	ft_choice(t_var *tab, int i)
 	{
 		dprintf(2, "=enter export\n\n");
 		export(tab->cmd[i][1], tab);
-		// exportmaster(tab->cmd[i][1], *tab->env);
 	}
 	else if (!ft_strcmp(tab->cmd[i][0], "unset"))
 	{
@@ -124,6 +114,11 @@ void	ft_choice(t_var *tab, int i)
 	{
 		dprintf(2, "=enter execve\n\n");
 		s = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
+		if (!s)
+		{
+			ft_putstr_fd("Malloc error\n", 2);
+			exit (1);
+		}
 		int	i = 0;
 		while (s[i])
 			dprintf(2, "split = %s\n", s[i++]);
