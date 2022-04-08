@@ -1,17 +1,29 @@
 #include "../incl/minishell.h"
 
+char *doublechevre(char **file)
+{
+
+}
+
 int	ft_chevreg(char **file)
 {
-	int	fd;
-	int	pipefd[2];
-	int	i;
+	int		fd;
+	int		i;
+	char	*input;
 
-	dprintf(2, "lllll%s\n", &file[0][2]);
 	i = 0;
 	while (file[i])
 	{
-		fd = open(&file[i][2], O_RDONLY);
-		close(fd);
+		dprintf(2, "lllll%s\n", file[i]);
+		if (file[i][0] != '<')
+		{
+			fd = open(&file[i][2], O_RDONLY);
+			close(fd);
+		}
+		else if (file[i][0] == '<')
+		{
+			input = doublechevre(file);
+		}
 		i++;
 	}
 	fd = open(&file[i - 1][2], O_RDONLY);
