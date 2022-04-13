@@ -23,6 +23,7 @@ typedef struct s_var
 	char	***env;
 	char	***chevred;
 	char	***chevreg;
+	char	**heredoc;
 }				t_var;
 
 char	*ft_prompt(void);
@@ -75,6 +76,6 @@ void	free_cmd(char ***cmd);
 pid_t	multipipex(t_var *tab, int nb, int *old, int i);
 char	**ft_sfilechevre(char *ch, char c);
 int		ft_chevred(char **file);
-int		ft_chevreg(char **file);
+int		ft_chevreg(char **file, t_var *tab);
 
 #endif

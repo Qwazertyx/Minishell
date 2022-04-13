@@ -71,7 +71,7 @@ void	ft_choice(t_var *tab, int i)
 	if (tab->chevreg[i][0])
 	{
 		dprintf(2,"get chevreg\n");
-		ft_chevreg(tab->chevreg[i]);
+		ft_chevreg(tab->chevreg[i], tab);
 		dprintf(2, "=%s\n", tab->cmd[i][1]);
 	}
 	if (tab->chevred[i][0])
