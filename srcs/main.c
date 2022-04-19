@@ -51,6 +51,7 @@ void	ft_while(t_var *parsed)
 
 	nb = 0;
 	tmp = ft_prompt();
+	tmp = ft_strjoin2("👻 ", tmp);
 	a = readline(tmp);
 	free(tmp);
 	if (a == 0)

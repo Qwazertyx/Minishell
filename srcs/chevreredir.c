@@ -1,5 +1,21 @@
 #include "../incl/minishell.h"
 
+void	ft_putendl_fd(char *s, int fd)
+{
+	int	c;
+
+	c = 0;
+	if (s)
+	{
+		while (s[c])
+		{
+			write(fd, &s[c], 1);
+			c++;
+		}
+		write(fd, "\n", 1);
+	}
+}
+
 int	whoislastdouble(char **file)
 {
 	int	i;
@@ -22,6 +38,7 @@ char	*doublechevre(char **file, t_var *tab, int i)
 	char	*stop;
 	char	*read;
 	char	**heredoc;
+	int		pipefd[2];
 
 	y = 0;
 	stop = malloc((ft_strlen(file[i]) - 2 + 1) * sizeof(char *));
@@ -30,16 +47,19 @@ char	*doublechevre(char **file, t_var *tab, int i)
 		stop[y] = file[i][y + 2];
 		y++;
 	}
+	pipe(pipefd);
 	stop[y] = 0;
 	read = readline(0);
-	if (i == whoislastdouble(file))
-		ft_putstr_fd(read, 3);
 	while (ft_strcmp(read, stop))
 	{
-		read = readline(0);
 		if (i == whoislastdouble(file))
-			ft_putstr_fd(read, 3);
+			ft_putendl_fd(read, pipefd[1]);
+		free(read);
+		read = readline(0);
 	}
+	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
+	close(pipefd[1]);
 	free(stop);
 	return (read);
 }
@@ -49,7 +69,7 @@ int	ft_chevreg(char **file, t_var *tab)
 	int		i;
 	int		fd;
 
-	dprintf(2, "last: %d\n == %s\n", whoislastdouble(file), file[whoislastdouble(file)]);
+	dprintf(2, "last: %d == %s\n", whoislastdouble(file), file[whoislastdouble(file)]);
 	i = 0;
 	while (file[i])
 	{

@@ -1,5 +1,34 @@
 #include "../incl/minishell.h"
 
+char	*ft_strjoin2(char const *s1, char const *s2)
+{
+	int		s;
+	char	*t;
+	int		i;
+	int		j;
+
+	if (!s1 || !s2)
+		return (0);
+	s = ft_strlen(s1) + ft_strlen(s2);
+	t = malloc(1 + s * sizeof(char));
+	if (!t)
+		return (0);
+	i = 0;
+	while (s1[i])
+	{
+		t[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+	{
+		t[i + j] = s2[j];
+		j++;
+	}
+	t[i + j] = 0;
+	return (t);
+}
+
 static void	ft_strc(char *c, int nb, int i)
 {
 	if (nb == 0)
@@ -8,6 +37,14 @@ static void	ft_strc(char *c, int nb, int i)
 		c[1] = '[';
 		c[2] = '3';
 		c[3] = '2';
+		c[4] = 'm';
+	}
+	if (nb == 0)
+	{
+		c[0] = '\033';
+		c[1] = '[';
+		c[2] = '3';
+		c[3] = '1';
 		c[4] = 'm';
 	}
 	if (nb == 1)
@@ -94,5 +131,5 @@ char	*ft_prompt(void)
 		a = ft_skip(a);
 	if (!a)
 		return (0);
-	return (ft_join(a, " > "));
+	return (ft_join(a, " 🎃 > "));
 }
