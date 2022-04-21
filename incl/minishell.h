@@ -78,5 +78,6 @@ char	**ft_sfilechevre(char *ch, char c);
 int		ft_chevred(char **file);
 int		ft_chevreg(char **file, t_var *tab);
 char	**parse_export(char *cmd, char **env);
+char	*ft_strjoin2(char const *s1, char const *s2);
 
 #endif

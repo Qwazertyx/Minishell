@@ -1,5 +1,21 @@
 #include "../incl/minishell.h"
 
+void	ft_putendl_fd(char *s, int fd)
+{
+	int	c;
+
+	c = 0;
+	if (s)
+	{
+		while (s[c])
+		{
+			write(fd, &s[c], 1);
+			c++;
+		}
+		write(fd, "\n", 1);
+	}
+}
+
 int	whoislastdouble(char **file)
 {
 	int	i;
@@ -43,17 +59,13 @@ char	*doublechevre(char **file, t_var *tab, int i)
 	}
 	pipe(pipefd);
 	stop[y] = 0;
-	read = readline("> ");
-	if (!read)
-		ft_putstr_fd("\b\b", 1);
-	while (ft_strcmp(read, stop) && read)
+	read = readline(0);
+	while (ft_strcmp(read, stop))
 	{
 		if (i == whoislastdouble(file))
 			ft_putendl_fd(read, pipefd[1]);
 		free(read);
-		read = readline("> ");
-		if (!read)
-			ft_putstr_fd("\b\b", 1);
+		read = readline(0);
 	}
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
@@ -67,7 +79,7 @@ int	ft_chevreg(char **file, t_var *tab)
 	int		i;
 	int		fd;
 
-	dprintf(2, "last: %d\n == %s\n", whoislastdouble(file), file[whoislastdouble(file)]);
+	dprintf(2, "last: %d == %s\n", whoislastdouble(file), file[whoislastdouble(file)]);
 	i = 0;
 	while (file[i])
 	{
