@@ -64,6 +64,7 @@ SOURCES	=	prompt.c		\
 			echo.c			\
 			ft_atoi.c		\
 			exit.c			\
+			exitutils.c		\
 			utils.c			\
 			pwd.c			\
 			env.c			\
@@ -74,7 +75,9 @@ SOURCES	=	prompt.c		\
 			chevreredir.c	\
 			chevreutils.c	\
 			getenv.c		\
-			ft_export.c		\
+			export.c		\
+			exportutils.c	\
+			exportutils2.c	\
 			unset.c			\
 			main.c			\
 			multipipex.c	\

@@ -58,9 +58,7 @@ char	*ft_joinsfree(char *a, char *b)
 	int		j;
 	char	*s;
 
-	i = ft_strlen(a);
-	j = ft_strlen(b);
-	s = malloc(i + j + 1);
+	s = malloc(ft_strlen(a) + ft_strlen(b) + 1);
 	if (s)
 	{
 		i = -1;
@@ -79,6 +77,30 @@ char	*ft_joinsfree(char *a, char *b)
 	}
 	free(a);
 	free(b);
+	return (s);
+}
+
+char	*fill_ft_noquote(char *a, int len)
+{
+	char	*s;
+	char	quot;
+	int		i;
+
+	s = malloc(len + 1);
+	if (!s)
+		return (0);
+	len = 0;
+	i = 0;
+	while (a[i])
+	{
+		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
+			quot = a[i++];
+		else if (quot != 0 && quot == a[i])
+			quot = 0 * i++;
+		else
+			s[len++] = a[i++];
+	}
+	s[len] = '\0';
 	return (s);
 }
 
@@ -101,18 +123,5 @@ char	*ft_noquote(char *a)
 		else
 			i = i + 1 + 0 * len++;
 	}
-	s = malloc(len + 1);
-	len = 0;
-	i = 0;
-	while (a[i])
-	{
-		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
-			quot = a[i++];
-		else if (quot != 0 && quot == a[i])
-			quot = 0 * i++;
-		else
-			s[len++] = a[i++];
-	}
-	s[len] = '\0';
-	return (s);
+	return (fill_ft_noquote(a, len));
 }

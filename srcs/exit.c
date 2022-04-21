@@ -14,26 +14,6 @@ int	is_num(char *a)
 	return (0);
 }
 
-int	ft_strleni(char *a, int i)
-{
-	int	j;
-
-	j = i;
-	while (a[i])
-		i++;
-	return (i - j);
-}
-
-int	ft_strcmpi(char *a, char *b, int i)
-{
-	int	j;
-
-	j = 0;
-	while (a[i] && b[j] && a[i] == b[j])
-		i += 1 + 0 * j++;
-	return (a[i] - b[j]);
-}
-
 int	verif_exit(char *cmd)
 {
 	char	sign;
@@ -92,9 +72,6 @@ void	ft_exit(t_var	*tab, int i)
 	if (tab && tab->cmd[i] && tab->cmd[i][1])
 	{
 		cmd = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
-		int	i = 0;
-		while (cmd && cmd[i])
-			printf("cmd[%d] = %s\n", i, cmd[i++]);
 		if (!verif_exit(cmd[1]))
 			nb = 255;
 		else

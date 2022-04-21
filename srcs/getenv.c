@@ -28,18 +28,6 @@ int	ft_startcompare(char *s1, char *s2)
 	return (1);
 }
 
-int	ft_strchr(char *a, char c)
-{
-	int	i;
-
-	i = 0;
-	while (a[i] && a[i] != c)
-		i++;
-	if (a[i] && a[i] == c)
-		return (i);
-	return (-1);
-}
-
 char	*ft_getenv(char	*var, char **env)
 {
 	int	i;

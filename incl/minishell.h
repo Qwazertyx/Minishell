@@ -77,5 +77,6 @@ pid_t	multipipex(t_var *tab, int nb, int *old, int i);
 char	**ft_sfilechevre(char *ch, char c);
 int		ft_chevred(char **file);
 int		ft_chevreg(char **file, t_var *tab);
+char	**parse_export(char *cmd, char **env);
 
 #endif

@@ -12,6 +12,8 @@ char	*while_ft_nochevre(char *s, char c, char *str)
 		if (s[i] == c)
 		{
 			i++;
+			if (s[i] == c)
+				i++;
 			while (s[i] && s[i] == ' ')
 				i++;
 			while (s[i] && (s[i] != ' ' || quot != 0))
@@ -40,29 +42,35 @@ char	*ft_nochevre(char *s, char c)
 	return (str);
 }
 
-int	end_chevre(char **file, int param)
+void	end_chevre(char **file, int param)
 {
 	int	i;
 	int	fd;
-	int	returned;
 
 	i = 0;
 	while (file[i])
 	{
+		if (access(&file[i][2], F_OK | W_OK) == -1)
+		{
+			ft_putstr_fd("Minishell: ", 2);
+			ft_putstr_fd(&file[i][2], 2);
+			if (access(&file[i][2], F_OK) == -1)
+				ft_putstr_fd(": No such file or directory\n", 2);
+			else if (access(&file[i][2], W_OK) == -1)
+				ft_putstr_fd(": Permission denied\n", 2);
+			exit (1);
+		}
 		fd = open(&file[i][2], param, 0777);
 		close(fd);
 		i++;
 	}
 	fd = open(&file[i - 1][2], param);
-	returned = dup(1);
 	dup2(fd, 1);
-	return (returned);
 }
 
 int	ft_chevred(char **file)
 {
 	int		i;
-	int		fd;
 
 	i = 0;
 	if (file[i][1] == '>')

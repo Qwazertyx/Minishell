@@ -222,41 +222,20 @@ char	*ft_parsechevre(char *a, t_var *p)
 		i++;
 	p->chevred = malloc(sizeof(char **) * (i + 1));
 	p->chevreg = malloc(sizeof(char **) * (i + 1));
-	printf("%d\n", i);
 	j = 0;
 	while (j < i)
 	{
 		p->chevred[j] = ft_sfilechevre(pipe[j], '>');
-		dprintf(2, "%s\n", p->chevred[j][0]);
 		p->chevreg[j] = ft_sfilechevre(pipe[j], '<');
-		dprintf(2, "%s\n", p->chevreg[j][0]);
 		j++;
 	}
 	temp = ft_nochevre(a, '>');
 	a = ft_nochevre(temp, '<');
+	dprintf(2, "\n\nICI\n%s\n======================\n", a);
 	p->chevred[j] = NULL;
 	p->chevreg[j] = NULL;
 	free_split(pipe);
 	return (a);
-}
-
-int	check_exist(char *s)
-{
-	int		i;
-	char	*path;
-	int		returned;
-
-	i = 2;
-	while (s[i] && s[i] != '/')
-		i++;
-	path = malloc(i - 1);
-	i = 1;
-	while (s[++i] && s[i] != '/')
-		path[i - 2] = s[i];
-	path[i - 2] = '\0';
-	returned = access(path, F_OK | W_OK);
-	free(path);
-	return (returned);
 }
 
 int	ft_verifchevred(t_var *p)
@@ -272,9 +251,6 @@ int	ft_verifchevred(t_var *p)
 		{
 			if (!p->chevred[i][j][2])
 				return (0);
-			if (ft_strchrquot(p->chevred[i][j], '/', 0) != -1)
-				if (check_exist(p->chevred[i][j]) == -1)
-					return (0);
 		}
 	}
 	return (1);
@@ -293,9 +269,6 @@ int	ft_verifchevreg(t_var *p)
 		{
 			if (!p->chevreg[i][j][2])
 				return (0);
-			if (ft_strchrquot(p->chevreg[i][j], '/', 0) != -1)
-				if (check_exist(p->chevreg[i][j]) == -1)
-					return (0);
 		}
 	}
 	return (1);
