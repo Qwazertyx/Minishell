@@ -58,7 +58,7 @@ int	nb_param(char *a)
 		i++;
 	while (a[i] && a[i] == ' ')
 		i++;
-	if (a[i])
+	if (a[i] && a[i] != '|')
 		nb++;
 	return (nb);
 }
@@ -124,14 +124,24 @@ char	*skip_quote(char *cmd, int n, char **env)
 		if (cmd[i] == '$' && quot != '\'')
 		{
 			s = ft_joinsfree(s, ft_dolar(&cmd[i + 1], env));
+			if (!s)
+				return (NULL);
 			i += skip_dolar(&cmd[i + 1]);
 		}
 		else if (cmd[i] == '~' && quot == 0)
+		{
 			s = ft_joins(s, ft_getenv("HOME", env));
-		else if ((n == 1 || (quot != cmd[i] && quot != 0)
-				|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"'))
-				&& (cmd[i] != ' ' || (i >= 1 && cmd[i] == ' ' && cmd[i - 1] && cmd[i - 1] != ' ')))
+			if (!s)
+				return (NULL);
+		}
+		else if ((n == 1 || (quot != cmd[i] && quot != 0) \
+		|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"')) && (cmd[i] != ' ' \
+		|| (i >= 1 && cmd[i] == ' ' && cmd[i - 1] && cmd[i - 1] != ' ')))
+		{
 			s = ft_joinc(s, cmd[i]);
+			if (!s)
+				return (NULL);
+		}
 		i++;
 	}
 	free(cmd);
@@ -292,6 +302,52 @@ int	ft_verifchevre(t_var *p)
 	return (1);
 }
 
+t_var	*ft_free_i(t_var *p, char *a, int i, int j)
+{
+	while (j >= 0)
+		free(p->cmd[i + 1][j--]);
+	while (i >= 0)
+	{
+		j = 1;
+		while (j >= 0)
+			free(p->cmd[i][j--]);
+		free(p->cmd[i--]);
+	}
+	free_cmd(p->chevred);
+	free_cmd(p->chevreg);
+	free(a);
+	dprintf(2, "malloc error : %d %d", i, j);
+	return (NULL);
+}
+
+int	*ft_heredoc(t_var *p, char ***file)
+{
+	int	i;
+	int	j;
+	int	lastfd;
+	int	*fd;
+
+	i = 0;
+	while (file[i])
+		i++;
+	fd = malloc(sizeof(int) * (i + 1));
+	i = -1;
+	while (file[++i])
+	{
+		j = -1;
+		lastfd = 0;
+		while (file[i][++j])
+		{
+			if (file[i][j][0] == '<')
+				fd[i] = doublechevre(file[i], p, j);
+			if (lastfd && fd[i] != lastfd)
+				close(lastfd);
+			lastfd = fd[i];
+		}
+	}
+	return (fd);
+}
+
 t_var	*parse(char *a, t_var *p)
 {
 	int		i;
@@ -304,10 +360,17 @@ t_var	*parse(char *a, t_var *p)
 	while (i < nb_doublt(a))
 	{
 		p->cmd[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
+		if (!p->cmd[i])
+			return (ft_free_i(p, a, i - 1, -1));
 		p->cmd[i][0] = skip_quote(f_split(place_split(a, i)), 0, *p->env);
+		if (!p->cmd[i][0])
+			return (ft_free_i(p, a, i - 1, 0));
 		if (nb_param(place_split(a, i)) > 1)
 		{
 			p->cmd[i][1] = skip_quote(l_split(place_split(a, i)), 1, *p->env);
+			dprintf(2, "%p	%s\n", p->cmd[i][1], p->cmd[i][1]);
+			if (!p->cmd[i][1])
+				return (ft_free_i(p, a, i - 1, -1));
 			p->cmd[i][2] = NULL;
 		}
 		else
@@ -315,6 +378,7 @@ t_var	*parse(char *a, t_var *p)
 		i++;
 	}
 	p->cmd[i] = NULL;
+	p->heredocfd = ft_heredoc(p, p->chevreg);
 	free(a);
 	return (p);
 }

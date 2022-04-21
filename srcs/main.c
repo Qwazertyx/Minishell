@@ -34,8 +34,19 @@ void	free_cmd(char ***cmd)
 	free(cmd);
 }
 
+void	ft_close(t_var *p)
+{
+	int	i;
+
+	i = 0;
+	while (p->cmd[i])
+		close(p->heredocfd[i++]);
+	free(p->heredocfd);
+}
+
 void	free_struc(t_var *p, int i)
 {
+	ft_close(p);
 	free_cmd(p->cmd);
 	free_cmd(p->chevred);
 	free_cmd(p->chevreg);
@@ -51,7 +62,7 @@ void	ft_while(t_var *parsed)
 
 	nb = 0;
 	tmp = ft_prompt();
-	tmp = ft_strjoin2("👻 ", tmp);
+	tmp = ft_strjoin2("🎃 ", tmp);
 	a = readline(tmp);
 	free(tmp);
 	if (a == 0)

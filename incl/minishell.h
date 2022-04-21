@@ -23,7 +23,7 @@ typedef struct s_var
 	char	***env;
 	char	***chevred;
 	char	***chevreg;
-	char	**heredoc;
+	int		*heredocfd;
 }				t_var;
 
 char	*ft_prompt(void);
@@ -76,8 +76,9 @@ void	free_cmd(char ***cmd);
 pid_t	multipipex(t_var *tab, int nb, int *old, int i);
 char	**ft_sfilechevre(char *ch, char c);
 int		ft_chevred(char **file);
-int		ft_chevreg(char **file, t_var *tab);
+int		ft_chevreg(char **file, t_var *tab, int j);
 char	**parse_export(char *cmd, char **env);
 char	*ft_strjoin2(char const *s1, char const *s2);
+int		doublechevre(char **file, t_var *tab, int i);
 
 #endif

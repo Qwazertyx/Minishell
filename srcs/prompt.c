@@ -125,7 +125,7 @@ char	*ft_prompt(void)
 	i = -1;
 	nb = 0;
 	while (a[++i])
-		if(a[i] == '/')
+		if (a[i] == '/')
 			nb++;
 	if (nb >= 2)
 		a = ft_skip(a);

@@ -32,17 +32,7 @@ int	whoislastdouble(char **file)
 	return (y);
 }
 
-void	ft_putendl_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	write(fd, s, i);
-	write(fd, "\n", 1);
-}
-char	*doublechevre(char **file, t_var *tab, int i)
+int	doublechevre(char **file, t_var *tab, int i)
 {
 	int		y;
 	char	*stop;
@@ -59,22 +49,21 @@ char	*doublechevre(char **file, t_var *tab, int i)
 	}
 	pipe(pipefd);
 	stop[y] = 0;
-	read = readline(0);
+	read = readline("> ");
 	while (ft_strcmp(read, stop))
 	{
 		if (i == whoislastdouble(file))
 			ft_putendl_fd(read, pipefd[1]);
 		free(read);
-		read = readline(0);
+		read = readline("> ");
 	}
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
+	free(read);
 	close(pipefd[1]);
 	free(stop);
-	return (read);
+	return (pipefd[0]);
 }
 
-int	ft_chevreg(char **file, t_var *tab)
+int	ft_chevreg(char **file, t_var *tab, int j)
 {
 	int		i;
 	int		fd;
@@ -88,8 +77,13 @@ int	ft_chevreg(char **file, t_var *tab)
 			fd = open(&file[i][2], O_RDONLY);
 			close(fd);
 		}
-		else if (file[i][0] == '<')
-			doublechevre(file, tab, i);
+		else if (!file[i + 1])
+		{
+			dup2(tab->heredocfd[j], STDIN_FILENO);
+			close(tab->heredocfd[j]);
+		}
+		// else if (file[i][0] == '<')
+		// 	doublechevre(file, tab, i);
 		i++;
 	}
 	if (file[i - 1][0] != '<')
