@@ -10,7 +10,7 @@ int	nb_schevre(char *ch, char c)
 	nb = 0;
 	if (i != -1)
 		nb++;
-	if (ch[i] && ch[i] == c)
+	if (i >= 0 && ch[i] && ch[i] == c)
 		nb--;
 	oldi = i;
 	while (i != -1)

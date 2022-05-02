@@ -10,7 +10,7 @@ void	ft_fatherpipex(int *fd, int nb, int *old, int i)
 {
 	if (*old != 0)
 		close (*old);
-	if (i < nb - 1)
+	if (i < (nb - 1))
 		*old = dup(fd[0]);
 	close(fd[0]);
 	close(fd[1]);

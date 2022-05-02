@@ -152,15 +152,19 @@ char	*f_split(char *a)
 {
 	int		i;
 	char	*s;
+	char	quot;
 
 	i = 0;
-	while (a[i] && a[i] != ' ')
-		i++;
-	s = malloc(i + 1);
+	quot = 0;
+	s = NULL;
 	i = 0;
-	while (a[i] && a[i] != ' ')
+	while (a[i] && (quot || a[i] != ' ') && (quot || a[i] != '|'))
 	{
-		s[i] = a[i];
+		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
+			quot = a[i];
+		else if (quot && quot == a[i])
+			quot = 0;
+		s = ft_joinc(s, a[i]);
 		i++;
 	}
 	s[i] = '\0';
@@ -213,10 +217,42 @@ char	*place_split(char *a, int nb)
 		if (a[i] == '|')
 			n++;
 		if (n == nb)
-			return (&a[i + 2]);
+		{
+			i++;
+			while (a[i] && a[i] == ' ')
+				i++;
+			return (&a[i]);
+		}
 		i++;
 	}
 	return (a);
+}
+
+char	*ft_no_doublespace(char *s)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	str = NULL;
+	while (s[i])
+	{
+		if (s[i] == ' ')
+		{
+			while (s[i] && s[i] == ' ')
+				i++;
+			if (!s[i])
+				return (str);
+			str = ft_joinc(str, ' ');
+			if (!str)
+				return (0);
+		}
+		str = ft_joinc(str, s[i]);
+		if (!str)
+			return (0);
+		i++;
+	}
+	return (str);
 }
 
 char	*ft_parsechevre(char *a, t_var *p)
@@ -230,8 +266,8 @@ char	*ft_parsechevre(char *a, t_var *p)
 	i = 0;
 	while (pipe[i])
 		i++;
-	p->chevred = malloc(sizeof(char **) * (i + 1));
-	p->chevreg = malloc(sizeof(char **) * (i + 1));
+	p->chevred = malloc((i + 1) * sizeof(char **));
+	p->chevreg = malloc((i + 1) * sizeof(char **));
 	j = 0;
 	while (j < i)
 	{
@@ -239,9 +275,10 @@ char	*ft_parsechevre(char *a, t_var *p)
 		p->chevreg[j] = ft_sfilechevre(pipe[j], '<');
 		j++;
 	}
-	temp = ft_nochevre(a, '>');
-	a = ft_nochevre(temp, '<');
-	dprintf(2, "\n\nICI\n%s\n======================\n", a);
+	temp = ft_nochevre(ft_nochevre(a, '>'), '<');
+	a = ft_no_doublespace(temp);
+	free(temp);
+	dprintf(2, "\n\nICI\n(%s)\n======================\n", a);
 	p->chevred[j] = NULL;
 	p->chevreg[j] = NULL;
 	free_split(pipe);
@@ -330,12 +367,13 @@ int	*ft_heredoc(t_var *p, char ***file)
 	i = 0;
 	while (file[i])
 		i++;
-	fd = malloc(sizeof(int) * (i + 1));
+	fd = malloc((i + 1) * sizeof(int));
 	i = -1;
 	while (file[++i])
 	{
 		j = -1;
 		lastfd = 0;
+		fd[i] = 0;
 		while (file[i][++j])
 		{
 			if (file[i][j][0] == '<')
@@ -355,14 +393,15 @@ t_var	*parse(char *a, t_var *p)
 	a = ft_parsechevre(a, p);
 	if (!ft_verifchevre(p))
 		return (free_returned(p, a));
-	p->cmd = malloc(sizeof(char **) * (nb_doublt(a) + 1));
+	p->cmd = malloc((nb_doublt(a) + 1) * sizeof(char **));
 	i = 0;
 	while (i < nb_doublt(a))
 	{
-		p->cmd[i] = malloc(sizeof(char *) * (nb_param(place_split(a, i)) + 1));
+		p->cmd[i] = malloc((nb_param(place_split(a, i)) + 1) * sizeof(char *));
 		if (!p->cmd[i])
 			return (ft_free_i(p, a, i - 1, -1));
 		p->cmd[i][0] = skip_quote(f_split(place_split(a, i)), 0, *p->env);
+		printf("p->cmd[%d] = %s\n", i, p->cmd[i][0]);
 		if (!p->cmd[i][0])
 			return (ft_free_i(p, a, i - 1, 0));
 		if (nb_param(place_split(a, i)) > 1)

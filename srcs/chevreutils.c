@@ -1,5 +1,61 @@
 #include "../incl/minishell.h"
 
+int	skip_next_word(char *s, char c)
+{
+	int		i;
+	char	quot;
+
+	// dprintf(2, "s = %s\n", s);
+	i = 1;
+	quot = 0;
+	if (s[i] == c)
+		i++;
+	// dprintf(2, "i2 = %d\n", i);
+	while (s[i] && s[i] == ' ')
+		i++;
+	// dprintf(2, "i2 = %d\n", i);
+	while (s[i])
+	{
+		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+			quot = s[i];
+		else if (quot && quot == s[i])
+			quot = 0;
+		if (!quot && (s[i] == ' ' || s[i] == '|'))
+			return (i);
+		i++;
+	}
+	return (i);
+}
+
+char	*no_chevre(char *s, char c)
+{
+	int		i;
+	char	quot;
+	char	*str;
+
+	i = 0;
+	quot = 0;
+	str = NULL;
+	while (s[i])
+	{
+		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
+			quot = s[i];
+		else if (quot && quot == s[i])
+			quot = 0;
+		if (!quot && s[i] == c)
+		{
+			// dprintf(2, "i1 = %d\n", i);
+			i += skip_next_word(&s[i], c);
+			// dprintf(2, "i1 = %d\n", i);
+		}
+		str = ft_joinc(str, s[i]);
+		if (!str)
+			return (0);
+		i++;
+	}
+	return (str);
+}
+
 char	*while_ft_nochevre(char *s, char c, char *str)
 {
 	int		i;
@@ -35,36 +91,59 @@ char	*ft_nochevre(char *s, char c)
 {
 	char	*str;
 
-	str = while_ft_nochevre(s, c, NULL);
+	str = no_chevre(s, c);
+	// str = while_ft_nochevre(s, c, NULL);
 	free(s);
 	if (!str)
 		return (0);
 	return (str);
 }
 
+char	*filename(char *s)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	i = 0;
+	j = -1;
+	while (s[i])
+	{
+		if (s[i] == '/')
+			j = i;
+		i++;
+	}
+	if (j == -1)
+		return (0);
+	str = malloc(j + 1);
+	i = -1;
+	while (++i < j)
+		str[i] = s[i];
+	str[i] = '\0';
+	return (str);
+
+}
+
 void	end_chevre(char **file, int param)
 {
-	int	i;
-	int	fd;
+	int		i;
+	int		fd;
+	char	*fname;
 
 	i = 0;
 	while (file[i])
 	{
-		if (access(&file[i][2], F_OK | W_OK) == -1)
+		fd = open(&file[i][2], param, 0777);
+		if (fd == -1)
 		{
 			ft_putstr_fd("Minishell: ", 2);
-			ft_putstr_fd(&file[i][2], 2);
-			if (access(&file[i][2], F_OK) == -1)
-				ft_putstr_fd(": No such file or directory\n", 2);
-			else if (access(&file[i][2], W_OK) == -1)
-				ft_putstr_fd(": Permission denied\n", 2);
-			exit (1);
+			perror(&file[i][2]);
+			exit(1);
 		}
-		fd = open(&file[i][2], param, 0777);
-		close(fd);
 		i++;
+		if (file[i])
+			close(fd);
 	}
-	fd = open(&file[i - 1][2], param);
 	dup2(fd, 1);
 }
 

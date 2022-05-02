@@ -19,7 +19,7 @@ char	**delete_tab(char **cmd, char **env)
 		else
 			len += 1 + 0 * i++;
 	}
-	new_env = malloc(sizeof(char **) * (len + 1));
+	new_env = malloc((len + 1) * sizeof(char **));
 	i = 0;
 	len = 0;
 	while (env[i])

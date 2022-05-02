@@ -39,8 +39,9 @@ void	ft_close(t_var *p)
 	int	i;
 
 	i = 0;
-	while (p->cmd[i])
-		close(p->heredocfd[i++]);
+	while (p->cmd[++i])
+		if (p->heredocfd[i])
+			close(p->heredocfd[i++]);
 	free(p->heredocfd);
 }
 
@@ -62,10 +63,10 @@ void	ft_while(t_var *parsed)
 
 	nb = 0;
 	tmp = ft_prompt();
-	tmp = ft_strjoin2("🎃 ", tmp);
+	// tmp = ft_strjoin2("🎃 ", tmp);
 	a = readline(tmp);
 	free(tmp);
-	if (a == 0)
+	if (!a)
 	{
 		printf("\b\bexit\n");
 		exit(0);

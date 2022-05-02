@@ -10,7 +10,7 @@ char	*ft_strjoin2(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (0);
 	s = ft_strlen(s1) + ft_strlen(s2);
-	t = malloc(1 + s * sizeof(char));
+	t = malloc(s + 1);
 	if (!t)
 		return (0);
 	i = 0;
@@ -31,14 +31,6 @@ char	*ft_strjoin2(char const *s1, char const *s2)
 
 static void	ft_strc(char *c, int nb, int i)
 {
-	if (nb == 0)
-	{
-		c[0] = '\033';
-		c[1] = '[';
-		c[2] = '3';
-		c[3] = '2';
-		c[4] = 'm';
-	}
 	if (nb == 0)
 	{
 		c[0] = '\033';
@@ -131,5 +123,5 @@ char	*ft_prompt(void)
 		a = ft_skip(a);
 	if (!a)
 		return (0);
-	return (ft_join(a, " 🎃 > "));
+	return (ft_join(a, " > "));
 }
