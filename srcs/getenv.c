@@ -38,6 +38,7 @@ char	*ft_getenv(char	*var, char **env)
 		i++;
 	if (!env[i])
 		return (NULL);
+	dprintf(2, "SUS\n");
 	j = 0;
 	if (ft_strchr(env[i], '=') == -1)
 		return (NULL);

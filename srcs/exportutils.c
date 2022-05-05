@@ -11,9 +11,10 @@ char	**pre_parsexport(char *cmd)
 	quot = 0;
 	while (cmd[i])
 	{
-		while (cmd[i] && ((cmd[i] >= 'a' && cmd[i] <= 'z') || (cmd[i] >= 'A' \
-		&& cmd[i] <= 'Z') || (cmd[i] >= '0' && cmd[i] <= '9') \
-		|| cmd[i] == '_' || cmd[i] == '=' || quot != 0))
+		while (cmd[i] && ((cmd[i] >= 'a' && cmd[i] <= 'z') || (cmd[i] >= 'A' && \
+		cmd[i] <= 'Z') || (cmd[i] >= '0' && cmd[i] <= '9') || cmd[i] == '/' || \
+		cmd[i] == '_' || cmd[i] == '=' || cmd[i] == '.' || cmd[i] == ':' || \
+		quot != 0))
 		{
 			i++;
 			if (quot == 0 && (cmd[i] == '\'' || cmd[i] == '\"'))

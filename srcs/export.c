@@ -87,9 +87,10 @@ char	*fill_export(char *cmd, int nb, int i)
 	while (cmd[i])
 	{
 		j = i;
-		while ((cmd[i] >= 'a' && cmd[i] <= 'z') || (cmd[i] >= 'A'
-				&& cmd[i] <= 'Z') || (cmd[i] >= '0' && cmd[i] <= '9')
-			|| cmd[i] == '_' || cmd[i] == '=' || quot != 0)
+		while ((cmd[i] >= 'a' && cmd[i] <= 'z') || (cmd[i] >= 'A' && \
+		cmd[i] <= 'Z') || (cmd[i] >= '0' && cmd[i] <= '9') || cmd[i] == '_' \
+		|| cmd[i] == '=' || cmd[i] == '.' || cmd[i] == '/' || cmd[i] == ':' \
+		|| quot != 0)
 		{
 			i++;
 			if (quot == 0 && (cmd[i] == '\'' || cmd[i] == '\"'))

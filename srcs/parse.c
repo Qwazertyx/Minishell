@@ -81,10 +81,14 @@ char	*ft_dolar(char *a, char **env)
 	char	*gete;
 
 	i = 0;
+	if (!a[0])
+		return (ft_strdup("$"));
 	while (a[i] && stop_while(a[i],
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		i++;
 	s = malloc(i + 1);
+	if (!s)
+		return (0);
 	i = -1;
 	while (a[++i] && stop_while(a[i],
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))

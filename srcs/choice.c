@@ -128,6 +128,7 @@ void	ft_choice(t_var *tab, int i, pid_t pid)
 	else
 	{
 		dprintf(2, "=enter execve\n\n");
+		pid = fork();
 		if (pid)
 			return ;
 		s = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
