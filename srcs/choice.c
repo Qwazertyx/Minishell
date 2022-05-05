@@ -30,11 +30,14 @@ void	ft_vpipe(t_var *tab, int nb)
 	old = 0;
 	i = 0;
 	signal(SIGINT, useless_sig);
+	signal(SIGQUIT, useless_sig);
 	tab->heredocfd = ft_heredoctest(tab, tab->chevreg);
 	wait(&status);
 	if (!(tab->cmd[nb - 1][0][0] == '.' && tab->cmd[nb - 1][0][1] == '/'))
+	{
 		signal(SIGINT, func_sig);
-	// 	signal(SIGINT, useless_sig);
+		signal(SIGQUIT, func_sig);
+	}
 	if (status == 0)
 	{
 		if (nb > 1)

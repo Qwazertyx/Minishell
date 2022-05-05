@@ -81,20 +81,23 @@ char	*ft_dolar(char *a, char **env)
 	char	*gete;
 
 	i = 0;
-	if (!a[0])
-		return (ft_strdup("$"));
-	while (a[i] && stop_while(a[i],
-			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
+	if (a[i] && a[i+1] && a[i] == '?' && a[i + 1] == ' ')
+		return (ft_strdup("$?"));
+	while (a[i] && stop_while(a[i], \
+	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		i++;
 	s = malloc(i + 1);
 	if (!s)
 		return (0);
 	i = -1;
-	while (a[++i] && stop_while(a[i],
-			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
+	while (a[++i] && stop_while(a[i], \
+	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		s[i] = a[i];
 	s[i] = '\0';
-	gete = ft_strdup(ft_getenv(s, env));
+	if (i != 0)
+		gete = ft_strdup(ft_getenv(s, env));
+	else
+		gete = ft_strdup("$");
 	free(s);
 	return (gete);
 }
@@ -104,6 +107,8 @@ int	skip_dolar(char *cmd)
 	int	i;
 
 	i = 0;
+	if (cmd[i] && cmd[i + 1] && cmd[i] == '?' && cmd[i + 1] == ' ')
+		return (1);
 	while (cmd[i] && stop_while(cmd[i],
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		i++;

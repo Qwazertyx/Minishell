@@ -19,6 +19,8 @@ int	ft_startcompare(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1[i])
+		return (0);
 	while (s1[i])
 	{
 		if (!s2[i] || s1[i] != s2[i])
@@ -38,7 +40,6 @@ char	*ft_getenv(char	*var, char **env)
 		i++;
 	if (!env[i])
 		return (NULL);
-	dprintf(2, "SUS\n");
 	j = 0;
 	if (ft_strchr(env[i], '=') == -1)
 		return (NULL);

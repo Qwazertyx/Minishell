@@ -6,6 +6,8 @@ char	*ft_strdup(char *a)
 	char	*s;
 
 	i = 0;
+	if (!a)
+		return (0);
 	while (a[i])
 		i++;
 	s = malloc(i + 1);
@@ -68,7 +70,7 @@ void	ft_while(t_var *parsed)
 	free(tmp);
 	if (!a)
 	{
-		printf("\b\bexit\n");
+		ft_putstr_fd("\b\bexit\n", 2);
 		exit(0);
 	}
 	if (a[0])
@@ -100,11 +102,36 @@ void	CtrlC(int sig)
 	(void)sig;
 	prompt = ft_strjoin(rl_prompt, rl_line_buffer);
 	prompt = ft_joins(prompt, "  \b\b");
-	ft_putendl_fd(prompt, 2);
+	if (sig == SIGINT)
+	{
+		ft_putendl_fd(prompt, 2);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	else
+	{
+		rl_redisplay();
+				rl_on_new_line();
+	}
 	free(prompt);
-	rl_replace_line("", 0);
+}
+
+void	CtrlB(int sig)
+{
+	char	s;
+
+	(void) sig;
 	rl_on_new_line();
 	rl_redisplay();
+	if (rl_point == ft_strlen(rl_line_buffer))
+		write(2, "  \b\b", 4);
+	else if (rl_point == ft_strlen(rl_line_buffer) - 1)
+	{
+		s = rl_line_buffer[rl_point];
+		write (2, &s, 1);
+		write(2, " \b\b", 3);
+	}
 }
 
 void	sig_heredoc(int sig)
@@ -123,7 +150,8 @@ void	sig_heredoc(int sig)
 
 void	func_sig(int sig)
 {
-	(void)sig;
+	if (sig == SIGQUIT)
+		ft_putstr_fd("Quit: 3", 2);
 	ft_putstr_fd("\n", 2);
 }
 
@@ -159,6 +187,7 @@ int	main(int argc, char *argv[], char **envp)
 	while (1)
 	{
 		signal(SIGINT, CtrlC);
+		signal(SIGQUIT, CtrlB);
 		ft_while(&struc);
 	}
 }
