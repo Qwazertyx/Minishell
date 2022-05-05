@@ -16,6 +16,15 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <errno.h>
+# include <dirent.h>
+# include <string.h>
+
+# ifndef G_EXIT
+#  define G_EXIT
+
+extern unsigned char	g_exit;
+
+# endif
 
 typedef struct s_var
 {
@@ -40,7 +49,7 @@ int		execmaster(char **maincmd, char **env);
 char	*path(char *cmd, char **tab);
 char	*ft_strdup(char *a);
 void	ft_vpipe(t_var *tab, int nb);
-void	ft_choice(t_var *tab, int i);
+void	ft_choice(t_var *tab, int i, pid_t pid);
 int		echomaster(char *cmd);
 void	ft_exit(t_var *tab, int nb);
 void	free_tab(t_var *a);
@@ -80,5 +89,19 @@ int		ft_chevreg(char **file, t_var *tab, int j);
 char	**parse_export(char *cmd, char **env);
 char	*ft_strjoin2(char const *s1, char const *s2);
 int		doublechevre(char **file, t_var *tab, int i);
+void	ft_putendl_fd(char *s, int fd);
+int		*ft_heredoc(t_var *p, char ***file);
+int		*ft_heredoctest(t_var *p, char ***file);;
+int		whoislastdouble(char **file);
+void	CtrlC(int sig);
+void	sig_heredoc(int sig);
+void	useless_sig(int sig);
+void	func_sig(int sig);
+char	**utils_pre_parsexport(char *cmd, int nb);
+char	**add_export(char **cmd, char **env, int i);
+int		ft_strchr(char *a, char c);
+void	free_struc(t_var *p, int i);
+int		ft_strcmpi(char *a, char *b, int i);
+int		ft_strleni(char *a, int i);
 
 #endif

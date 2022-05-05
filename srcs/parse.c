@@ -115,7 +115,7 @@ char	*skip_quote(char *cmd, int n, char **env)
 	quot = 0;
 	i = 0;
 	s = NULL;
-	while (cmd[i])
+	while (cmd && cmd[i])
 	{
 		if (quot == 0 && (cmd[i] == '\'' || cmd[i] == '\"'))
 			quot = cmd[i];
@@ -165,9 +165,10 @@ char	*f_split(char *a)
 		else if (quot && quot == a[i])
 			quot = 0;
 		s = ft_joinc(s, a[i]);
+		if (!s)
+			return (0);
 		i++;
 	}
-	s[i] = '\0';
 	return (s);
 }
 
@@ -343,6 +344,7 @@ t_var	*ft_free_i(t_var *p, char *a, int i, int j)
 {
 	while (j >= 0)
 		free(p->cmd[i + 1][j--]);
+	free(p->cmd[i + 1]);
 	while (i >= 0)
 	{
 		j = 1;
@@ -350,11 +352,81 @@ t_var	*ft_free_i(t_var *p, char *a, int i, int j)
 			free(p->cmd[i][j--]);
 		free(p->cmd[i--]);
 	}
+	free(p->cmd);
 	free_cmd(p->chevred);
 	free_cmd(p->chevreg);
 	free(a);
-	dprintf(2, "malloc error : %d %d", i, j);
+	ft_putstr_fd("parse error\n", 2);
 	return (NULL);
+}
+
+int	ft_doublechevre(int *pipes[2], char ***file)
+{
+	int		i;
+	int		j;
+	char	*read;
+
+	i = -1;
+	while (file[++i])
+	{
+		j = -1;
+		while (file[i][++j])
+		{
+			if (file[i][j][0] == '<')
+			{
+				read = readline("> ");
+				while (ft_strcmp(read, &file[i][j][2]))
+				{
+					if (j == whoislastdouble(file[i]))
+						ft_putendl_fd(read, pipes[1][i]);
+					free(read);
+					read = readline("> ");
+				}
+				free(read);
+				close(pipes[1][i]);
+				close(pipes[0][i]);
+			}
+		}
+	}
+	return (0);
+}
+
+int	*ft_heredoctest(t_var *p, char ***file)
+{
+	int		i;
+	int		*pipes[2];
+	int		pip[2];
+	pid_t	pid;
+
+	i = 0;
+	while (file[i])
+		i++;
+	dprintf(2, "i ======= %d\n", i);
+	pipes[0] = malloc((i + 1) * sizeof(int));
+	pipes[1] = malloc((i + 1) * sizeof(int));
+	i = -1;
+	while (file[++i])
+	{
+		pipe(pip);
+		pipes[0][i] = pip[0];
+		pipes[1][i] = pip[1];
+	}
+	pipes[0][i] = 0;
+	pipes[1][i] = 0;
+	pid = fork();
+	if (!pid)
+	{
+		signal(SIGINT, sig_heredoc);
+		exit(ft_doublechevre(pipes, file));
+	}
+	else
+	{
+		i = -1;
+		while (file[++i])
+			close(pipes[1][i]);
+		free(pipes[1]);
+		return (pipes[0]);
+	}
 }
 
 int	*ft_heredoc(t_var *p, char ***file)
@@ -368,6 +440,8 @@ int	*ft_heredoc(t_var *p, char ***file)
 	while (file[i])
 		i++;
 	fd = malloc((i + 1) * sizeof(int));
+	if (!fd)
+		return (0);
 	i = -1;
 	while (file[++i])
 	{
@@ -391,6 +465,11 @@ t_var	*parse(char *a, t_var *p)
 	int		i;
 
 	a = ft_parsechevre(a, p);
+	if (!a)
+	{
+		ft_putstr_fd("parse error \n", 2);
+		return (0);
+	}
 	if (!ft_verifchevre(p))
 		return (free_returned(p, a));
 	p->cmd = malloc((nb_doublt(a) + 1) * sizeof(char **));
@@ -398,6 +477,7 @@ t_var	*parse(char *a, t_var *p)
 	while (i < nb_doublt(a))
 	{
 		p->cmd[i] = malloc((nb_param(place_split(a, i)) + 1) * sizeof(char *));
+		printf("cmd = %p\n", p->cmd[i]);
 		if (!p->cmd[i])
 			return (ft_free_i(p, a, i - 1, -1));
 		p->cmd[i][0] = skip_quote(f_split(place_split(a, i)), 0, *p->env);
@@ -417,7 +497,6 @@ t_var	*parse(char *a, t_var *p)
 		i++;
 	}
 	p->cmd[i] = NULL;
-	p->heredocfd = ft_heredoc(p, p->chevreg);
 	free(a);
 	return (p);
 }

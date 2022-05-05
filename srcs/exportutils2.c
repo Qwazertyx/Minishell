@@ -47,6 +47,11 @@ void	export(char *cmd, t_var *p)
 	int		i;
 
 	split = ft_splitve(cmd, ' ', "export");
+	if (!split)
+	{
+		ft_putstr_fd("malloc error\n", 2);
+		return ;
+	}
 	i = 0;
 	while (split[++i])
 	{
@@ -63,6 +68,11 @@ void	export(char *cmd, t_var *p)
 	if (cmd)
 	{
 		new_env = parse_export(cmd, *p->env);
+		if (!new_env)
+		{
+			ft_putstr_fd("malloc error\n", 2);
+			return ;
+		}
 		*p->env = new_env;
 	}
 	else

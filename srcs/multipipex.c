@@ -32,7 +32,7 @@ pid_t	multipipex(t_var *tab, int nb, int *old, int i)
 			dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		close(fd[0]);
-		ft_choice(tab, i);
+		ft_choice(tab, i, pid);
 	}
 	else
 		ft_fatherpipex(fd, nb, old, i);

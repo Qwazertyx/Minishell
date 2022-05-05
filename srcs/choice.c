@@ -29,25 +29,31 @@ void	ft_vpipe(t_var *tab, int nb)
 
 	old = 0;
 	i = 0;
-	if (nb > 1)
+	signal(SIGINT, useless_sig);
+	tab->heredocfd = ft_heredoctest(tab, tab->chevreg);
+	wait(&status);
+	if (!(tab->cmd[nb - 1][0][0] == '.' && tab->cmd[nb - 1][0][1] == '/'))
+		signal(SIGINT, func_sig);
+	// 	signal(SIGINT, useless_sig);
+	if (status == 0)
 	{
-		while (i < nb)
-			pid = multipipex(tab, nb, &old, i++);
-		waitpid(pid, &status, 0);
-		while (wait(NULL) != -1)
-			;
-	}
-	else
-	{
-		if (!ft_strcmp(tab->cmd[0][0], "exit"))
+		if (nb > 1)
 		{
-			dprintf(2, "=enter exit\n\n");
-			ft_exit(tab, 0);
+			while (i < nb)
+				pid = multipipex(tab, nb, &old, i++);
+			waitpid(pid, &status, 0);
+			while (wait(NULL) != -1)
+				;
 		}
-		pid = fork();
-		if (pid)
-			return ;
-		return (ft_choice(tab, 0));
+		else
+		{
+			if (!ft_strcmp(tab->cmd[0][0], "exit"))
+			{
+				dprintf(2, "=enter exit\n\n");
+				ft_exit(tab, 0);
+			}
+			return (ft_choice(tab, 0, 1));
+		}
 	}
 }
 
@@ -56,12 +62,14 @@ int	ft_strcmp(char *a, char *b)
 	int	i;
 
 	i = 0;
+	if (!a || !b)
+		return (0);
 	while (a[i] && b[i] && a[i] == b[i])
 		i++;
 	return (a[i] - b[i]);
 }
 
-void	ft_choice(t_var *tab, int i)
+void	ft_choice(t_var *tab, int i, pid_t pid)
 {
 	char	**s;
 	int		fd;
@@ -120,6 +128,8 @@ void	ft_choice(t_var *tab, int i)
 	else
 	{
 		dprintf(2, "=enter execve\n\n");
+		if (pid)
+			return ;
 		s = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
 		if (!s)
 		{
@@ -132,5 +142,6 @@ void	ft_choice(t_var *tab, int i)
 		dprintf(2, "\n");
 		execmaster(s, *tab->env);
 	}
-	exit(0);
+	if (!pid)
+		exit(0);
 }

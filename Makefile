@@ -33,7 +33,7 @@ NAME	= minishell
 ##**************###
 CC		= gcc
 
-CFLAGS	= -Wall -Wextra -g #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
+CFLAGS	= -Wall -Wextra #-g3 -fsanitize=address #-Werror #-fsanitize=address -g3
 #-framework CoreFoundation
 ##*******************##
 ### DIRECTORY PATHS ###
@@ -42,6 +42,8 @@ HEADER		= ./incl/minishell.h
 MLX			= ./mlx
 OBJ_PATH	= ./objs
 SRC_PATH	= ./srcs
+RL_LIB_DIR	:= -L $(shell brew --prefix readline)/lib
+RL_INC_DIR	:= -I $(shell brew --prefix readline)/include
 
 ##***********##
 ### OBJECTS ###
@@ -93,12 +95,12 @@ SOURCES	=	prompt.c		\
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(HEADER) Makefile
 			@mkdir -p objs
 			@printf "$(ERASE)$(BLUE)$(UNDERLINE)Compiling:$(END)$(CYAN)$<"
-			@${CC} ${CFLAGS} -c $< -o $@
+			@${CC} ${RL_INC_DIR} ${CFLAGS} -c $< -o $@
 
 all:	${NAME}
 
 ${NAME}:	${OBJS}
-			@${CC} ${CFLAGS} -lreadline ${OBJS} -o ${NAME}
+			@${CC} ${RL_LIB_DIR} ${CFLAGS} -lreadline ${OBJS} -o ${NAME}
 			@printf "\n$(GREEN)Successful compilation$(END)\n"
 
 mini:	all

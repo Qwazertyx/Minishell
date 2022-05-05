@@ -78,7 +78,10 @@ void	ft_while(t_var *parsed)
 		{
 			parsed = parse(a, parsed);
 			if (!parsed)
+			{
+				// ft_putstr_fd("parse error\n", 2);
 				return ;
+			}
 			while (parsed->cmd[nb])
 				nb++;
 			ft_vpipe(parsed, nb);
@@ -90,11 +93,43 @@ void	ft_while(t_var *parsed)
 		free(a);
 }
 
-void CtrlC(int sig)
+void	CtrlC(int sig)
+{
+	char	*prompt;
+
+	(void)sig;
+	prompt = ft_strjoin(rl_prompt, rl_line_buffer);
+	prompt = ft_joins(prompt, "  \b\b");
+	ft_putendl_fd(prompt, 2);
+	free(prompt);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	sig_heredoc(int sig)
+{
+	char	*prompt;
+
+	if (sig == SIGINT)
+	{
+		prompt = ft_strjoin(rl_prompt, rl_line_buffer);
+		prompt = ft_joins(prompt, "  \b\b");
+		ft_putendl_fd(prompt, 2);
+		free(prompt);
+		exit(1);
+	}
+}
+
+void	func_sig(int sig)
 {
 	(void)sig;
-	// printf("\n\033[32m~/Desktop/cursus/minishelldossier/Minishell > \033[0m");
-	// fprintf(stdin, "%d", -1);
+	ft_putstr_fd("\n", 2);
+}
+
+void	useless_sig(int sig)
+{
+	(void)sig;
 }
 
 int	main(int argc, char *argv[], char **envp)
@@ -121,9 +156,9 @@ int	main(int argc, char *argv[], char **envp)
 	struc.env = &env;
 	(void) argc;
 	(void) argv;
-	//signal(SIGINT, CtrlC);
 	while (1)
 	{
+		signal(SIGINT, CtrlC);
 		ft_while(&struc);
 	}
 }

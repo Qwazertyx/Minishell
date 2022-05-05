@@ -43,15 +43,12 @@ char	*no_chevre(char *s, char c)
 		else if (quot && quot == s[i])
 			quot = 0;
 		if (!quot && s[i] == c)
-		{
-			// dprintf(2, "i1 = %d\n", i);
 			i += skip_next_word(&s[i], c);
-			// dprintf(2, "i1 = %d\n", i);
-		}
 		str = ft_joinc(str, s[i]);
 		if (!str)
 			return (0);
-		i++;
+		if (s[i])
+			i++;
 	}
 	return (str);
 }

@@ -50,22 +50,26 @@ int	echospecial(char *cmd, char **envp, int i)
 int	nparam(char *cmd)
 {
 	int	i;
+	int	ret;
 
 	i = 0;
-	while (cmd[i] == ' ')
-		i++;
-	if (cmd[i] && cmd[i] == '-')
+	ret = 0;
+	while (cmd[i] && (cmd[i] == ' ' || cmd[i] == '-' || cmd[i] == 'n'))
 	{
-		i++;
-		if (cmd[i] && cmd[i] == 'n')
-		{
-			while (cmd[i] && cmd[i] == 'n')
-				i++;
-			if (cmd[i] && cmd[i] == ' ')
-				return (i);
-		}
+		while (cmd[i] == ' ')
+			i++;
+		if (cmd[i] == '-')
+			i++;
+		if (cmd[i] != 'n')
+			return (ret);
+		while (cmd[i] == 'n')
+			i++;
+		if (cmd[i] != ' ')
+			return (ret);
+		if (i >= 1 && cmd[i - 1] == 'n')
+			ret = i;
 	}
-	return (0);
+	return (ret);
 }
 
 int	echoservant(char *cmd, int i)

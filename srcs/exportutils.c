@@ -60,6 +60,8 @@ char	**create_tab_parse(char **tab, char *to_add)
 	while (tab && tab[i])
 		i++;
 	new_tab = malloc(sizeof(char *) * (i + 2));
+	if (!new_tab)
+		return (0);
 	i = 0;
 	while (tab && tab[i])
 	{
@@ -67,14 +69,17 @@ char	**create_tab_parse(char **tab, char *to_add)
 		i++;
 	}
 	new_tab[i] = ft_strdup(to_add);
+	if (!new_tab[i])
+		return (0);
 	new_tab[i + 1] = 0;
-	free_split(tab);
+	free(tab);
 	return (new_tab);
 }
 
 void	export_exist(char *mod, char **env)
 {
-	int	i;
+	int		i;
+	char	*save;
 
 	if (!contains(mod, '='))
 		return ;
@@ -83,11 +88,17 @@ void	export_exist(char *mod, char **env)
 	{
 		if (ft_startcomparegal(mod, env[i]))
 		{
-			free(env[i]);
+			save = env[i];
 			env[i] = ft_strdup(mod);
+			if (!env[i])
+			{
+				env[i] = save;
+				return ;
+			}
 		}
 		i++;
 	}
+	free(save);
 }
 
 char	**parse_export(char *cmd, char **env)
@@ -98,18 +109,25 @@ char	**parse_export(char *cmd, char **env)
 	int		i;
 
 	parsed = pre_parsexport(cmd);
+	if (!parsed)
+		return (0);
 	i = 0;
 	final = NULL;
 	while (parsed[i])
 	{
 		if (!ft_exist(parsed[i], env))
+		{
 			final = create_tab_parse(final, parsed[i++]);
+			if (!final)
+			{
+				free_split(parsed);
+				return (0);
+			}
+		}
 		else
 			export_exist(parsed[i++], env);
 	}
 	free_split(parsed);
-	if (!final)
-		return (env);
 	returned = add_export(final, env, 0);
 	return (returned);
 }
