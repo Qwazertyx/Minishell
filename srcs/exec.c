@@ -7,7 +7,10 @@ int	execmaster(char **maincmd, char **env)
 	if (env[0] && path(maincmd[0], env))
 	{
 		if (execve(path(maincmd[0], env), maincmd, env) == -1)
+		{
 			perror("error execve:");
+			exit(126);
+		}
 	}
 	else
 		errorcmd(maincmd[0]);

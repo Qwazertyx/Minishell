@@ -1,6 +1,6 @@
 #include "../incl/minishell.h"
 
-void	mycd(char **path)
+void	mycd(char **path, char **env)
 {
 	int	i;
 
@@ -12,11 +12,17 @@ void	mycd(char **path)
 		if (path[1][i] && path[1][i] == ' ')
 			path[1][i] = 0;
 		if (chdir(path[1]) != 0)
-			perror("chdir() failed");
+		{
+			perror("Minishell: cd: ");
+			g_exit = 1;
+		}
 	}
 	else
 	{
-		if (chdir(getenv("HOME")) != 0)
-			perror("no HOME detected");
+		if (chdir(ft_getenv("HOME", env)) != 0)
+		{
+			ft_putstr_fd("Minishell: cd: HOME not set\n", 2);
+			g_exit = 1;
+		}
 	}
 }

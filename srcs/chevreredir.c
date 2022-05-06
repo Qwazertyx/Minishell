@@ -68,7 +68,7 @@ int	ft_chevreg(char **file, t_var *tab, int j)
 	int		i;
 	int		fd;
 
-	dprintf(2, "last: %d == %s\n", whoislastdouble(file), file[whoislastdouble(file)]);
+	dprintf(450, "last: %d == %s\n", whoislastdouble(file), file[whoislastdouble(file)]);
 	i = 0;
 	while (file[i])
 	{

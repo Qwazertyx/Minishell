@@ -22,7 +22,7 @@
 # ifndef G_EXIT
 #  define G_EXIT
 
-extern unsigned char	g_exit;
+int	g_exit;
 
 # endif
 
@@ -48,8 +48,8 @@ t_var	*parse(char *a, t_var *p);
 int		execmaster(char **maincmd, char **env);
 char	*path(char *cmd, char **tab);
 char	*ft_strdup(char *a);
-void	ft_vpipe(t_var *tab, int nb);
-void	ft_choice(t_var *tab, int i, pid_t pid);
+pid_t	ft_vpipe(t_var *tab, int nb);
+pid_t	ft_choice(t_var *tab, int i, pid_t pid);
 int		echomaster(char *cmd);
 void	ft_exit(t_var *tab, int nb);
 void	free_tab(t_var *a);
@@ -59,7 +59,7 @@ void	ft_pwd(void);
 void	ft_env(char **env);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_splitve(char *arg, char c, char *cmd);
-void	mycd(char **cmd);
+void	mycd(char **cmd, char **env);
 int		ft_putchar(int c);
 int		is_input(char *s);
 int		ft_strcmp(char *a, char *b);

@@ -8,9 +8,10 @@ void	terminate(void)
 
 void	errorcmd(char *cmd)
 {
-	printf("Minishell: %s: command not found\n", cmd);
-	// write(2, "Error: command not found\n", 25);
-	exit(EXIT_FAILURE);
+	ft_putstr_fd("Minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	exit(127);
 }
 
 void	free_split(char **args)

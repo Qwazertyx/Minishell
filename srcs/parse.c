@@ -74,6 +74,50 @@ int	stop_while(char c, char *legal)
 	return (0);
 }
 
+char	*remp(char *tab, int nb, int l, int s)
+{
+	long int	n;
+
+	n = nb;
+	if (n < 0)
+		n = n * -1;
+	while (l-- > s)
+	{
+		tab[l] = (n % 10) + '0';
+		n = n / 10;
+	}
+	if (l == 0)
+		tab[0] = '-';
+	dprintf(450,"tab = %s\n", tab);
+	return (tab);
+}
+
+char	*ft_itoa(int n)
+{
+	int				l;
+	int				s;
+	long int		nb;
+	char			*a;
+
+	l = 0;
+	s = 0;
+	nb = n;
+	if (n < 0)
+		nb = nb * -1 + s++;
+	while (nb > 0)
+	{
+		nb = nb / 10;
+		l++;
+	}
+	if (n == 0)
+		l = 1;
+	a = malloc(l + s + 1);
+	if (!a)
+		return (0);
+	a[l + s] = '\0';
+	return (remp(a, n, l + s, s));
+}
+
 char	*ft_dolar(char *a, char **env)
 {
 	int		i;
@@ -81,8 +125,9 @@ char	*ft_dolar(char *a, char **env)
 	char	*gete;
 
 	i = 0;
-	if (a[i] && a[i+1] && a[i] == '?' && a[i + 1] == ' ')
-		return (ft_strdup("$?"));
+	if (a[i] && a[i] == '?')
+		return (ft_itoa((int)g_exit));
+	dprintf(450, "SUS\n");
 	while (a[i] && stop_while(a[i], \
 	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		i++;
@@ -107,7 +152,7 @@ int	skip_dolar(char *cmd)
 	int	i;
 
 	i = 0;
-	if (cmd[i] && cmd[i + 1] && cmd[i] == '?' && cmd[i + 1] == ' ')
+	if (cmd[i] && cmd[i] == '?')
 		return (1);
 	while (cmd[i] && stop_while(cmd[i],
 			"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
@@ -288,7 +333,7 @@ char	*ft_parsechevre(char *a, t_var *p)
 	temp = ft_nochevre(ft_nochevre(a, '>'), '<');
 	a = ft_no_doublespace(temp);
 	free(temp);
-	dprintf(2, "\n\nICI\n(%s)\n======================\n", a);
+	dprintf(450, "\n\nICI\n(%s)\n======================\n", a);
 	p->chevred[j] = NULL;
 	p->chevreg[j] = NULL;
 	free_split(pipe);
@@ -410,7 +455,7 @@ int	*ft_heredoctest(t_var *p, char ***file)
 	i = 0;
 	while (file[i])
 		i++;
-	dprintf(2, "i ======= %d\n", i);
+	dprintf(450, "i ======= %d\n", i);
 	pipes[0] = malloc((i + 1) * sizeof(int));
 	pipes[1] = malloc((i + 1) * sizeof(int));
 	i = -1;
@@ -486,17 +531,17 @@ t_var	*parse(char *a, t_var *p)
 	while (i < nb_doublt(a))
 	{
 		p->cmd[i] = malloc((nb_param(place_split(a, i)) + 1) * sizeof(char *));
-		printf("cmd = %p\n", p->cmd[i]);
+		dprintf(450, "cmd = %p\n", p->cmd[i]);
 		if (!p->cmd[i])
 			return (ft_free_i(p, a, i - 1, -1));
 		p->cmd[i][0] = skip_quote(f_split(place_split(a, i)), 0, *p->env);
-		printf("p->cmd[%d] = %s\n", i, p->cmd[i][0]);
+		dprintf(450, "p->cmd[%d] = %s\n", i, p->cmd[i][0]);
 		if (!p->cmd[i][0])
 			return (ft_free_i(p, a, i - 1, 0));
 		if (nb_param(place_split(a, i)) > 1)
 		{
 			p->cmd[i][1] = skip_quote(l_split(place_split(a, i)), 1, *p->env);
-			dprintf(2, "%p	%s\n", p->cmd[i][1], p->cmd[i][1]);
+			dprintf(450, "%p	%s\n", p->cmd[i][1], p->cmd[i][1]);
 			if (!p->cmd[i][1])
 				return (ft_free_i(p, a, i - 1, -1));
 			p->cmd[i][2] = NULL;

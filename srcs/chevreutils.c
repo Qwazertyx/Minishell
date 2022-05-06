@@ -5,15 +5,15 @@ int	skip_next_word(char *s, char c)
 	int		i;
 	char	quot;
 
-	// dprintf(2, "s = %s\n", s);
+	// dprintf(450, "s = %s\n", s);
 	i = 1;
 	quot = 0;
 	if (s[i] == c)
 		i++;
-	// dprintf(2, "i2 = %d\n", i);
+	// dprintf(450, "i2 = %d\n", i);
 	while (s[i] && s[i] == ' ')
 		i++;
-	// dprintf(2, "i2 = %d\n", i);
+	// dprintf(450, "i2 = %d\n", i);
 	while (s[i])
 	{
 		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))

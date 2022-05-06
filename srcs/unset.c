@@ -51,6 +51,7 @@ char	**unset(char **cmd, char **env)
 			ft_putstr_fd("Minishell: unset: `", 2);
 			ft_putstr_fd(split[i], 2);
 			ft_putstr_fd("\': not a valid indentifier\n", 2);
+			g_exit = 1;
 			free_split(split);
 			return (env);
 		}

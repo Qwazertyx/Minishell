@@ -62,6 +62,7 @@ void	ft_while(t_var *parsed)
 	char	*a;
 	char	*tmp;
 	int		nb;
+	pid_t	pid;
 
 	nb = 0;
 	tmp = ft_prompt();
@@ -70,7 +71,7 @@ void	ft_while(t_var *parsed)
 	free(tmp);
 	if (!a)
 	{
-		ft_putstr_fd("\b\bexit\n", 2);
+		ft_putstr_fd("  \b\bexit\n", 2);
 		exit(0);
 	}
 	if (a[0])
@@ -86,8 +87,16 @@ void	ft_while(t_var *parsed)
 			}
 			while (parsed->cmd[nb])
 				nb++;
-			ft_vpipe(parsed, nb);
-			wait (NULL);
+			pid = ft_vpipe(parsed, nb);
+			if (pid)
+			{
+				waitpid(pid, &nb, 0);
+				if (g_exit != 130 && g_exit != 131)
+					g_exit = WEXITSTATUS(nb);
+			}
+			dprintf(2, "%d\n", g_exit);
+			while (wait(NULL) != -1)
+				;
 			free_struc(parsed, 0);
 		}
 	}
@@ -111,10 +120,11 @@ void	CtrlC(int sig)
 	}
 	else
 	{
+		rl_on_new_line();
 		rl_redisplay();
-				rl_on_new_line();
 	}
 	free(prompt);
+	g_exit = 1;
 }
 
 void	CtrlB(int sig)
@@ -132,6 +142,7 @@ void	CtrlB(int sig)
 		write (2, &s, 1);
 		write(2, " \b\b", 3);
 	}
+
 }
 
 void	sig_heredoc(int sig)
@@ -153,16 +164,21 @@ void	func_sig(int sig)
 	if (sig == SIGQUIT)
 		ft_putstr_fd("Quit: 3", 2);
 	ft_putstr_fd("\n", 2);
+	g_exit = 131;
+	if (sig == SIGINT)
+		g_exit = 130;
 }
 
 void	useless_sig(int sig)
 {
 	(void)sig;
+	g_exit = 1;
 }
 
 int	main(int argc, char *argv[], char **envp)
 {
 	int		i;
+	int		status;
 	char	**env;
 	t_var	struc;
 
