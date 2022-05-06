@@ -54,11 +54,13 @@ int	nparam(char *cmd)
 
 	i = 0;
 	ret = 0;
-	while (cmd[i] && (cmd[i] == ' ' || cmd[i] == '-' || cmd[i] == 'n'))
+	while (cmd[i] && (cmd[i] == ' ' || cmd[i] == '-' ))
 	{
 		while (cmd[i] == ' ')
 			i++;
-		if (cmd[i] == '-')
+		if (cmd[i] != '-')
+			return (i);
+		else
 			i++;
 		if (cmd[i] != 'n')
 			return (ret);

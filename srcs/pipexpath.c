@@ -31,8 +31,7 @@ char	*path(char *cmd, char **env)
 	while (paths[++i])
 	{
 		slash = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(slash, cmd);
-		free(slash);
+		path = ft_joins(slash, cmd);
 		if (!access(path, F_OK))
 		{
 			free_split(paths);

@@ -56,7 +56,6 @@ OBJS = $(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
 ##****************##
 SOURCES	=	prompt.c		\
 			parse.c			\
-			pipex.c			\
 			pipexerror.c	\
 			pipexpath.c		\
 			pipexutils.c	\
@@ -76,16 +75,16 @@ SOURCES	=	prompt.c		\
 			chevre.c		\
 			chevreredir.c	\
 			chevreutils.c	\
+			chevreutils2.c	\
 			getenv.c		\
 			export.c		\
 			exportutils.c	\
 			exportutils2.c	\
 			unset.c			\
-			main.c			\
 			multipipex.c	\
-
-#			gnl.c			
-#			gnl2.c			
+			sigholders.c	\
+			ft_free.c		\
+			main.c			\
 
 
 ##*********##

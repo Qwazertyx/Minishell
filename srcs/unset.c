@@ -1,11 +1,10 @@
 #include "../incl/minishell.h"
 
-char	**delete_tab(char **cmd, char **env)
+int	len_delete_tab(char **cmd, char **env)
 {
-	int		i;
-	int		j;
-	int		len;
-	char	**new_env;
+	int	i;
+	int	j;
+	int	len;
 
 	i = 0;
 	len = 0;
@@ -19,6 +18,16 @@ char	**delete_tab(char **cmd, char **env)
 		else
 			len += 1 + 0 * i++;
 	}
+}
+
+char	**delete_tab(char **cmd, char **env)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	**new_env;
+
+	len = len_delete_tab(cmd, env);
 	new_env = malloc((len + 1) * sizeof(char **));
 	i = 0;
 	len = 0;

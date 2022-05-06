@@ -102,18 +102,14 @@ void	export_exist(char *mod, char **env)
 	free(save);
 }
 
-char	**parse_export(char *cmd, char **env)
+char	**parse_export(char *cmd, char **env, int i, char **final)
 {
 	char	**parsed;
-	char	**final;
 	char	**returned;
-	int		i;
 
 	parsed = pre_parsexport(cmd);
 	if (!parsed)
 		return (0);
-	i = 0;
-	final = NULL;
 	while (parsed[i])
 	{
 		if (!ft_exist(parsed[i], env))

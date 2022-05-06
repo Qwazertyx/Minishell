@@ -1,38 +1,15 @@
 #include "../incl/minishell.h"
 
-char	*only_noquote(char *a)
+char	**env_cpy(char **env, char **cmd)
 {
 	int		i;
-	char	*s;
-	char	quot;
-
-	i = 0;
-	quot = 0;
-	s = NULL;
-	while (a && a[i])
-	{
-		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
-			quot = a[i++];
-		else if (quot != 0 && quot == a[i])
-			quot = 0 * i++;
-		if (a[i])
-		{
-			s = ft_joinc(s, a[i]);
-			if (!s)
-				return (0);
-		}
-		if (a[i])
-			i++;
-	}
-	free(a);
-	return (s);
-}
-
-char	**env_cpy(char **env, int nb)
-{
-	int		i;
+	int		nb;
 	char	**new_env;
 
+	nb = 0;
+	while (cmd && cmd[i])
+		if (!ft_exist(cmd[i++], env))
+			nb++;
 	i = 0;
 	while (env[i])
 		i++;
@@ -51,14 +28,10 @@ char	**add_export(char **cmd, char **env, int i)
 	char	**new_env;
 	int		nb;
 
-	nb = 0;
-	while (cmd && cmd[i])
-		if (!ft_exist(cmd[i++], env))
-			nb++;
 	i = 0;
 	while (env[i])
 		i++;
-	new_env = env_cpy(env, nb);
+	new_env = env_cpy(env, cmd);
 	if (!new_env)
 		return (0);
 	nb = 0;

@@ -1,60 +1,30 @@
 #include "../incl/minishell.h"
 
-char	*ft_strdup(char *a)
+void	ft_useread(t_var *parsed, char *a)
 {
-	int		i;
-	char	*s;
+	pid_t	pid;
+	int		nb;
 
-	i = 0;
-	if (!a)
-		return (0);
-	while (a[i])
-		i++;
-	s = malloc(i + 1);
-	i = -1;
-	while (a[++i])
-		s[i] = a[i];
-	s[i] = '\0';
-	return (s);
-}
-
-void	free_cmd(char ***cmd)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (cmd && cmd[i])
+	nb = 0;
+	if (is_input(a))
 	{
-		j = 0;
-		while (cmd[i][j])
+		parsed = parse(a, parsed);
+		if (!parsed)
+			return ;
+		while (parsed->cmd[nb])
+			nb++;
+		pid = ft_vpipe(parsed, nb);
+		if (pid)
 		{
-			free(cmd[i][j++]);
+			waitpid(pid, &nb, 0);
+			if (g_exit != 130 && g_exit != 131)
+				g_exit = WEXITSTATUS(nb);
 		}
-		free(cmd[i++]);
+		dprintf(2, "%d\n", g_exit);
+		while (wait(NULL) != -1)
+			;
+		free_struc(parsed, 0);
 	}
-	free(cmd);
-}
-
-void	ft_close(t_var *p)
-{
-	int	i;
-
-	i = 0;
-	while (p->cmd[++i])
-		if (p->heredocfd[i])
-			close(p->heredocfd[i++]);
-	free(p->heredocfd);
-}
-
-void	free_struc(t_var *p, int i)
-{
-	ft_close(p);
-	free_cmd(p->cmd);
-	free_cmd(p->chevred);
-	free_cmd(p->chevreg);
-	if (i == 1)
-		free_cmd(p->env);
 }
 
 void	ft_while(t_var *parsed)
@@ -66,7 +36,6 @@ void	ft_while(t_var *parsed)
 
 	nb = 0;
 	tmp = ft_prompt();
-	// tmp = ft_strjoin2("🎃 ", tmp);
 	a = readline(tmp);
 	free(tmp);
 	if (!a)
@@ -77,109 +46,16 @@ void	ft_while(t_var *parsed)
 	if (a[0])
 	{
 		add_history(a);
-		if (is_input(a))
-		{
-			parsed = parse(a, parsed);
-			if (!parsed)
-			{
-				// ft_putstr_fd("parse error\n", 2);
-				return ;
-			}
-			while (parsed->cmd[nb])
-				nb++;
-			pid = ft_vpipe(parsed, nb);
-			if (pid)
-			{
-				waitpid(pid, &nb, 0);
-				if (g_exit != 130 && g_exit != 131)
-					g_exit = WEXITSTATUS(nb);
-			}
-			dprintf(2, "%d\n", g_exit);
-			while (wait(NULL) != -1)
-				;
-			free_struc(parsed, 0);
-		}
+		ft_useread(parsed, a);
 	}
 	else
 		free(a);
 }
 
-void	CtrlC(int sig)
+char	**prep_env(char **envp)
 {
-	char	*prompt;
-
-	(void)sig;
-	prompt = ft_strjoin(rl_prompt, rl_line_buffer);
-	prompt = ft_joins(prompt, "  \b\b");
-	if (sig == SIGINT)
-	{
-		ft_putendl_fd(prompt, 2);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (sig == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	free(prompt);
-	g_exit = 1;
-}
-
-void	CtrlB(int sig)
-{
-	char	s;
-
-	(void) sig;
-	rl_on_new_line();
-	rl_redisplay();
-	if (rl_point == ft_strlen(rl_line_buffer))
-		write(2, "  \b\b", 4);
-	else if (rl_point == ft_strlen(rl_line_buffer) - 1)
-	{
-		s = rl_line_buffer[rl_point];
-		write (2, &s, 1);
-		write(2, " \b\b", 3);
-	}
-
-}
-
-void	sig_heredoc(int sig)
-{
-	char	*prompt;
-
-	if (sig == SIGINT)
-	{
-		prompt = ft_strjoin(rl_prompt, rl_line_buffer);
-		prompt = ft_joins(prompt, "  \b\b");
-		ft_putendl_fd(prompt, 2);
-		free(prompt);
-		exit(1);
-	}
-}
-
-void	func_sig(int sig)
-{
-	if (sig == SIGQUIT)
-		ft_putstr_fd("Quit: 3", 2);
-	ft_putstr_fd("\n", 2);
-	g_exit = 131;
-	if (sig == SIGINT)
-		g_exit = 130;
-}
-
-void	useless_sig(int sig)
-{
-	(void)sig;
-	g_exit = 1;
-}
-
-int	main(int argc, char *argv[], char **envp)
-{
-	int		i;
 	char	**env;
-	t_var	struc;
+	int		i;
 
 	i = 0;
 	while (envp[i])
@@ -196,13 +72,23 @@ int	main(int argc, char *argv[], char **envp)
 		i++;
 	}
 	env[i] = 0;
+	return (env);
+}
+
+int	main(int argc, char *argv[], char **envp)
+{
+	int		i;
+	char	**env;
+	t_var	struc;
+
+	env = prep_env(envp);
 	struc.env = &env;
 	(void) argc;
 	(void) argv;
 	while (1)
 	{
-		signal(SIGINT, CtrlC);
-		signal(SIGQUIT, CtrlB);
+		signal(SIGINT, ctrl_c);
+		signal(SIGQUIT, ctrl_bs);
 		ft_while(&struc);
 	}
 }

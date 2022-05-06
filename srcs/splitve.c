@@ -86,7 +86,6 @@ char	**ft_splitve(char *arg, char c, char *cmd)
 	char	**tab;
 
 	tab = malloc((ft_nb_w(arg, c) + 2) * sizeof(char *));
-	dprintf(450, "nb_w = %d\n", ft_nb_w(arg, c) + 1);
 	if (!tab)
 		return (0);
 	tab[0] = ft_strdup(cmd);

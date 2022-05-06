@@ -40,17 +40,16 @@ int	only_onechar(char *a, char c)
 	return (1);
 }
 
-void	export(char *cmd, t_var *p)
+int	secu_export(char *cmd, t_var *p)
 {
-	char	**new_env;
-	char	**split;
 	int		i;
+	char	**split;
 
 	split = ft_splitve(cmd, ' ', "export");
 	if (!split)
 	{
 		ft_putstr_fd("malloc error\n", 2);
-		return ;
+		return (0);
 	}
 	i = 0;
 	while (split[++i])
@@ -62,13 +61,24 @@ void	export(char *cmd, t_var *p)
 			ft_putstr_fd("\': not a valid indentifier\n", 2);
 			g_exit = 1;
 			free_split(split);
-			return ;
+			return (0);
 		}
 	}
 	free_split(split);
+	return (1);
+}
+
+void	export(char *cmd, t_var *p)
+{
+	char	**new_env;
+	char	**split;
+	int		i;
+
+	if (!secu_export(cmd, p))
+		return ;
 	if (cmd)
 	{
-		new_env = parse_export(cmd, *p->env);
+		new_env = parse_export(cmd, *p->env, 0, NULL);
 		if (!new_env)
 		{
 			ft_putstr_fd("malloc error\n", 2);
@@ -80,14 +90,30 @@ void	export(char *cmd, t_var *p)
 		print_export(*p->env);
 }
 
-int	ft_strchr(char *a, char c)
+char	*only_noquote(char *a)
 {
-	int	i;
+	int		i;
+	char	*s;
+	char	quot;
 
 	i = 0;
-	while (a[i] && a[i] != c)
-		i++;
-	if (a[i] && a[i] == c)
-		return (i);
-	return (-1);
+	quot = 0;
+	s = NULL;
+	while (a && a[i])
+	{
+		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
+			quot = a[i++];
+		else if (quot != 0 && quot == a[i])
+			quot = 0 * i++;
+		if (a[i])
+		{
+			s = ft_joinc(s, a[i]);
+			if (!s)
+				return (0);
+		}
+		if (a[i])
+			i++;
+	}
+	free(a);
+	return (s);
 }
