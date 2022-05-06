@@ -1,74 +1,73 @@
 #include "../incl/minishell.h"
 
-int	ft_conststrlen(char const *s)
+static int	ft_nb_w(const char *s, char c)
 {
 	int	i;
+	int	nb;
 
 	i = 0;
+	nb = 0;
 	while (s[i])
-		i++;
-	return (i);
+	{
+		while (s[i] == c && s[i])
+			i++;
+		if (s[i] != '\0')
+			nb++;
+		while (s[i] != c && s[i])
+			i++;
+	}
+	return (nb);
 }
 
-int	nbwords(const char *str, char c)
+static char	*ft__strncpy(char *dest, const char *str, int n)
 {
 	int	i;
-	int	isword;
 
-	i = 0;
-	isword = 0;
-	while (*str)
-	{
-		if (*str != c && isword == 0)
-		{
-			isword = 1;
-			i++;
-		}
-		else if (*str == c)
-			isword = 0;
-		str++;
-	}
-	return (i);
+	i = -1;
+	while (str[++i] && i < n)
+		dest[i] = str[i];
+	dest[i] = '\0';
+	return (dest);
 }
 
-char	*getword(char const *s, int start, int stop)
+static char	*mallocdef(char **tab, int j, int len)
 {
-	char	*split;
-	int		i;
-
-	i = 0;
-	split = malloc((stop - start + 1) * sizeof(char));
-	while (start < stop)
-		split[i++] = s[start++];
-	split[i] = 0;
-	return (split);
+	tab[j] = malloc(len);
+	if (!tab[j])
+	{
+		while (-j > 0)
+			free(tab[j]);
+		free(tab);
+		return (0);
+	}
+	return (tab[j]);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	int		i;
 	int		j;
-	int		start;
-	char	**split;
+	int		l;
+	char	**tab;
 
-	if (!s)
+	tab = malloc(sizeof(char *) * (ft_nb_w(s, c) + 1));
+	if (!tab)
 		return (0);
-	split = malloc((nbwords(s, c) + 1) * sizeof(char *));
-	if (!split)
-		return (0);
-	i = -1;
+	i = 0;
 	j = 0;
-	start = -1;
-	while (++i <= ft_conststrlen(s))
+	while (j < ft_nb_w(s, c))
 	{
-		if (s[i] != c && start < 0)
-			start = i;
-		else if ((s[i] == c || i == ft_conststrlen(s)) && start >= 0)
-		{
-			split[j++] = getword(s, start, i);
-			start = -1;
-		}
+		while (s[i] == c && s[i])
+			i++;
+		l = i;
+		while (s[i] != c && s[i])
+			i++;
+		tab[j] = mallocdef(tab, j, i - l + 1);
+		if (!tab[j])
+			return (0);
+		tab[j] = ft__strncpy(tab[j], &s[l], i - l);
+		j++;
 	}
-	split[j] = 0;
-	return (split);
+	tab[j] = 0;
+	return (tab);
 }

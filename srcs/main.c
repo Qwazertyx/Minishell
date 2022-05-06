@@ -118,7 +118,7 @@ void	CtrlC(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else
+	else if (sig == SIGQUIT)
 	{
 		rl_on_new_line();
 		rl_redisplay();
@@ -178,7 +178,6 @@ void	useless_sig(int sig)
 int	main(int argc, char *argv[], char **envp)
 {
 	int		i;
-	int		status;
 	char	**env;
 	t_var	struc;
 

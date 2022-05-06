@@ -6,8 +6,10 @@ char	**get_paths(char **envp)
 	int		i;
 
 	i = 0;
-	while (!ft_strnstr(envp[i], "PATH", 4))
+	while (envp[i] && !ft_strnstr(envp[i], "PATH", 4))
 		i++;
+	if (!envp[i])
+		return (0);
 	paths = ft_split(envp[i] + 5, ':');
 	return (paths);
 }
@@ -23,6 +25,8 @@ char	*path(char *cmd, char **env)
 	if (ft_strnstr(cmd, "/", ft_strlen(cmd)))
 		return (cmd);
 	paths = get_paths(env);
+	if (!paths)
+		return (0);
 	i = -1;
 	while (paths[++i])
 	{
