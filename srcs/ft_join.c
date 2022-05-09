@@ -106,7 +106,6 @@ char	*fill_ft_noquote(char *a, int len)
 
 char	*ft_noquote(char *a)
 {
-	char	*s;
 	char	quot;
 	int		i;
 	int		len;

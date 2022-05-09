@@ -6,5 +6,6 @@ void	ft_pwd(void)
 
 	a = NULL;
 	a = getcwd(a, 1);
-	printf("%s\n", a);
+	ft_putendl_fd(a, 1);
+	free(a);
 }

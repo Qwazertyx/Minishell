@@ -18,6 +18,7 @@ int	len_delete_tab(char **cmd, char **env)
 		else
 			len += 1 + 0 * i++;
 	}
+	return (len);
 }
 
 char	**delete_tab(char **cmd, char **env)

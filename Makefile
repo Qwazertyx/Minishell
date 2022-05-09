@@ -33,7 +33,7 @@ NAME	= minishell
 ##**************###
 CC		= gcc
 
-CFLAGS	= -Wall -Wextra -g3 -fsanitize=address #-Werror #-fsanitize=address -g3
+CFLAGS	= -Wall -Wextra -Werror #-g3 -fsanitize=address #-fsanitize=address -g3
 #-framework CoreFoundation
 ##*******************##
 ### DIRECTORY PATHS ###
@@ -54,37 +54,46 @@ OBJS = $(addprefix $(OBJ_PATH)/,$(SOURCES:.c=.o))
 ##****************##
 ### SOURCE FILES ###
 ##****************##
-SOURCES	=	prompt.c		\
-			parse.c			\
-			pipexerror.c	\
-			pipexpath.c		\
-			pipexutils.c	\
-			pipexutils2.c	\
-			exec.c			\
-			choice.c		\
-			echo.c			\
-			ft_atoi.c		\
-			exit.c			\
-			exitutils.c		\
-			utils.c			\
-			pwd.c			\
-			env.c			\
-			splitve.c		\
-			ft_join.c		\
-			cd.c			\
+SOURCES	=	cd.c			\
 			chevre.c		\
 			chevreredir.c	\
 			chevreutils.c	\
 			chevreutils2.c	\
-			getenv.c		\
+			choice.c		\
+			echo.c			\
+			env_null.c		\
+			env.c			\
+			exec.c			\
+			exit.c			\
+			exitutils.c		\
+			expand_dolar.c	\
 			export.c		\
+			exportexit.c	\
 			exportutils.c	\
 			exportutils2.c	\
-			unset.c			\
-			multipipex.c	\
-			sigholders.c	\
+			ft_atoi.c		\
 			ft_free.c		\
+			ft_join.c		\
+			getenv.c		\
+			heredoc.c		\
 			main.c			\
+			multipipex.c	\
+			parse.c			\
+			parseutils.c	\
+			pipexerror.c	\
+			pipexpath.c		\
+			pipexutils.c	\
+			prints.c		\
+			prompt.c		\
+			pwd.c			\
+			sigholders.c	\
+			split.c			\
+			splitquote.c	\
+			splitve.c		\
+			strchrcmp.c		\
+			unset.c			\
+			utils.c			\
+			verif_parse.c	\
 
 
 ##*********##

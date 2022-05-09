@@ -40,18 +40,18 @@ int	only_onechar(char *a, char c)
 	return (1);
 }
 
-int	secu_export(char *cmd, t_var *p)
+int	secu_export(char *cmd)
 {
 	int		i;
 	char	**split;
 
-	split = ft_splitve(cmd, ' ', "export");
+	split = ft_splitquote(cmd, ' ');
 	if (!split)
 	{
 		ft_putstr_fd("malloc error\n", 2);
 		return (0);
 	}
-	i = 0;
+	i = -1;
 	while (split[++i])
 	{
 		if (!ft_isexportable(split[i]))
@@ -71,19 +71,15 @@ int	secu_export(char *cmd, t_var *p)
 void	export(char *cmd, t_var *p)
 {
 	char	**new_env;
-	char	**split;
-	int		i;
 
-	if (!secu_export(cmd, p))
+	if (!secu_export(cmd))
 		return ;
 	if (cmd)
 	{
 		new_env = parse_export(cmd, *p->env, 0, NULL);
 		if (!new_env)
-		{
-			ft_putstr_fd("malloc error\n", 2);
-			return ;
-		}
+			return (ft_putstr_fd("Error, env didn't change\n", 2));
+		free(*p->env);
 		*p->env = new_env;
 	}
 	else
@@ -109,7 +105,7 @@ char	*only_noquote(char *a)
 		{
 			s = ft_joinc(s, a[i]);
 			if (!s)
-				return (0);
+				break ;
 		}
 		if (a[i])
 			i++;

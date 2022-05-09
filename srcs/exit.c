@@ -23,11 +23,11 @@ int	verif_exit(char *cmd)
 		sign += 2;
 	if (cmd && cmd[0] == '+')
 		sign++;
-	if (cmd && (ft_strleni(cmd, sign) > 19 \
+	if (cmd && ((!cmd[1] && sign != 0) || (ft_strleni(cmd, sign) > 19 \
 		|| (ft_strleni(cmd, sign) == 19 \
 		&& ft_strcmpi(cmd, "9223372036854775807", sign) > 0 && sign <= 1) \
 		|| (ft_strlen(cmd) == 20 && ft_strcmp(cmd, "-9223372036854775808") > 0 \
-		&& sign == 2) || !is_num(cmd)))
+		&& sign == 2) || !is_num(cmd))))
 	{
 		ft_putstr_fd("Minishell: exit: ", 2);
 		ft_putstr_fd(cmd, 2);
@@ -37,7 +37,7 @@ int	verif_exit(char *cmd)
 	return (1);
 }
 
-long long	ft_atol(char *str)
+long	ft_atol(char *str)
 {
 	int			i;
 	int			sign;
@@ -62,16 +62,13 @@ long long	ft_atol(char *str)
 	return (nb * sign);
 }
 
-void	ft_exit(t_var	*tab, int i)
+void	ft_exit(t_var	*tab, int i, int nb, char **cmd)
 {
-	int		nb;
-	char	**cmd;
-
-	nb = -1;
-	cmd = NULL;
 	if (tab && tab->cmd[i] && tab->cmd[i][1])
 	{
 		cmd = ft_splitve(tab->cmd[i][1], ' ', tab->cmd[i][0]);
+		if (!cmd)
+			return (ft_putstr_fd("malloc error\n", 2));
 		if (!verif_exit(cmd[1]))
 			nb = 255;
 		else
@@ -84,8 +81,10 @@ void	ft_exit(t_var	*tab, int i)
 	}
 	if ((cmd && cmd[1] && !cmd[2]))
 	{
+		free_split(cmd);
 		free_struc(tab, 0);
 		exit(nb % 256);
 	}
+	free_split(cmd);
 	ft_putstr_fd("Minishell: exit: too many arguments\n", 2);
 }

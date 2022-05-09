@@ -36,11 +36,28 @@ int	has_a_single(char **chevre)
 	return (0);
 }
 
+int	last_is_double(char **chevre)
+{
+	int	i;
+
+	i = 0;
+	while (chevre[i])
+		i++;
+	if (i > 0 && chevre[i - 1][0] != ' ')
+		return (1);
+	return (0);
+}
+
 int	all_chevre(t_var *tab, int i, int fd[2])
 {
-	fd[0] = 0;
-	fd[1] = 0;
-	if (has_a_single(tab->chevreg[i]))
+	fd[0] = -1;
+	fd[1] = -1;
+	if (last_is_double(tab->chevreg[i]))
+	{
+		fd[0] = dup(0);
+		dup2(tab->heredocfd[i], 0);
+	}
+	else if (has_a_single(tab->chevreg[i]))
 	{
 		fd[0] = ft_chevreg(tab->chevreg[i], tab, i);
 		if (!fd[0])

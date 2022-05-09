@@ -1,34 +1,60 @@
 #include "../incl/minishell.h"
 
-void	ft_while_doublechevre(int *pipes[2], char ***file, int i, int j)
-{
-	char	*read;
-
-	read = readline("> ");
-	while (ft_strcmp(read, &file[i][j][2]))
-	{
-		if (j == whoislastdouble(file[i]))
-			ft_putendl_fd(read, pipes[1][i]);
-		free(read);
-		read = readline("> ");
-	}
-	free(read);
-	close(pipes[1][i]);
-	close(pipes[0][i]);
-}
-
-int	ft_doublechevre(int *pipes[2], char ***file)
+char	*hdocparse(char	*s, char **env)
 {
 	int		i;
-	int		j;
+	char	*str;
 
-	i = -1;
-	while (file[++i])
+	i = 0;
+	str = NULL;
+	while (s[i])
 	{
-		j = -1;
-		while (file[i][++j])
-			if (file[i][j][0] == '<')
-				ft_while_doublechevre(pipes, file, i, j);
+		if (s[i] == '$')
+		{
+			str = ft_joinsfree(str, ft_dolar(&s[i + 1], env));
+			if (!s)
+				return (0);
+			i += skip_dolar(&s[i + 1]) + 1;
+		}
+		else
+			str = ft_joinc(str, s[i++]);
+	}
+	return (str);
+}
+
+void	ft_while_doublechevre(int *pipes[2], char ***file, int ij[2], char **e)
+{
+	char	*read;
+	char	*parsed;
+
+	read = readline("> ");
+	parsed = hdocparse(read, e);
+	while (ft_strcmp(read, &file[ij[0]][ij[1]][2]))
+	{
+		if (ij[1] == whoislastdouble(file[ij[0]]))
+			ft_putendl_fd(parsed, pipes[1][ij[0]]);
+		free(read);
+		free(parsed);
+		read = readline("> ");
+		parsed = hdocparse(read, e);
+	}
+	free(read);
+	free(parsed);
+	close(pipes[1][ij[0]]);
+	close(pipes[0][ij[0]]);
+}
+
+int	ft_doublechevre(int *pipes[2], char ***file, char **env)
+{
+	int		ij[2];
+
+	ij[0] = -1;
+	while (file[++ij[0]])
+	{
+		ij[1] = -1;
+		while (file[ij[0]][++ij[1]])
+			if (file[ij[0]][ij[1]][0] == '<')
+				ft_while_doublechevre(pipes, file, ij, env);
 	}
 	return (0);
 }
@@ -54,7 +80,7 @@ void	fill_pipes(char ***file, int *pipes[2])
 	pipes[1][i] = 0;
 }
 
-int	*ft_heredoctest(t_var *p, char ***file)
+int	*ft_heredoctest(char ***file, char **env)
 {
 	int		i;
 	int		*pipes[2];
@@ -65,7 +91,7 @@ int	*ft_heredoctest(t_var *p, char ***file)
 	if (!pid)
 	{
 		signal(SIGINT, sig_heredoc);
-		exit(ft_doublechevre(pipes, file));
+		exit(ft_doublechevre(pipes, file, env));
 	}
 	else
 	{
@@ -75,4 +101,5 @@ int	*ft_heredoctest(t_var *p, char ***file)
 		free(pipes[1]);
 		return (pipes[0]);
 	}
+	return (0);
 }

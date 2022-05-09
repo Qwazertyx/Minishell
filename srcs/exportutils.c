@@ -93,13 +93,13 @@ void	export_exist(char *mod, char **env)
 			env[i] = ft_strdup(mod);
 			if (!env[i])
 			{
+				ft_putstr_fd("malloc error\n", 2);
 				env[i] = save;
 				return ;
 			}
 		}
 		i++;
 	}
-	free(save);
 }
 
 char	**parse_export(char *cmd, char **env, int i, char **final)
@@ -126,5 +126,6 @@ char	**parse_export(char *cmd, char **env, int i, char **final)
 	}
 	free_split(parsed);
 	returned = add_export(final, env, 0);
+	free_split(final);
 	return (returned);
 }

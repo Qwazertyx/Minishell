@@ -20,8 +20,6 @@ void	free_split(char **args)
 
 	i = 0;
 	while (args[i])
-	{
 		free(args[i++]);
-	}
 	free(args);
 }

@@ -1,6 +1,6 @@
 #include "../incl/minishell.h"
 
-char	*ft_strjoin2(char const *s1, char const *s2)
+char	*ft_strjoin2(char *s1, char *s2)
 {
 	int		s;
 	char	*t;

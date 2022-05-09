@@ -81,7 +81,7 @@ char	*ft_parsechevre(char *a, t_var *p)
 	return (a);
 }
 
-t_var	*ft_fill_cmd(char *a, t_var *p, int i)
+int	ft_fill_cmd(char *a, t_var *p, int i)
 {
 	p->cmd[i] = malloc((nb_param(place_split(a, i)) + 1) * sizeof(char *));
 	if (!p->cmd[i])
@@ -98,6 +98,7 @@ t_var	*ft_fill_cmd(char *a, t_var *p, int i)
 	}
 	else
 		p->cmd[i][1] = NULL;
+	return (1);
 }
 
 t_var	*parse(char *a, t_var *p)

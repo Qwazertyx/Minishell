@@ -66,7 +66,6 @@ int	end_chevre(char **file, int param)
 	int		i;
 	int		fd;
 	int		f1;
-	char	*fname;
 
 	i = 0;
 	while (file[i])

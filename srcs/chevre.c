@@ -72,8 +72,6 @@ char	**ft_sfilechevre(char *ch, char c)
 			else
 				file[j++] = ft_chevrecpy(&ch[oldi], ' ', ch[oldi - 1]);
 		}
-		if (j > 0)
-			printf("file = (%s)\n", file[j - 1]);
 	}
 	file[j] = NULL;
 	return (file);

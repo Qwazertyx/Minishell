@@ -33,7 +33,7 @@ void	readline_doublechevre(char **file, char *stop, int pipefd[2], int i)
 	free(stop);
 }
 
-int	doublechevre(char **file, t_var *tab, int i)
+int	doublechevre(char **file, int i)
 {
 	int		y;
 	char	*stop;

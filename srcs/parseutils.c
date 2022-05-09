@@ -16,10 +16,9 @@ int	nb_param(char *a)
 	return (nb);
 }
 
-int	special_joinsfree_skip(char *a, char *b, char *s, int *i)
+char	*special_joinsfree_skip(char *a, char **b, char *s, int *i)
 {
 	s = ft_joinsfree(s, ft_dolar(a, b));
-	dprintf(2, "%s\n", s);
 	if (!s)
 		return (0);
 	*i += skip_dolar(a);
@@ -40,14 +39,14 @@ char	*skip_quote(char *cmd, int n, char **env, char *s)
 		else if (quot != 0 && quot == cmd[i])
 			quot = 0;
 		if (cmd[i] == '$' && quot != '\'')
-			s = special_joinsfree_skip(&cmd[i + 1], env, &s, &i);
+			s = special_joinsfree_skip(&cmd[i + 1], env, s, &i);
 		else if (cmd[i] == '~' && quot == 0)
 			s = ft_joins(s, ft_getenv("HOME", env));
 		else if ((n == 1 || (quot != cmd[i] && quot != 0) \
 		|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"')) && (cmd[i] != ' ' \
 		|| (i >= 1 && cmd[i] == ' ' && cmd[i - 1] && cmd[i - 1] != ' ')))
 			s = ft_joinc(s, cmd[i]);
-		if (s == -1)
+		if (!s)
 			return (0);
 	}
 	free(cmd);

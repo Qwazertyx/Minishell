@@ -1,6 +1,6 @@
 #include "../incl/minishell.h"
 
-static	int	ft_strcmtri(char **env, int i)
+int	ft_strcmtri(char **env, int i)
 {
 	int	nb;
 	int	j;
@@ -40,6 +40,6 @@ void	ft_env(char **env)
 	i = -1;
 	while (env[++i])
 		if (contains(env[nb[i]], '='))
-			printf("%s\n", env[nb[i]]);
+			ft_putendl_fd(env[nb[i]], 1);
 	free(nb);
 }

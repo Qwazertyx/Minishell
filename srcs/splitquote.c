@@ -1,5 +1,7 @@
 #include "../incl/minishell.h"
 
+#include "../incl/minishell.h"
+
 static int	ft_nb_w(const char *s, char c)
 {
 	int		i;
@@ -19,11 +21,9 @@ static int	ft_nb_w(const char *s, char c)
 		}
 		if (quot != 0 && quot == s[i])
 			quot = 0 * i++;
-		if (quot == 0)
+		if (s[i] && quot == 0)
 			nb++;
 		while (s[i] && s[i] != c && s[i] != '\'' && s[i] != '\"')
-			i++;
-		if (s[i])
 			i++;
 	}
 	return (nb);
@@ -78,20 +78,19 @@ static char	*mallocdef(char **tab, int j, int len)
 	return (tab[j]);
 }
 
-char	**ft_splitve(char *arg, char c, char *cmd)
+char	**ft_splitquote(char *arg, char c)
 {
 	int		i;
 	int		j;
 	int		l;
 	char	**tab;
 
-	tab = malloc((ft_nb_w(arg, c) + 2) * sizeof(char *));
+	tab = malloc((ft_nb_w(arg, c) + 1) * sizeof(char *));
 	if (!tab)
 		return (0);
-	tab[0] = ft_strdup(cmd);
 	i = 0;
-	j = 1;
-	while (j < ft_nb_w(arg, c) + 1)
+	j = 0;
+	while (j < ft_nb_w(arg, c))
 	{
 		while (arg && arg[i] == c && arg[i])
 			i++;

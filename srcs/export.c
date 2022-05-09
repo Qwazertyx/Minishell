@@ -7,6 +7,7 @@ char	**env_cpy(char **env, char **cmd)
 	char	**new_env;
 
 	nb = 0;
+	i = 0;
 	while (cmd && cmd[i])
 		if (!ft_exist(cmd[i++], env))
 			nb++;

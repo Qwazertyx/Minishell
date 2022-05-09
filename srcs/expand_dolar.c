@@ -20,7 +20,6 @@ char	*ft_dolar(char *a, char **env)
 	i = 0;
 	if (a[i] && a[i] == '?')
 		return (ft_itoa((int)g_exit));
-	dprintf(450, "SUS\n");
 	while (a[i] && stop_while(a[i], \
 	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01233456789_"))
 		i++;
