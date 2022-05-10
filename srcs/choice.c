@@ -23,8 +23,8 @@ pid_t	ft_vpipe(t_var *tab, int nb)
 
 	old = 0;
 	i = 0;
-	g_exit = 0;
 	read_heredoc(tab, &status, nb);
+	g_exit = 0;
 	if (status == 0)
 	{
 		if (nb > 1)

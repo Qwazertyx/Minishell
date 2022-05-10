@@ -11,7 +11,6 @@ void	modify_oldpwd(char **env, char *pwd, t_var *p)
 		return ;
 	free(env[i]);
 	env[i] = ft_joinsfree2("OLDPWD=", pwd);
-	// free(pwd);
 	if (!env[i])
 		exit_export(p, i);
 }

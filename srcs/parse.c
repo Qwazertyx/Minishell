@@ -32,6 +32,8 @@ char	*ft_no_doublespace(char *s)
 
 	i = 0;
 	str = NULL;
+	while (s[i] == ' ')
+		i++;
 	while (s[i])
 	{
 		if (s[i] == ' ')
