@@ -156,7 +156,8 @@ int		ft_existcompare(char *s1, char *s2);
 int		ft_exist(char *var, char **env);
 
 //HEREDOC
-void	ft_while_doublechevre(int *pipes[2], char ***file, int ij[2], char **env);
+void	ft_while_doublechevre(int *pipes[2], char ***file, int ij[2],
+			char **env);
 int		ft_doublechevre(int *pipes[2], char ***file, char **env);
 void	fill_pipes(char ***file, int *pipes[2]);
 int		*ft_heredoctest(char ***file, char **env);

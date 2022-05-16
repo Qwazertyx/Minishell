@@ -9,7 +9,8 @@ int	execmaster(char **maincmd, char **env)
 	{
 		if (execve(path(maincmd[0], env), maincmd, env) == -1)
 		{
-			perror("error execve:");
+			ft_putstr_fd("Minishell: ", 2);
+			perror(maincmd[0]);
 			exit(126);
 		}
 	}

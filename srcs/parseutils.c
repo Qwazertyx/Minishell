@@ -40,7 +40,8 @@ char	*skip_quote(char *cmd, int n, char **env, char *s)
 			quot = 0;
 		if (cmd[i] == '$' && quot != '\'')
 			s = special_joinsfree_skip(&cmd[i + 1], env, s, &i);
-		else if (cmd[i] == '~' && quot == 0)
+		else if (cmd[i] == '~' && (!cmd[i + 1] || cmd[i + 1] == ' ') \
+		&& (i == 0 || (i > 0 && cmd[i - 1] == ' ')) && quot == 0)
 			s = ft_joins(s, ft_getenv("HOME", env));
 		else if ((n == 1 || (quot != cmd[i] && quot != 0) \
 		|| (quot == 0 && cmd[i] != '\'' && cmd[i] != '\"')) && (cmd[i] != ' ' \
