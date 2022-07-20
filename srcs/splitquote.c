@@ -1,4 +1,14 @@
-#include "../incl/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   splitquote.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:06:33 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 13:06:34 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../incl/minishell.h"
 
@@ -9,8 +19,10 @@ static int	ft_nb_w(const char *s, char c)
 	char	quot;
 
 	i = 0;
-	nb = 0;
+	nb = 1;
 	quot = 0;
+	if (!s)
+		return (0);
 	while (s && s[i])
 	{
 		if (quot == 0 && (s[i] == '\'' || s[i] == '\"'))
@@ -18,12 +30,12 @@ static int	ft_nb_w(const char *s, char c)
 			quot = s[i++];
 			while (s[i] && s[i] != quot)
 				i++;
+			if (quot == s[i])
+				quot = 0 * i++;
 		}
-		if (quot != 0 && quot == s[i])
-			quot = 0 * i++;
-		if (s[i] && quot == 0)
-			nb++;
-		while (s[i] && s[i] != c && s[i] != '\'' && s[i] != '\"')
+		if (s[i] && s[i] == c)
+			nb = nb + 1 + 0 * i++;
+		if (s[i])
 			i++;
 	}
 	return (nb);

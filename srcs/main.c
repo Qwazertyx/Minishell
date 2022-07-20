@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:05:38 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 15:38:24 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 void	ft_useread(t_var *parsed, char *a)
@@ -13,12 +25,13 @@ void	ft_useread(t_var *parsed, char *a)
 			return ;
 		while (parsed->cmd[nb])
 			nb++;
-		pid = ft_vpipe(parsed, nb);
+		pid = ft_vpipe(parsed, nb, 0);
 		if (pid)
 		{
 			waitpid(pid, &nb, 0);
 			if (g_exit != 130 && g_exit != 131)
 				g_exit = WEXITSTATUS(nb);
+			dprintf(2, "=%d\n", g_exit);
 		}
 		while (wait(NULL) != -1)
 			;

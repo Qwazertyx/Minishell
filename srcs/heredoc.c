@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:05:34 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/20 11:59:38 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 char	*hdocparse(char	*s, char **env)
@@ -27,12 +39,16 @@ void	ft_while_doublechevre(int *pipes[2], char ***file, int ij[2], char **e)
 	char	*read;
 	char	*parsed;
 
+	dprintf(2, "==%d %d\n", pipes[1][ij[0]], pipes[0][ij[0]]);
 	read = readline("> ");
 	parsed = hdocparse(read, e);
 	while (ft_strcmp(read, &file[ij[0]][ij[1]][2]))
 	{
 		if (ij[1] == whoislastdouble(file[ij[0]]))
+		{
+			dprintf(2, "%d écrit\n", pipes[1][ij[0]]);
 			ft_putendl_fd(parsed, pipes[1][ij[0]]);
+		}
 		free(read);
 		free(parsed);
 		read = readline("> ");
@@ -40,8 +56,6 @@ void	ft_while_doublechevre(int *pipes[2], char ***file, int ij[2], char **e)
 	}
 	free(read);
 	free(parsed);
-	close(pipes[1][ij[0]]);
-	close(pipes[0][ij[0]]);
 }
 
 int	ft_doublechevre(int *pipes[2], char ***file, char **env)
@@ -55,6 +69,8 @@ int	ft_doublechevre(int *pipes[2], char ***file, char **env)
 		while (file[ij[0]][++ij[1]])
 			if (file[ij[0]][ij[1]][0] == '<')
 				ft_while_doublechevre(pipes, file, ij, env);
+		close(pipes[0][ij[0]]);
+		close(pipes[1][ij[0]]);
 	}
 	return (0);
 }

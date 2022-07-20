@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   choice.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:04:38 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/20 11:52:22 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 int	read_heredoc(t_var *tab, int *status, int nb)
@@ -14,15 +26,13 @@ int	read_heredoc(t_var *tab, int *status, int nb)
 	return (0);
 }
 
-pid_t	ft_vpipe(t_var *tab, int nb)
+pid_t	ft_vpipe(t_var *tab, int nb, int i)
 {
 	pid_t	pid;
 	int		old;
 	int		status;
-	int		i;
 
 	old = 0;
-	i = 0;
 	read_heredoc(tab, &status, nb);
 	g_exit = 0;
 	if (status == 0)
@@ -30,7 +40,11 @@ pid_t	ft_vpipe(t_var *tab, int nb)
 		if (nb > 1)
 		{
 			while (i < nb)
+			{
 				pid = multipipex(tab, nb, &old, i++);
+				if (pid < 0)
+					return (0);
+			}
 			return (pid);
 		}
 		else
@@ -43,6 +57,7 @@ pid_t	ft_vpipe(t_var *tab, int nb)
 pid_t	ft_execve(t_var *tab, int i, pid_t pid, int fd[2])
 {
 	char	**s;
+	int		status;
 
 	if (pid)
 		pid = fork();
@@ -56,7 +71,8 @@ pid_t	ft_execve(t_var *tab, int i, pid_t pid, int fd[2])
 		}
 		execmaster(s, *tab->env);
 	}
-	wait(NULL);
+	wait(&status);
+	g_exit = WEXITSTATUS(status);
 	dup2(fd[0], 0);
 	return (pid);
 }
@@ -81,7 +97,7 @@ void	ft_functions(t_var *tab, int i, pid_t pid, int fd[2])
 		pid = ft_execve(tab, i, pid, fd);
 }
 
-int	ft_choice(t_var *tab, int i, pid_t pid)
+pid_t	ft_choice(t_var *tab, int i, pid_t pid)
 {
 	int	fd[2];
 

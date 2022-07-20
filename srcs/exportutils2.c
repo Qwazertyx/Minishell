@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exportutils2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:05:19 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 13:05:20 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 void	print_export(char **env)
@@ -86,21 +98,18 @@ void	export(char *cmd, t_var *p)
 		print_export(*p->env);
 }
 
-char	*only_noquote(char *a)
+char	*only_noquote(char *a, int i, char *s, char quot)
 {
-	int		i;
-	char	*s;
-	char	quot;
-
-	i = 0;
-	quot = 0;
-	s = NULL;
 	while (a && a[i])
 	{
 		if (quot == 0 && (a[i] == '\'' || a[i] == '\"'))
+		{
 			quot = a[i++];
-		else if (quot != 0 && quot == a[i])
-			quot = 0 * i++;
+			while (a[i] && a[i] != quot)
+				s = ft_joinc(s, a[i++]);
+			if (quot == a[i])
+				quot = 0 * i++;
+		}
 		if (a[i])
 		{
 			s = ft_joinc(s, a[i]);

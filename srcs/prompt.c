@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prompt.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:06:06 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 15:37:59 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 char	*ft_strjoin2(char *s1, char *s2)
@@ -106,6 +118,27 @@ static char	*ft_join(char *a, char *b)
 	return (c);
 }
 
+int	ft_strcmpn(char *a, char *b)
+{
+	int	i;
+
+	i = 0;
+	if (!a || !b)
+		return (1);
+	while (a && b && b[i] && a[i] == b[i])
+		i++;
+	if (!b[i])
+		return (0);
+	return (a[i] - b[i]);
+}
+
+int	ft_is_me(char *s)
+{
+	if (ft_strcmpn(s, "/Users/"))
+		return (0);
+	return (1);
+}
+
 char	*ft_prompt(void)
 {
 	char	*a;
@@ -119,7 +152,8 @@ char	*ft_prompt(void)
 	while (a[++i])
 		if (a[i] == '/')
 			nb++;
-	if (nb >= 2)
+	// if (nb >= 2)
+	if (ft_is_me(a))
 		a = ft_skip(a);
 	if (!a)
 		return (0);

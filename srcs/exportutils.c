@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exportutils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:05:16 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 13:05:17 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 char	**pre_parsexport(char *cmd)
@@ -97,6 +109,7 @@ void	export_exist(char *mod, char **env)
 				env[i] = save;
 				return ;
 			}
+			free(save);
 		}
 		i++;
 	}
@@ -126,6 +139,7 @@ char	**parse_export(char *cmd, char **env, int i, char **final)
 	}
 	free_split(parsed);
 	returned = add_export(final, env, 0);
-	free_split(final);
+	if (final)
+		free_split(final);
 	return (returned);
 }

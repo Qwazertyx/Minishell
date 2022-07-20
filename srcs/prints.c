@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prints.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:06:03 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 16:22:45 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 void	ft_putstr_fd(char *s, int fd)
@@ -38,10 +50,8 @@ void	ft_putendl_fd(char *s, int fd)
 	if (s)
 	{
 		while (s[c])
-		{
-			write(fd, &s[c], 1);
 			c++;
-		}
+		write(fd, s, c);
 		write(fd, "\n", 1);
 	}
 }

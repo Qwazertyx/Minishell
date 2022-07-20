@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   chevreutils2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:04:34 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/20 11:54:39 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 int	skip_next_word(char *s, char c)
@@ -55,6 +67,7 @@ int	all_chevre(t_var *tab, int i, int fd[2])
 	if (last_is_double(tab->chevreg[i]))
 	{
 		fd[0] = dup(0);
+		dprintf(2, "-%d\n", tab->heredocfd[i]);
 		dup2(tab->heredocfd[i], 0);
 	}
 	else if (has_a_single(tab->chevreg[i]))

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:07:02 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 15:38:12 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -65,10 +77,10 @@ int		all_chevre(t_var *tab, int i, int fd[2]);
 
 //CHOICE
 int		read_heredoc(t_var *tab, int *status, int nb);
-pid_t	ft_vpipe(t_var *tab, int nb);
+pid_t	ft_vpipe(t_var *tab, int nb, int i);
 pid_t	ft_execve(t_var *tab, int i, pid_t pid, int fd[2]);
 void	ft_functions(t_var *tab, int i, pid_t pid, int fd[2]);
-int		ft_choice(t_var *tab, int i, pid_t pid);
+pid_t	ft_choice(t_var *tab, int i, pid_t pid);
 
 //ECHO
 int		*get_sus(char **envp, char *toech, int j);
@@ -127,7 +139,7 @@ void	print_export(char **env);
 int		only_onechar(char *a, char c);
 int		secu_export(char *cmd);
 void	export(char *cmd, t_var *p);
-char	*only_noquote(char *a);
+char	*only_noquote(char *a, int i, char *s, char quot);
 
 //FT_ATOI
 int		ft_atoi(const char *str);

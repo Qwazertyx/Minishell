@@ -33,7 +33,7 @@ NAME	= minishell
 ##**************###
 CC		= gcc
 
-CFLAGS	= -Wall -Wextra -Werror #-g3 -fsanitize=address #-fsanitize=address -g3
+CFLAGS	= -Wall -Wextra -Werror -g3 -fsanitize=address #-fsanitize=address -g3
 #-framework CoreFoundation
 ##*******************##
 ### DIRECTORY PATHS ###

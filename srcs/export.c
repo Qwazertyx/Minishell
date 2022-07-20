@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:05:09 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 13:05:10 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 char	**env_cpy(char **env, char **cmd)
@@ -103,7 +115,7 @@ char	**utils_pre_parsexport(char *cmd, int nb)
 		pre[i] = fill_export(cmd, i, 0);
 		if (!pre[i])
 			return (free_pre_parse(pre, i));
-		pre[i] = only_noquote(pre[i]);
+		pre[i] = only_noquote(pre[i], 0, 0, 0);
 		if (!pre[i])
 			return (free_pre_parse(pre, i));
 	}

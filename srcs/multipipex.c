@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   multipipex.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlagrang <mlagrang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 13:05:42 by mlagrang          #+#    #+#             */
+/*   Updated: 2022/07/19 13:05:43 by mlagrang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/minishell.h"
 
 void	callerror(const char *s)
@@ -23,6 +35,12 @@ pid_t	multipipex(t_var *tab, int nb, int *old, int i)
 
 	pipe(fd);
 	pid = fork();
+	if (pid < 0)
+	{
+		perror("Minishell: fork");
+		g_exit = 1;
+		return (pid);
+	}
 	if (!pid)
 	{
 		dup2(*old, STDIN_FILENO);
